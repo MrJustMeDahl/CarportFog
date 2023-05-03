@@ -23,6 +23,7 @@ public class Login extends HttpServlet
     public void init() throws ServletException
     {
         this.connectionPool = ApplicationStart.getConnectionPool();
+        System.out.println("test sikkerhed");
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
