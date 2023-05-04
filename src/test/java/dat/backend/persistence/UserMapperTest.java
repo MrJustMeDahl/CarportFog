@@ -18,9 +18,9 @@ class UserMapperTest
 {
     // TODO: Change mysql login credentials if needed below
 
-    private final static String USER = "root";
-    private final static String PASSWORD = "root";
-    private final static String URL = "jdbc:mysql://localhost:3306/fog_test?serverTimezone=CET&allowPublicKeyRetrieval=true&useSSL=false";
+    private final static String USER = System.getenv("USERNAME");
+    private final static String PASSWORD = System.getenv("PASSWORD");
+    private final static String URL = "jdbc:mysql://134.122.87.83:3306/fog_test?serverTimezone=CET&allowPublicKeyRetrieval=true&useSSL=false";
 
     private static ConnectionPool connectionPool;
 
