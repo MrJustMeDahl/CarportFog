@@ -1,0 +1,74 @@
+@startuml
+
+Class User {
+- int USerID
+- String email
+- String password
+- String name
+- String role
+- List<Order> orders
+
++ User(String email, String password, String name, String role, List<Order> orders)
++ User(String email, String password, String name)
+}
+
+Class Order{
+- int orderID
+- int userID
+- boolean orderStatus
+- Carport carport
+
++ Order (int orderID, int userID, boolean orderStatus, Carport carport)
+}
+
+Class Carport{
+- double indicativePrice
+- double carportPrice
+- List<Materials> materiallist
+}
+
+Abstract Class Materials{
+- String name
+- String materialTypeDescription
+- String materialDescription
+- String functionDescription
+- double materialPrice
+- int length
+- int amount
+- String materialType
+}
+
+Class Rafter{
+- int RafterID
+Rafter(String name, double materialPrice, int length, int amount, String materialTypeDescription, String materialDescription, String functionDescription)
+}
+
+Class Post{
+- int PostID
+Post(String name, double materialPrice, int length, int amount, String materialTypeDescription, String materialDescription, String functionDescription)
+}
+
+Class Purlin{
+-Int PurlingID
+Purlin(String name, double materialPrice, int length, int amount, String materialTypeDescription, String materialDescription, String functionDescription)
+}
+
+User *-- Order
+Order *-- Carport
+Carport *-- Materials
+Materials <|-- Rafter
+Materials <|-- Post
+Materials <|-- Purlin
+
+
+
+
+
+
+
+
+
+
+
+
+@enduml
