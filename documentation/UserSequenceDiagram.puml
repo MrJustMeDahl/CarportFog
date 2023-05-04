@@ -1,0 +1,27 @@
+@startuml
+autonumber
+User -> index.jsp: Enter site
+index.jsp -> register.jsp: create new user
+register.jsp -> registerServlet: doPost()
+registerServlet -> UserMapper: CreateUser(String email, String Password, String address, int phonenumber)
+UserMapper -> DB: Create user in DB
+DB -> UserMapper
+UserMapper -> registerServlet
+registerServlet -> login.jsp: redirect
+login.jsp -> loginServlet: doPost()
+loginServlet -> UserMapper: login(String email, String password)
+UserMapper -> DB: check for userinfo
+DB -> UserMapper: return userinfo
+UserMapper -> loginServlet
+loginServlet -> productServlet: request productdata
+productServlet -> product.jsp
+product.jsp -> carportServlet: doGet()
+carportServlet -> carport.jsp:redirect
+carport.jsp -> carportServlet: doPost()
+carportServlet -> shoppingbasketServlet: doGet()
+shoppingbasketServlet -> shoppingbasket.jsp: redirect
+shoppingbasket.jsp -> shoppingbasketServlet: doPost()
+shoppingbasketServlet -> OrderMapper: createOrder(Carport carport, int UserID)
+OrderMapper -> infoServlet: doGet()
+infoServlet -> info.jsp: redirect
+@enduml
