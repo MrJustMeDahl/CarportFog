@@ -11,7 +11,7 @@ UserMapper -> loginServlet
 loginServlet -> productServlet: request productdata
 productServlet -> product.jsp
 product.jsp -> orderServlet: via orders in navbar
-orderservlet -> orders.jsp
+orderServlet -> orders.jsp
 orders.jsp -> orderServlet: doPost()
 orderServlet -> orderMapper:updateApproveOrder()
 orderMapper -> DB: changes orderStatus
