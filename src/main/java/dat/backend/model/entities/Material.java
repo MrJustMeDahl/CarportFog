@@ -18,5 +18,5 @@ public abstract class Material {
         this.length = length;
     }
 
-    abstract double getPrice();
+    public abstract double getPrice();
 }

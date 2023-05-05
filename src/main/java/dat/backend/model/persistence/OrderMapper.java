@@ -1,9 +1,6 @@
 package dat.backend.model.persistence;
 
-import dat.backend.model.entities.Carport;
-import dat.backend.model.entities.Material;
-import dat.backend.model.entities.Order;
-import dat.backend.model.entities.Post;
+import dat.backend.model.entities.*;
 import dat.backend.model.exceptions.DatabaseException;
 
 import java.sql.Connection;
@@ -60,6 +57,15 @@ public class OrderMapper {
                         switch (rs.getString("buildFunction")) {
                             case "stolpe":
                                 newMaterial = new Post(materialID, description, type, function, price, length);
+                                break;
+                            case "rem":
+                                newMaterial = new Purlin(materialID, description, type, function, price, length);
+                                break;
+                            case "spær":
+                                newMaterial = new Rafter(materialID, description, type, function, price, length);
+                                break;
+                            default:
+                                throw new DatabaseException("Function of: "+ description + " " + materialID + " is not recognised in database.");
                         }
                         materials.put(newMaterial, amount);
                     }

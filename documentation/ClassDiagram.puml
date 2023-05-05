@@ -5,11 +5,13 @@ Class User {
 - String email
 - String password
 - String name
+- int phoneNumber
+- String address
 - String role
 - List<Order> orders
 
-+ User(String email, String password, String name, String role, List<Order> orders)
-+ User(String email, String password, String name)
++ User(int userID, String email, String password, String name,int phoneNumber, String address, String role)
++ void loadOrders(ConnectionPool connectionPool)
 }
 
 Class Order{
@@ -17,40 +19,48 @@ Class Order{
 - int userID
 - boolean orderStatus
 - Carport carport
+- double price
+- double indicativePrice
 
-+ Order (int orderID, int userID, boolean orderStatus, Carport carport)
++ Order (int orderID, int userID, String orderStatus, Carport carport, double price, double indicativePrice)
 }
 
 Class Carport{
+- double price
 - double indicativePrice
-- double carportPrice
-- List<Materials> materiallist
+- Map<Material, Integer> materials
+
++ Carport(Map<Material, Integer materials)
++ Carport(Map<Material, Integer materials, double price, double indicativePrice)
+- double calculatePrice()
+- double calculateIndicativePrice()
 }
 
-Abstract Class Materials{
-- String name
-- String materialTypeDescription
-- String materialDescription
-- String functionDescription
-- double materialPrice
-- int length
-- int amount
-- String materialType
+Abstract Class Material{
+# int materialID
+# String Description
+# String type
+# String function
+# double price
+# int length
+
+# Material(int materialID, String description, String type, String function, double price, int length)
++ abstract double getPrice()
 }
 
 Class Rafter{
-- int RafterID
-Rafter(String name, double materialPrice, int length, int amount, String materialTypeDescription, String materialDescription, String functionDescription)
+Rafter(int materialID, String description, String type, String function, double price, int length)
++ double getPrice()
 }
 
 Class Post{
-- int PostID
-Post(String name, double materialPrice, int length, int amount, String materialTypeDescription, String materialDescription, String functionDescription)
+Post(int materialID, String description, String type, String function, double price, int length)
++ double getPrice()
 }
 
 Class Purlin{
--Int PurlingID
-Purlin(String name, double materialPrice, int length, int amount, String materialTypeDescription, String materialDescription, String functionDescription)
+Purlin(int materialID, String description, String type, String function, double price, int length)
++ double getPrice()
 }
 
 
@@ -63,17 +73,20 @@ class UserMapper{
 }
 
 class OrderMapper{
+<<static>>
 + Order createOrder (Carport carport, int UserID, ConnectionPool connectionPool) throws DatabaseException
 + Order getOrderByOrderID(int orderID, ConnectionPool connectionPool) throws DatabaseException
 + List<Order> getAllOrders(ConnectionPool connectionPool) throws DatabaseException
-+ List<Order> getAllOrdersByID(Int userID, ConnectionPool connectionPool) throws DatabaseException
++ List<Order> getOrdersByUserID(Int userID, ConnectionPool connectionPool) throws DatabaseException
 + void editOrder (int orderID, ConnectionPool connectionPool) throws DatabaseException
 + void updateApproveOrder (int orderID, ConnectionPool connectionPool) throws DatabaseException
 + void updateOrderPayment (int orderID, ConnectionPool connectionPool) throws DatabaseException
 + void deleteOrder ( int orderID, ConnectionPool connectionPool) throws DatabaseException
++ getCarportForOrder(int orderID, ConnectionPool connectionPool) throws DatabaseException
 }
 
 class MaterialMapper{
+<<static>>
 void materialPriceUpdate (int materialID, double price, ConnectionPool connectionPool) throws DatabaseException
 void materialAdd (String name, double price,String materialTypeDescription, String materialDescription, String functionDescription, ConnectionPool connectionPool) throws DatabaseException
 void materialDelte (int materialID, ConnectionPool connectionPool) throws DatabaseException
@@ -94,10 +107,10 @@ class ConnectionPool{
 
 User *-- Order
 Order *-- Carport
-Carport *-- Materials
-Materials <|-- Rafter
-Materials <|-- Post
-Materials <|-- Purlin
+Carport *-- Material
+Material <|-- Rafter
+Material <|-- Post
+Material <|-- Purlin
 
 
 
