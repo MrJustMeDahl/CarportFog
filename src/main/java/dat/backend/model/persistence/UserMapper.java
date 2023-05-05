@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 class UserMapper
 {
-    static User login(String username, String password, ConnectionPool connectionPool) throws DatabaseException
+    static User login(String email, String password, ConnectionPool connectionPool) throws DatabaseException
     {
         Logger.getLogger("web").log(Level.INFO, "");
 
@@ -21,16 +21,20 @@ class UserMapper
         {
             try (PreparedStatement ps = connection.prepareStatement(sql))
             {
-                ps.setString(1, username);
+                ps.setString(1, email);
                 ps.setString(2, password);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next())
                 {
+                    int userID = rs.getInt("userId");
+                    String name = rs.getString("FullName");
+                    int phoneNumber = rs.getInt("phoneNumber");
+                    String address = rs.getString("address");
                     String role = rs.getString("role");
-                    user = new User(username, password, role);
+                    user = new User(userID, email, password, name, phoneNumber, address, role);
                 } else
                 {
-                    throw new DatabaseException("Wrong username or password");
+                    throw new DatabaseException("Wrong email or password");
                 }
             }
         } catch (SQLException ex)
@@ -40,25 +44,25 @@ class UserMapper
         return user;
     }
 
-    static User createUser(String username, String password, String role, ConnectionPool connectionPool) throws DatabaseException
+    static User createUser(String email, String password, String role, ConnectionPool connectionPool) throws DatabaseException
     {
         Logger.getLogger("web").log(Level.INFO, "");
         User user;
-        String sql = "insert into user (username, password, role) values (?,?,?)";
+        String sql = "insert into user (email, password, role) values (?,?,?)";
         try (Connection connection = connectionPool.getConnection())
         {
             try (PreparedStatement ps = connection.prepareStatement(sql))
             {
-                ps.setString(1, username);
+                ps.setString(1, email);
                 ps.setString(2, password);
                 ps.setString(3, role);
                 int rowsAffected = ps.executeUpdate();
                 if (rowsAffected == 1)
                 {
-                    user = new User(username, password, role);
+                    //user = new User(email, password, role);
                 } else
                 {
-                    throw new DatabaseException("The user with username = " + username + " could not be inserted into the database");
+                    throw new DatabaseException("The user with email = " + email + " could not be inserted into the database");
                 }
             }
         }
@@ -66,7 +70,7 @@ class UserMapper
         {
             throw new DatabaseException(ex, "Could not insert username into database");
         }
-        return user;
+        return null;
     }
 
 

@@ -96,11 +96,11 @@ CREATE TABLE `user` (
 
 CREATE SCHEMA IF NOT EXISTS fog_test;
 USE fog_test;
-CREATE TABLE IF NOT EXISTS itemList_test LIKE fog.itemList;
-CREATE TABLE IF NOT EXISTS material_test LIKE fog.material;
-CREATE TABLE IF NOT EXISTS materialBuildFunction_test LIKE fog.materialBuildFunction;
-CREATE TABLE IF NOT EXISTS materialType_test LIKE fog.materialType;
-CREATE TABLE IF NOT EXISTS materialVariant_test LIKE fog.materialVariant;
-CREATE TABLE IF NOT EXISTS order_test LIKE fog.order;
-CREATE TABLE IF NOT EXISTS reciept_test LIKE fog.reciept;
-CREATE TABLE IF NOT EXISTS user_test LIKE fog.user;
+CREATE TABLE IF NOT EXISTS itemList LIKE fog.itemList;
+CREATE TABLE IF NOT EXISTS material LIKE fog.material;
+CREATE TABLE IF NOT EXISTS materialBuildFunction LIKE fog.materialBuildFunction;
+CREATE TABLE IF NOT EXISTS materialType LIKE fog.materialType;
+CREATE TABLE IF NOT EXISTS materialVariant LIKE fog.materialVariant;
+CREATE TABLE IF NOT EXISTS order LIKE fog.order;
+CREATE TABLE IF NOT EXISTS reciept LIKE fog.reciept;
+CREATE TABLE IF NOT EXISTS user LIKE fog.user;
