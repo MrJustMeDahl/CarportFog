@@ -12,8 +12,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class contains all methods used to retrieve or alter order data in the database.
+ * Every method in this class is static, and an instance of this class is never needed.
+ * @MrJustMeDahl
+ */
 public class OrderMapper {
 
+    /**
+     * This method retrieves a list of orders belonging to a specific user, from the database.
+     * @param userID user ID number - generated in the database.
+     * @param connectionPool Required to establish connection to the database.
+     * @return List of instances from the Order.java class - data for each instance is retrieved from the database.
+     * @throws DatabaseException is thrown if there is no connection to the database, or if data retrieved from the database is invalid.
+     * @author MrJustMeDahl
+     */
     public static List<Order> getOrdersByUserID(int userID, ConnectionPool connectionPool) throws DatabaseException {
         List<Order> allOrders = new ArrayList<>();
         String sql = "SELECT * FROM fog.order WHERE userId = ?";
@@ -37,6 +50,14 @@ public class OrderMapper {
         return allOrders;
     }
 
+    /**
+     * This method generates an instance of Carport.java. The instance is made with data from the row, from the itemListView view in the database, that matches the given order ID.
+     * @param orderID ID number for the order you need the carport for.
+     * @param connectionPool Required to establish connection to the database.
+     * @return Carport including all the data it persists of.
+     * @throws DatabaseException is thrown if there isn't a connection to the database or if the data in the database is invalid.
+     * @author MrJustMeDahl
+     */
     public static Carport getCarportForOrder(int orderID, ConnectionPool connectionPool) throws DatabaseException{
         Map<Material, Integer> materials = new HashMap<>();
         String SQL = "SELECT * FROM fog.itemListView WHERE orderId = ?";

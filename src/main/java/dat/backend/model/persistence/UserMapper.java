@@ -7,8 +7,23 @@ import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-class UserMapper
-{
+/**
+ * This class contains all methods used to retrieve or alter userdata in the database.
+ * Every method in this class is static, and an instance of this class is never needed.
+ * @MrJustMeDahl
+ */
+class UserMapper {
+
+    /**
+     * Method is used to log in users.
+     * It checks if a user exist with the email and password given, if it does it create a user object with the data from that row in the database.
+     * @param email user's email / functions as a username.
+     * @param password Password matching the given email.
+     * @param connectionPool Required to make connection to the database.
+     * @return User
+     * @throws DatabaseException is thrown if there is no connection to the database or if the given email or password doesn't match any data in the user table.
+     * @author MrJustMeDahl
+     */
     static User login(String email, String password, ConnectionPool connectionPool) throws DatabaseException
     {
         Logger.getLogger("web").log(Level.INFO, "");
