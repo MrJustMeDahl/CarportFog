@@ -70,6 +70,10 @@ public class User {
         return address;
     }
 
+    public List<Order> getOrders() {
+        return orders;
+    }
+
     /**
      * This method is called if you need to retrieve all orders belonging to the user.
      * @param connectionPool Used to get a connection to the database.

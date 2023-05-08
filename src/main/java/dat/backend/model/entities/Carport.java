@@ -11,16 +11,22 @@ public class Carport {
     private double price;
     private double indicativePrice;
     private Map<Material, Integer> materials;
+    private int width;
+    private int length;
+    private int minHeight;
 
     /**
      * This constructor is used when creating a new order - meaning you don't know the price yet, it will calculate the price of all materials for you and give you a suggested indicative price.
      * @param materials Key is the material and value is number of that material used for this specific Carport
      * @author MrJustMeDahl
      */
-    public Carport(Map<Material, Integer> materials){
+    public Carport(Map<Material, Integer> materials, int width, int length, int minHeight){
         this.materials = materials;
         this.price = calculatePrice();
         this.indicativePrice = calculateIndicativePrice();
+        this.width = width;
+        this.length = length;
+        this.minHeight = minHeight;
     }
 
     /**
@@ -30,10 +36,13 @@ public class Carport {
      * @param indicativePrice Sales price.
      * @author MrJustMeDahl
      */
-    public Carport(Map<Material, Integer> materials, double price, double indicativePrice){
+    public Carport(Map<Material, Integer> materials, double price, double indicativePrice, int width, int length, int minHeight){
         this.materials = materials;
         this.price = price;
         this.indicativePrice = indicativePrice;
+        this.width = width;
+        this.length = length;
+        this.minHeight = minHeight;
     }
 
     /**
@@ -57,5 +66,29 @@ public class Carport {
     private double calculateIndicativePrice(){
         double indicativePrice = (100*price)/61;
         return indicativePrice;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public double getIndicativePrice() {
+        return indicativePrice;
+    }
+
+    public Map<Material, Integer> getMaterials() {
+        return materials;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public int getMinHeight() {
+        return minHeight;
     }
 }
