@@ -37,7 +37,7 @@ public class OrderMapper {
                 ResultSet rs = ps.executeQuery();
                 while(rs.next()){
                     int orderID = rs.getInt("orderId");
-                    Carport carport = getCarportForOrder(orderID, connectionPool);
+                    Carport carport = new Carport(getCarportForOrder(orderID, connectionPool), rs.getInt("carportPrice"), rs.getInt("carportIndicativePrice"));
                     String orderStatus = rs.getString("orderStatus");
                     double price = rs.getDouble("price");
                     double indicativePrice = rs.getDouble("indicativePrice");
@@ -58,7 +58,7 @@ public class OrderMapper {
      * @throws DatabaseException is thrown if there isn't a connection to the database or if the data in the database is invalid.
      * @author MrJustMeDahl
      */
-    public static Carport getCarportForOrder(int orderID, ConnectionPool connectionPool) throws DatabaseException{
+    public static Map<Material, Integer> getCarportForOrder(int orderID, ConnectionPool connectionPool) throws DatabaseException{
         Map<Material, Integer> materials = new HashMap<>();
         String SQL = "SELECT * FROM fog.itemListView WHERE orderId = ?";
         try(Connection conn = connectionPool.getConnection()){
@@ -95,6 +95,6 @@ public class OrderMapper {
         }catch(SQLException e){
             throw new DatabaseException("Error retrieving carport for order: " + orderID);
         }
-        return null;
+        return materials;
     }
 }
