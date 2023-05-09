@@ -31,4 +31,28 @@ public class Order {
         this.price = price;
         this.indicativePrice = indicativePrice;
     }
+
+    public int getOrderID() {
+        return orderID;
+    }
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public Carport getCarport() {
+        return carport;
+    }
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public double getIndicativePrice() {
+        return indicativePrice;
+    }
 }
