@@ -36,8 +36,9 @@ public class Product extends HttpServlet
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
-        // You shouldn't end up here with a GET-request, thus you get sent back to frontpage
-        response.sendRedirect("product.jsp");
+
+        request.getRequestDispatcher("WEB-INF/product.jsp").forward(request, response);
+
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException

@@ -40,8 +40,10 @@ public class Carports extends HttpServlet
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
-        // You shouldn't end up here with a GET-request, thus you get sent back to frontpage
-        response.sendRedirect("carport.jsp");
+
+        //response.sendRedirect("WEB-INF/carport.jsp");
+        request.getRequestDispatcher("WEB-INF/carport.jsp").forward(request, response);
+
     }
 
 

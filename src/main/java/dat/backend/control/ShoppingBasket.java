@@ -60,7 +60,7 @@ public class ShoppingBasket extends HttpServlet
             request.setAttribute("errormessage", e);
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }
-        request.getRequestDispatcher("shoppingbasket.jsp").forward(request, response);
+        request.getRequestDispatcher("WEB-INF/shoppingbasket.jsp").forward(request, response);
     }
 
     /**
