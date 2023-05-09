@@ -38,4 +38,24 @@ public abstract class Material {
      * @author MrJustMeDahl
      */
     public abstract double getPrice();
+
+    public int getMaterialID() {
+        return materialID;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getFunction() {
+        return function;
+    }
+
+    public int getLength() {
+        return length;
+    }
 }
