@@ -10,7 +10,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><jsp:invoke fragment="header"/></title>
+    <title>
+        <jsp:invoke fragment="header"/>
+    </title>
     <link rel="stylesheet" href="<%=request.getContextPath()%>/css/style.css">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -38,6 +40,18 @@
                     <c:if test="${sessionScope.user != null }">
                         <a class="nav-item nav-link" href="${pageContext.request.contextPath}/logout">Log out</a>
                     </c:if>
+                    <c:if test="${sessionScope.user.role == 'admin'}">
+                        <div class="dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                Admin
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <li><a class="nav-item nav-link"
+                                       href="${pageContext.request.contextPath}/updatematerials">Materialer</a></li>
+                            </ul>
+                        </div>
+                    </c:if>
                 </div>
             </div>
         </div>
@@ -45,7 +59,9 @@
 </header>
 
 <div id="body" class="container mt-4" style="min-height: 400px;">
-    <h1><jsp:invoke fragment="header"/></h1>
+    <h1>
+        <jsp:invoke fragment="header"/>
+    </h1>
     <jsp:doBody/>
 </div>
 
@@ -58,7 +74,8 @@
             2800 Lyngby
         </div>
         <div class="col">
-            <jsp:invoke fragment="footer"/><br/>
+            <jsp:invoke fragment="footer"/>
+            <br/>
             <p>&copy; 2022 Cphbusiness</p>
         </div>
         <div class="col">

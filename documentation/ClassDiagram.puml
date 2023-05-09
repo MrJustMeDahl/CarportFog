@@ -87,13 +87,13 @@ class OrderMapper{
 
 class MaterialMapper{
 <<static>>
-void materialPriceUpdate (int materialID, double price, ConnectionPool connectionPool) throws DatabaseException
-void materialAdd (String name, double price,String materialTypeDescription, String materialDescription, String functionDescription, ConnectionPool connectionPool) throws DatabaseException
-void materialDelte (int materialID, ConnectionPool connectionPool) throws DatabaseException
-List<Rafter> rafters (ConnectionPool connectionPool) throws DatabaseException
-List<Post> posts (ConnectionPool connectionPool) throws DatabaseException
-List<Purlin> purlins (ConnectionPool connectionPool) throws DatabaseException
-list<Materials> partList (int OrderId, rafters, posts, purlins, ConnectionPool connectionPool) throws DatabaseException
++ void materialPriceUpdate (int materialID, double price, ConnectionPool connectionPool) throws DatabaseException
++ void materialAdd (String name, double price,String materialTypeDescription, String materialDescription, String functionDescription, ConnectionPool connectionPool) throws DatabaseException
++ void materialDelte (int materialID, ConnectionPool connectionPool) throws DatabaseException
++ List<Rafter> rafters (ConnectionPool connectionPool) throws DatabaseException
++ List<Post> posts (ConnectionPool connectionPool) throws DatabaseException
++ List<Purlin> purlins (ConnectionPool connectionPool) throws DatabaseException
++ list<Material> partList (int OrderId, rafters, posts, purlins, ConnectionPool connectionPool) throws DatabaseException
 }
 
 class ConnectionPool{
