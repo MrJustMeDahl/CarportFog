@@ -97,5 +97,41 @@ public class OrderMapper {
         }
         return materials;
     }
+    public static Order createOrder (Carport carport, int userId, double price, double indicativePrice, ConnectionPool connectionPool) throws DatabaseException {
+        int orderId = 0;
+        String SQL = "INSERT INTO fog.orders (price, indicativePrice, orderStatus, userId, carportLength, carportWidth, carportMinHeight, carportPrice, carportIndicativePrice) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    try(Connection connection = connectionPool.getConnection()){
+        try (PreparedStatement ps = connection.prepareStatement(SQL)){
 
+            ps.setDouble(1, price);
+            ps.setDouble(2, indicativePrice);
+            ps.setString(3, "pending");
+            ps.setInt(4, userId);
+            ps.setInt(5, carport.getLength());
+            ps.setInt(6, carport.getWidth());
+            ps.setInt(7, carport.getMinHeight());
+            ps.setFloat(8, (float) carport.getPrice());
+            ps.setFloat(9, (float) carport.getIndicativePrice());
+            ps.executeUpdate();
+        }
+    }
+    catch (SQLException ex){
+        throw new DatabaseException(ex, "Error creating order in the Database");
+    }
+    return new Order(orderId, userId, carport, "pending", price, indicativePrice);
+    }
+    public static void updateOrderOrdered(int orderId, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "UPDATE fog.orders SET orders.orderStatus = ? WHERE orderId = ?";
+
+        try(Connection connection = connectionPool.getConnection()){
+            try(PreparedStatement ps = connection.prepareStatement(sql)){
+
+                ps.setString(1, "ordered");
+                ps.setInt(2, orderId);
+                ps.execute();
+            }
+        } catch(SQLException e){
+            throw new DatabaseException("Failed to update paid in database");
+        }
+    }
 }

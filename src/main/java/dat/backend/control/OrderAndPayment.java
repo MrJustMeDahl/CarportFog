@@ -1,7 +1,12 @@
 package dat.backend.control;
 
 import dat.backend.model.config.ApplicationStart;
+import dat.backend.model.entities.Order;
+import dat.backend.model.entities.User;
+import dat.backend.model.exceptions.DatabaseException;
 import dat.backend.model.persistence.ConnectionPool;
+import dat.backend.model.persistence.OrderFacade;
+import dat.backend.model.persistence.OrderMapper;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,9 +15,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
+import java.util.Objects;
 
-@WebServlet(name = "carport", urlPatterns = {"/carport"} )
-public class Carport extends HttpServlet
+@WebServlet(name = "orderandpayment", urlPatterns = {"/orderandpayment"} )
+public class OrderAndPayment extends HttpServlet
 {
     private ConnectionPool connectionPool;
 
@@ -22,41 +29,30 @@ public class Carport extends HttpServlet
         this.connectionPool = ApplicationStart.getConnectionPool();
     }
 
-    /**
-     * */
+
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
         // You shouldn't end up here with a GET-request, thus you get sent back to frontpage
-        response.sendRedirect("carport.jsp");
+
+
     }
 
-
-    /**
-     * doPost is designed to take the users input on a requestscope and save it for the shoppingbasket. TBD
-     * @param request
-     * @param response
-     * @throws IOException
-     * @throws ServletException
-     */
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
         response.setContentType("text/html");
         HttpSession session = request.getSession();
 
-        String width = request.getParameter("width");
-        String length = request.getParameter("length");
-        String height = request.getParameter("height");
+        Order order = (Order) session.getAttribute("order");
 
+        try {
+            OrderFacade.updateOrderOrdered(order.getOrderID(), connectionPool);
+            request.getRequestDispatcher("shoppingbasket").forward(request, response);
 
-        try{
-
-
+        } catch (DatabaseException e) {
+            request.setAttribute("errormessage", e);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
-        catch (Exception e){
-
-        }
-
     }
 
 }

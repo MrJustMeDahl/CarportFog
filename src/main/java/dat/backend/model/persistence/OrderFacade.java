@@ -1,5 +1,6 @@
 package dat.backend.model.persistence;
 
+import dat.backend.model.entities.Carport;
 import dat.backend.model.entities.Order;
 import dat.backend.model.exceptions.DatabaseException;
 
@@ -22,6 +23,13 @@ public class OrderFacade {
      */
     public static List<Order> getOrdersByUserID(int userID, ConnectionPool connectionPool) throws DatabaseException {
         return OrderMapper.getOrdersByUserID(userID, connectionPool);
+    }
+
+    public static Order createOrder (Carport carport, int userId, double price, double indicativePrice, ConnectionPool connectionPool) throws DatabaseException {
+        return OrderMapper.createOrder(carport, userId, price, indicativePrice, connectionPool);
+    }
+    public static void updateOrderOrdered(int orderId, ConnectionPool connectionPool) throws DatabaseException {
+        OrderMapper.updateOrderOrdered(orderId, connectionPool);
     }
 
 }
