@@ -31,10 +31,10 @@ public class ShoppingBasket extends HttpServlet
 
     /**
      * doGet will load a pending order into the shoppingbasket on requestscope, which will act as the shoppingbasket
-     * @param request
-     * @param response
-     * @throws IOException
-     * @throws ServletException
+     * @param request Used for loading in the data on the request scope.
+     * @param response Is used to set the contentType.
+     * @throws IOException Is cast if the input/output is invalid.
+     * @throws ServletException is cast when theres an error using Servlets in general.
      */
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
@@ -62,6 +62,14 @@ public class ShoppingBasket extends HttpServlet
         }
         request.getRequestDispatcher("shoppingbasket.jsp").forward(request, response);
     }
+
+    /**
+     * doPost will just redirect to the doGet() method.
+     * @param request Used for loading in the data on the request scope.
+     * @param response Is used to set the contentType.
+     * @throws IOException Is cast if the input/output is invalid.
+     * @throws ServletException is cast when theres an error using Servlets in general.
+     */
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {

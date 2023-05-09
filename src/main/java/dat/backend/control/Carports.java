@@ -29,8 +29,14 @@ public class Carports extends HttpServlet
         this.connectionPool = ApplicationStart.getConnectionPool();
     }
 
+
     /**
-     * */
+     * doGet is used to redirect to the carport.jsp, where the user is able to customize the dimensions of a carport.
+     * @param request Used for loading in the data on the request scope.
+     * @param response Is used to set the contentType.
+     * @throws IOException Is cast if the input/output is invalid.
+     * @throws ServletException is cast when theres an error using Servlets in general.
+     */
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
@@ -40,12 +46,13 @@ public class Carports extends HttpServlet
 
 
     /**
-     * doPost is designed to take the users input on a requestscope and save it for the shoppingbasket.
-     * HER SKAL LOADES MATERIALER IND!!!!!! MANGLER STADIG
-     * @param request
-     * @param response
-     * @throws IOException
-     * @throws ServletException
+     * doPost is designed to take the users input and make use of the createOrder() method. The order is saved in the DB and on
+     * the request and session scope for later use, fx in the shoppingbasket.
+     * HER SKAL LOADES MATERIALER IND!!!!!! MANGLER STADIG.
+     * @param request Used for loading in the data on the request scope.
+     * @param response Is used to set the contentType.
+     * @throws IOException Is cast if the input/output is invalid.
+     * @throws ServletException is cast when theres an error using Servlets in general.
      */
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {

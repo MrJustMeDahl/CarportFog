@@ -25,9 +25,26 @@ public class OrderFacade {
         return OrderMapper.getOrdersByUserID(userID, connectionPool);
     }
 
+    /**
+     * @param carport the Object, which will be generated with height, width and length from the user, later to be put into the order in the DB
+     * @param userId ID number for the user, which the order is made for.
+     * @param price Price is the final price for the order. (This will later be changeable for the admin)
+     * @param indicativePrice The price which is predetermined, before the admin has made a deal.
+     * @param connectionPool Is required for establishing connection to the DB.
+     * @return Will return the order, which is being created by the method.
+     * @throws DatabaseException is thrown if there isn't a connection to the database or if the data in the database is invalid.
+     */
     public static Order createOrder (Carport carport, int userId, double price, double indicativePrice, ConnectionPool connectionPool) throws DatabaseException {
         return OrderMapper.createOrder(carport, userId, price, indicativePrice, connectionPool);
     }
+
+    /**
+     * This method will update the orderstatus for an order in the DB. Its used for changing the order which is visible in the shoppingbasket.
+     * for the user. After pressing "get offer", it will change the orderstatus from "pending" to "ordered".
+     * @param orderId Is the ID for the order itself.
+     * @param connectionPool Is required for establishing connection to the DB.
+     * @throws DatabaseException is thrown if there isn't a connection to the database or if the data in the database is invalid.
+     */
     public static void updateOrderOrdered(int orderId, ConnectionPool connectionPool) throws DatabaseException {
         OrderMapper.updateOrderOrdered(orderId, connectionPool);
     }

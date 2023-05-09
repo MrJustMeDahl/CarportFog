@@ -33,10 +33,18 @@ public class OrderAndPayment extends HttpServlet
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
-        // You shouldn't end up here with a GET-request, thus you get sent back to frontpage
 
 
     }
+
+    /**
+     * doPost will make use of the orderMapper method updateOrderOrdered(), which changes the order status of the order
+     * from "pending" to "ordered", and then redirect the user back to the shopping cart.
+     * @param request Used for loading in the data on the request scope.
+     * @param response Is used to set the contentType.
+     * @throws IOException Is cast if the input/output is invalid.
+     * @throws ServletException is cast when theres an error using Servlets in general.
+     */
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {

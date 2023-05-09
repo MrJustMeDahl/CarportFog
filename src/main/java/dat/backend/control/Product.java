@@ -25,9 +25,14 @@ public class Product extends HttpServlet
         this.connectionPool = ApplicationStart.getConnectionPool();
     }
 
-    /** doGet method has to load in our products (Carport and shed)
-     * As of now we have the products loaded inside products.jsp
-     * */
+    /**
+     * doGet will redirect the user to products.jsp, but later we will add more products, which then have to be loaded
+     * through this servlet.
+     * @param request Used for loading in the data on the request scope.
+     * @param response Is used to set the contentType.
+     * @throws IOException Is cast if the input/output is invalid.
+     * @throws ServletException is cast when theres an error using Servlets in general.
+     */
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
@@ -37,10 +42,6 @@ public class Product extends HttpServlet
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
-        response.setContentType("text/html");
-        HttpSession session = request.getSession();
-
-
 
 
     }
