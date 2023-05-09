@@ -38,6 +38,15 @@ public class Login extends HttpServlet
         response.sendRedirect("index.jsp");
     }
 
+    /**
+     * Servlet used for logging in.
+     * The first time a user logs on the application all the materials is pulled from the database and saved on the applicationScope.
+     * @param request
+     * @param response
+     * @throws IOException
+     * @throws ServletException
+     * @author MrJustMeDahl
+     */
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
         response.setContentType("text/html");
