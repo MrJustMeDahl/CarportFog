@@ -34,8 +34,9 @@
                     <c:if test="${sessionScope.user != null }">
                     <a class="nav-item nav-link" href="${pageContext.request.contextPath}/product">Produkter</a>
                     </c:if>
-                    <a class="nav-item nav-link" href="${pageContext.request.contextPath}/">Page 2</a>
-
+                    <c:if test="${sessionScope.user != null }">
+                    <a class="nav-item nav-link" href="${pageContext.request.contextPath}/shoppingbasket">Indkøbskurv</a>
+                    </c:if>
                     <a class="nav-item nav-link" href="${pageContext.request.contextPath}/">Page 3</a>
                     <c:if test="${sessionScope.user == null }">
                         <a class="nav-item nav-link" href="${pageContext.request.contextPath}/login.jsp">Login</a>
