@@ -3,7 +3,9 @@ package dat.backend.persistence;
 import dat.backend.model.entities.*;
 import dat.backend.model.exceptions.DatabaseException;
 import dat.backend.model.persistence.ConnectionPool;
+import dat.backend.model.persistence.OrderFacade;
 import dat.backend.model.persistence.OrderMapper;
+import dat.backend.model.persistence.UserFacade;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,6 +14,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -112,6 +115,51 @@ public class OrderMapperTest {
     void getMaterialsForCarport() throws DatabaseException{
         Map<Material, Integer> materialsOrderId1 = OrderMapper.getMaterialsForCarport(1, connectionPool);
         Map<Material, Integer> materialsOrderId2 = OrderMapper.getMaterialsForCarport(2, connectionPool);
+
+    }
+
+    @Test
+    void createOrder() {
+        Map<Material, Integer> materials = new HashMap<>();
+        materials.put(new Post(1, "97x97mm. trykimp.", "træ", "stolpe", 55, 330), 4);
+        Carport carport = new Carport(materials, 2000, 3000, 300, 500, 210);
+        User user = new User(4, "user@usersen.dk", "1234", "User Usersen", 12345678, "Danmarksgade 1", "user");
+
+        try (Connection testConnection = connectionPool.getConnection()) {
+            try  {
+
+                OrderFacade.createOrder(carport,user.getUserID(), 2000, 3000, connectionPool);
+                List testlist = OrderFacade.getOrdersByUserID(user.getUserID(), connectionPool);
+                Order testorder = (Order) testlist.get(0);
+
+                assertEquals(carport.getPrice(), testorder.getCarport().getPrice());
+                assertEquals(testorder.getIndicativePrice(), carport.getIndicativePrice());
+                assertEquals(testorder.getOrderID(), 3);
+                assertEquals(testorder.getUserID(), 4);
+
+
+            } catch (DatabaseException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException throwables) {
+            System.out.println(throwables.getMessage());
+            fail("Database connection failed");
+        }
+    }
+
+    @Test
+    void updateOrderOrdered() throws DatabaseException {
+
+        User user = new User(1, "user@usersen.dk", "1234", "User Usersen", 12345678, "Danmarksgade 1", "user");
+        
+        List testlist = OrderFacade.getOrdersByUserID(user.getUserID(), connectionPool);
+        Order testorder = (Order) testlist.get(0);
+
+        assertEquals(testorder.getOrderStatus(), "pending");
+        OrderFacade.updateOrderOrdered(testorder.getOrderID(), connectionPool);
+        testlist = OrderFacade.getOrdersByUserID(user.getUserID(), connectionPool);
+        testorder = (Order) testlist.get(0);
+        assertEquals(testorder.getOrderStatus(), "ordered");
 
     }
 }
