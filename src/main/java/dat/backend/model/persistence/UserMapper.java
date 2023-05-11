@@ -1,5 +1,6 @@
 package dat.backend.model.persistence;
 
+import dat.backend.model.config.ApplicationStart;
 import dat.backend.model.entities.User;
 import dat.backend.model.exceptions.DatabaseException;
 
@@ -46,7 +47,11 @@ class UserMapper {
                     int phoneNumber = rs.getInt("phoneNumber");
                     String address = rs.getString("address");
                     String role = rs.getString("role");
-                    user = new User(userID, email, password, name, phoneNumber, address, role);
+                    if(ApplicationStart.getConnectionPool() == null) {
+                        user = new User(userID, email, password, name, phoneNumber, address, role, connectionPool);
+                    } else {
+                        user = new User(userID, email, password, name, phoneNumber, address, role);
+                    }
                 } else
                 {
                     throw new DatabaseException("Wrong email or password");
