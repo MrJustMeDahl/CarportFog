@@ -114,4 +114,36 @@ public class MaterialMapper {
         Collections.sort(allPurlins, materialComparator);
         return allPurlins;
     }
+
+    public static List<String> getAllMaterialTypes(ConnectionPool connectionPool) throws DatabaseException{
+        List<String> allTypes = new ArrayList<>();
+        String SQL = "SELECT * FROM materialType";
+        try(Connection connection = connectionPool.getConnection()){
+            try(PreparedStatement ps = connection.prepareStatement(SQL)){
+                ResultSet rs = ps.executeQuery();
+                while(rs.next()){
+                    allTypes.add(rs.getString("description"));
+                }
+                return allTypes;
+            }
+        } catch (SQLException e){
+            throw new DatabaseException("Failed to retrieve material types from the database");
+        }
+    }
+
+    public static List<String> getAllMaterialFunctions(ConnectionPool connectionPool) throws DatabaseException {
+        List<String> allFunctions = new ArrayList<>();
+        String SQL = "SELECT * FROM materialBuildFunction";
+        try(Connection connection = connectionPool.getConnection()){
+            try(PreparedStatement ps = connection.prepareStatement(SQL)){
+                ResultSet rs = ps.executeQuery();
+                while(rs.next()){
+                    allFunctions.add(rs.getString("description"));
+                }
+                return allFunctions;
+            }
+        } catch (SQLException e){
+            throw new DatabaseException("Failed to retrieve material build functions from the database");
+        }
+    }
 }
