@@ -29,6 +29,7 @@ public class Carport {
         this.minHeight = minHeight;
     }
 
+
     /**
      * This constructor is used when loading in existing orders from the database.
      * @param materials Key is the material and value is number of that material used for this specific Carport
@@ -44,6 +45,7 @@ public class Carport {
         this.length = length;
         this.minHeight = minHeight;
     }
+
 
     /**
      * Calculates the combined price of all materials in the map.
@@ -90,5 +92,25 @@ public class Carport {
 
     public int getMinHeight() {
         return minHeight;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public void setIndicativePrice(double indicativePrice) {
+        this.indicativePrice = indicativePrice;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    public void setMinHeight(int minHeight) {
+        this.minHeight = minHeight;
     }
 }
