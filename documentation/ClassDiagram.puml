@@ -30,8 +30,8 @@ Class Carport{
 - double indicativePrice
 - Map<Material, Integer> materials
 
-+ Carport(Map<Material, Integer materials)
-+ Carport(Map<Material, Integer materials, double price, double indicativePrice)
++ Carport(Map<Material, Integer materials, int width, int length, int minHeight)
++ Carport(Map<Material, Integer materials, double price, double indicativePrice, int width, int length, int minHeight)
 - double calculatePrice()
 - double calculateIndicativePrice()
 }
@@ -93,7 +93,9 @@ class MaterialMapper{
 + List<Rafter> rafters (ConnectionPool connectionPool) throws DatabaseException
 + List<Post> posts (ConnectionPool connectionPool) throws DatabaseException
 + List<Purlin> purlins (ConnectionPool connectionPool) throws DatabaseException
-+ list<Material> partList (int OrderId, rafters, posts, purlins, ConnectionPool connectionPool) throws DatabaseException
++ list<Materials> partList (int OrderId, rafters, posts, purlins, ConnectionPool connectionPool) throws DatabaseException
++ List<String> getAllMaterialTypes(ConnectionPool connectionPool)
++ List<String> getAllMaterialBuildFunctions(ConnectionPool connectionPool)
 }
 
 class ConnectionPool{

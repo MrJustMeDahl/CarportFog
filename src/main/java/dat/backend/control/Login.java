@@ -63,6 +63,8 @@ public class Login extends HttpServlet
             List<Post> allPosts = (List<Post>) applicationScope.getAttribute("allPosts");
             List<Rafter> allRafters = (List<Rafter>) applicationScope.getAttribute("allRafters");
             List<Purlin> allPurlins = (List<Purlin>) applicationScope.getAttribute("allPurlins");
+            List<String> allMaterialTypes = (List<String>) applicationScope.getAttribute("allMaterialTypes");
+            List<String> allMaterialFunctions = (List<String>) applicationScope.getAttribute("allMaterialFunctions");
             if(allPosts == null){
                 allPosts = MaterialFacade.getAllPosts(connectionPool);
                 applicationScope.setAttribute("allPosts", allPosts);
@@ -74,6 +76,14 @@ public class Login extends HttpServlet
             if(allPurlins == null){
                 allPurlins = MaterialFacade.getAllPurlins(connectionPool);
                 applicationScope.setAttribute("allPurlins", allPurlins);
+            }
+            if(allMaterialTypes == null){
+                allMaterialTypes = MaterialFacade.getAllMaterialTypes(connectionPool);
+                applicationScope.setAttribute("allMaterialTypes", allMaterialTypes);
+            }
+            if(allMaterialFunctions == null){
+                allMaterialFunctions = MaterialFacade.getAllMaterialFunctions(connectionPool);
+                applicationScope.setAttribute("allMaterialFunctions", allMaterialFunctions);
             }
             request.getRequestDispatcher("WEB-INF/welcome.jsp").forward(request, response);
         }

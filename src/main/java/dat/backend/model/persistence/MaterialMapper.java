@@ -11,8 +11,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * This class contains all the methods used to retrieve and alter materials from the database.
@@ -31,7 +29,7 @@ public class MaterialMapper {
      */
     public static List<Post> getAllPosts(ConnectionPool connectionPool) throws DatabaseException {
         List<Post> allPosts = new ArrayList<>();
-        String SQL = "SELECT * FROM fog.allMaterialsView WHERE buildFunction = 'stolpe'";
+        String SQL = "SELECT * FROM allMaterialsView WHERE buildFunction = 'stolpe'";
         try(Connection connection = connectionPool.getConnection()){
             try(PreparedStatement ps = connection.prepareStatement(SQL)){
                 ResultSet rs = ps.executeQuery();
@@ -63,7 +61,7 @@ public class MaterialMapper {
      */
     public static List<Rafter> getAllRafters(ConnectionPool connectionPool) throws DatabaseException{
         List<Rafter> allRafters = new ArrayList<>();
-        String SQL = "SELECT * FROM fog.allMaterialsView WHERE buildFunction = 'spær'";
+        String SQL = "SELECT * FROM allMaterialsView WHERE buildFunction = 'spær'";
         try(Connection connection = connectionPool.getConnection()){
             try(PreparedStatement ps = connection.prepareStatement(SQL)){
                 ResultSet rs = ps.executeQuery();
@@ -95,7 +93,7 @@ public class MaterialMapper {
      */
     public static List<Purlin> getAllPurlins(ConnectionPool connectionPool) throws DatabaseException{
         List<Purlin> allPurlins = new ArrayList<>();
-        String SQL = "SELECT * FROM fog.allMaterialsView WHERE buildFunction = 'rem'";
+        String SQL = "SELECT * FROM allMaterialsView WHERE buildFunction = 'rem'";
         try(Connection connection = connectionPool.getConnection()){
             try(PreparedStatement ps = connection.prepareStatement(SQL)){
                 ResultSet rs = ps.executeQuery();
@@ -115,6 +113,52 @@ public class MaterialMapper {
         Comparator<Material> materialComparator = Comparator.comparing(Material::getDescription).thenComparing(Material::getLength);
         Collections.sort(allPurlins, materialComparator);
         return allPurlins;
+    }
+
+    /**
+     * This method retrieves a list of all material types from the databse.
+     * @param connectionPool required to establish connection to the database.
+     * @return List of strings with material types.
+     * @throws DatabaseException Is thrown if any SQL exception is thrown.
+     * @author MrJustMeDahl
+     */
+    public static List<String> getAllMaterialTypes(ConnectionPool connectionPool) throws DatabaseException{
+        List<String> allTypes = new ArrayList<>();
+        String SQL = "SELECT * FROM materialType";
+        try(Connection connection = connectionPool.getConnection()){
+            try(PreparedStatement ps = connection.prepareStatement(SQL)){
+                ResultSet rs = ps.executeQuery();
+                while(rs.next()){
+                    allTypes.add(rs.getString("description"));
+                }
+                return allTypes;
+            }
+        } catch (SQLException e){
+            throw new DatabaseException("Failed to retrieve material types from the database");
+        }
+    }
+
+    /**
+     * This method retrieves a list of all material build functions from the databse.
+     * @param connectionPool required to establish connection to the database.
+     * @return List of strings with material build functions.
+     * @throws DatabaseException Is thrown if any SQL exception is thrown.
+     * @author MrJustMeDahl
+     */
+    public static List<String> getAllMaterialFunctions(ConnectionPool connectionPool) throws DatabaseException {
+        List<String> allFunctions = new ArrayList<>();
+        String SQL = "SELECT * FROM materialBuildFunction";
+        try(Connection connection = connectionPool.getConnection()){
+            try(PreparedStatement ps = connection.prepareStatement(SQL)){
+                ResultSet rs = ps.executeQuery();
+                while(rs.next()){
+                    allFunctions.add(rs.getString("description"));
+                }
+                return allFunctions;
+            }
+        } catch (SQLException e){
+            throw new DatabaseException("Failed to retrieve material build functions from the database");
+        }
     }
 
     public static List<Material> getAllTypes(ConnectionPool connectionPool) throws DatabaseException{

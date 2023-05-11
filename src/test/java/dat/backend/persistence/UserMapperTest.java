@@ -70,7 +70,7 @@ class UserMapperTest {
 
     @Test
     void login() throws DatabaseException {
-        User expectedUser = new User(1, "user@usersen.dk", "1234", "User Usersen", 12345678, "Danmarksgade 1", "user");
+        User expectedUser = new User(1, "user@usersen.dk", "1234", "User Usersen", 12345678, "Danmarksgade 1", "user", connectionPool);
         User actualUser = UserFacade.login("user@usersen.dk", "1234", connectionPool);
         assertEquals(expectedUser, actualUser);
     }
