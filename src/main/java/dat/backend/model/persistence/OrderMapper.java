@@ -109,7 +109,7 @@ public class OrderMapper {
      */
     public static Order createOrder (Carport carport, int userId, double price, double indicativePrice, ConnectionPool connectionPool) throws DatabaseException {
         int orderId = 0;
-        String SQL = "INSERT INTO fog.orders (price, indicativePrice, orderStatus, userId, carportLength, carportWidth, carportMinHeight, carportPrice, carportIndicativePrice) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String SQL = "INSERT INTO orders (price, indicativePrice, orderStatus, userId, carportLength, carportWidth, carportMinHeight, carportPrice, carportIndicativePrice) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     try(Connection connection = connectionPool.getConnection()){
         try (PreparedStatement ps = connection.prepareStatement(SQL)){
 
@@ -140,7 +140,7 @@ public class OrderMapper {
      * @throws DatabaseException is thrown if there isn't a connection to the database or if the data in the database is invalid.
      */
     public static void updateOrderOrdered(int orderId, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "UPDATE fog.orders SET orders.orderStatus = ? WHERE orderId = ?";
+        String sql = "UPDATE orders SET orders.orderStatus = ? WHERE orderId = ?";
 
         try(Connection connection = connectionPool.getConnection()){
             try(PreparedStatement ps = connection.prepareStatement(sql)){
