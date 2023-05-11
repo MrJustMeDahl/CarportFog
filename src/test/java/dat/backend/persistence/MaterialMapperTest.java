@@ -103,4 +103,20 @@ public class MaterialMapperTest {
         assertEquals("træ", allPurlins.get(0).getType());
         assertEquals("rem", allPurlins.get(0).getFunction());
     }
+
+    @Test
+    void getAllMaterialTypes() throws DatabaseException {
+        List<String> allTypes = MaterialMapper.getAllMaterialTypes(connectionPool);
+        assertEquals("træ", allTypes.get(0));
+        assertEquals("metal", allTypes.get(1));
+        assertEquals("plastik", allTypes.get(2));
+    }
+
+    @Test
+    void getAllMaterialFunctions() throws DatabaseException {
+        List<String> allFunctions = MaterialMapper.getAllMaterialFunctions(connectionPool);
+        assertEquals("stolpe", allFunctions.get(0));
+        assertEquals("rem", allFunctions.get(1));
+        assertEquals("spær", allFunctions.get(2));
+    }
 }

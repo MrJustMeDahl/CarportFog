@@ -114,4 +114,50 @@ public class MaterialMapper {
         Collections.sort(allPurlins, materialComparator);
         return allPurlins;
     }
+
+    /**
+     * This method retrieves a list of all material types from the databse.
+     * @param connectionPool required to establish connection to the database.
+     * @return List of strings with material types.
+     * @throws DatabaseException Is thrown if any SQL exception is thrown.
+     * @author MrJustMeDahl
+     */
+    public static List<String> getAllMaterialTypes(ConnectionPool connectionPool) throws DatabaseException{
+        List<String> allTypes = new ArrayList<>();
+        String SQL = "SELECT * FROM materialType";
+        try(Connection connection = connectionPool.getConnection()){
+            try(PreparedStatement ps = connection.prepareStatement(SQL)){
+                ResultSet rs = ps.executeQuery();
+                while(rs.next()){
+                    allTypes.add(rs.getString("description"));
+                }
+                return allTypes;
+            }
+        } catch (SQLException e){
+            throw new DatabaseException("Failed to retrieve material types from the database");
+        }
+    }
+
+    /**
+     * This method retrieves a list of all material build functions from the databse.
+     * @param connectionPool required to establish connection to the database.
+     * @return List of strings with material build functions.
+     * @throws DatabaseException Is thrown if any SQL exception is thrown.
+     * @author MrJustMeDahl
+     */
+    public static List<String> getAllMaterialFunctions(ConnectionPool connectionPool) throws DatabaseException {
+        List<String> allFunctions = new ArrayList<>();
+        String SQL = "SELECT * FROM materialBuildFunction";
+        try(Connection connection = connectionPool.getConnection()){
+            try(PreparedStatement ps = connection.prepareStatement(SQL)){
+                ResultSet rs = ps.executeQuery();
+                while(rs.next()){
+                    allFunctions.add(rs.getString("description"));
+                }
+                return allFunctions;
+            }
+        } catch (SQLException e){
+            throw new DatabaseException("Failed to retrieve material build functions from the database");
+        }
+    }
 }
