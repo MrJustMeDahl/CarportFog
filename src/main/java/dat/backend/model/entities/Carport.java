@@ -50,7 +50,7 @@ public class Carport {
      * @return combined price of all the materials.
      * @author MrJustMeDahl
      */
-    private double calculatePrice(){
+    public double calculatePrice(){
         double price = 0;
         for(Map.Entry<Material, Integer> m: materials.entrySet()){
             price += m.getKey().getPrice()*m.getValue();
@@ -63,7 +63,7 @@ public class Carport {
      * @return Suggested sales price.
      * @author MrJustMeDahl
      */
-    private double calculateIndicativePrice(){
+    public double calculateIndicativePrice(){
         double indicativePrice = ((100*price)/61)*1.25;
         return indicativePrice;
     }
