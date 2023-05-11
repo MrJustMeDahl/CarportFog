@@ -60,7 +60,7 @@ public class OrderMapper {
      */
     public static Map<Material, Integer> getMaterialsForCarport(int orderID, ConnectionPool connectionPool) throws DatabaseException{
         Map<Material, Integer> materials = new HashMap<>();
-        String SQL = "SELECT * FROM fog.itemListView WHERE orderId = ?";
+        String SQL = "SELECT * FROM itemListView WHERE orderId = ?";
         try(Connection conn = connectionPool.getConnection()){
             try(PreparedStatement ps = conn.prepareStatement(SQL)){
                 ps.setInt(1, orderID);

@@ -64,7 +64,7 @@ public class Carport {
      * @author MrJustMeDahl
      */
     private double calculateIndicativePrice(){
-        double indicativePrice = (100*price)/61;
+        double indicativePrice = ((100*price)/61)*1.25;
         return indicativePrice;
     }
 

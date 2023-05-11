@@ -1,9 +1,11 @@
 package dat.backend.persistence;
 
-import dat.backend.model.entities.*;
+import dat.backend.model.entities.Post;
+import dat.backend.model.entities.Purlin;
+import dat.backend.model.entities.Rafter;
 import dat.backend.model.exceptions.DatabaseException;
 import dat.backend.model.persistence.ConnectionPool;
-import dat.backend.model.persistence.OrderMapper;
+import dat.backend.model.persistence.MaterialMapper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,12 +13,11 @@ import org.junit.jupiter.api.Test;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class OrderMapperTest {
+public class MaterialMapperTest {
 
     private final static String USER = System.getenv("USERNAME");
     private final static String PASSWORD = System.getenv("PASSWORD");
@@ -34,13 +35,10 @@ public class OrderMapperTest {
                 stmt.execute("CREATE DATABASE  IF NOT EXISTS fog_test;");
 
                 // create test tables - if not exist
-                stmt.execute("CREATE TABLE IF NOT EXISTS fog_test.user LIKE fog.user;");
-                stmt.execute("CREATE TABLE IF NOT EXISTS fog_test.orders LIKE fog.orders;");
                 stmt.execute("CREATE TABLE IF NOT EXISTS fog_test.material LIKE fog.material;");
                 stmt.execute("CREATE TABLE IF NOT EXISTS fog_test.materialBuildFunction LIKE fog.materialBuildFunction;");
                 stmt.execute("CREATE TABLE IF NOT EXISTS fog_test.materialType LIKE fog.materialType;");
                 stmt.execute("CREATE TABLE IF NOT EXISTS fog_test.materialVariant LIKE fog.materialVariant;");
-                stmt.execute("CREATE TABLE IF NOT EXISTS fog_test.itemList LIKE fog.itemList;");
             }
         } catch (SQLException throwables) {
             System.out.println(throwables.getMessage());
@@ -54,27 +52,18 @@ public class OrderMapperTest {
         try (Connection testConnection = connectionPool.getConnection()) {
             try (Statement stmt = testConnection.createStatement()) {
                 // Remove all data in test tables
-                stmt.execute("TRUNCATE fog_test.user;");
                 stmt.execute("TRUNCATE fog_test.material;");
                 stmt.execute("TRUNCATE fog_test.materialType;");
                 stmt.execute("TRUNCATE fog_test.materialVariant;");
                 stmt.execute("TRUNCATE fog_test.materialBuildFunction;");
-                stmt.execute("TRUNCATE fog_test.itemList;");
-                stmt.execute("TRUNCATE fog_test.orders;");
 
 
                 //Insert new test data
-                stmt.execute("insert into fog_test.user (email, password, phoneNumber, address, FullName, role) " +
-                        "values ('user@usersen.dk','1234','12345678','Danmarksgade 1','User Usersen','user'),('admin@adminsen.dk','1234','87654321','Danmarksgade 2','Admin Adminsen','admin'), ('test@testesen.dk','1234','14725836','Danmarksgade 3','Test Testesen','user');");
                 stmt.execute("INSERT into fog_test.materialType (description) VALUES ('træ'), ('metal'), ('plastik');");
                 stmt.execute("INSERT INTO fog_test.materialBuildFunction (description) VALUES ('stolpe'), ('rem'), ('spær');");
                 stmt.execute("INSERT INTO fog_test.material (price, description, materialTypeId, materialBuildFunctionId) VALUES " +
                         "(55, '97x97mm. trykimp.', 1, 1), (35, '45x195mm. spærtræ', 1, 2), (35, '45x195mm. spærtræ', 1, 3);");
                 stmt.execute("INSERT into fog_test.materialVariant (length, materialId) VALUES (330, 1), (420, 2), (360, 3);");
-                stmt.execute("INSERT INTO fog_test.orders (price, indicativePrice, orderStatus, userId, carportLength, carportWidth, carportMinHeight, carportPrice, carportIndicativePrice) VALUES " +
-                        "(1000, 1500, 'pending', 1, 500, 300, 210, 1000, 1500), (800, 1350, 'paid', 2, 400, 250, 180, 800, 1500), (0, 200, 'closed', 1, 800, 250, 210, 0, 200);");
-                stmt.execute("INSERT INTO fog_test.itemList (amount, orderId, materialVariantId, partFor) VALUES (4, 1, 1, 'carport'), (10, 1, 2, 'carport'), (8, 1, 3, 'carport'), " +
-                        "(4, 2, 1, 'carport'), (2, 2, 2, 'carport'), (30, 2, 3, 'carport'), (8, 3, 1, 'carport')");
             }
         } catch (SQLException throwables) {
             System.out.println(throwables.getMessage());
@@ -92,28 +81,26 @@ public class OrderMapperTest {
     }
 
     @Test
-    void getOrdersByUserID() throws DatabaseException {
-        User user = new User(1, "user@usersen.dk", "1234", "User Usersen", 12345678, "Danmarksgade 1", "user", connectionPool);
-        User admin = new User(2, "admin@adminsen.dk", "1234", "Admin Adminsen", 87654321, "Danmarksgade 2", "admin", connectionPool);
-        assertEquals(1, user.getOrders().get(0).getUserID());
-        assertEquals(2, admin.getOrders().get(0).getUserID());
-
-        assertEquals(1500, user.getOrders().get(0).getIndicativePrice());
-        assertEquals(800, admin.getOrders().get(0).getPrice());
-        Map<Material, Integer> materials = new HashMap<>();
-        materials.put(new Post(-1, "97x97mm. trykimp.", "træ", "stolpe", 55, 330), 4);
-        Carport carport = new Carport(materials, 1000, 1500, 300, 500, 210);
-        assertEquals(carport.getLength(), user.getOrders().get(0).getCarport().getLength());
+    void getAllPosts() throws DatabaseException {
+        List<Post> allPosts = MaterialMapper.getAllPosts(connectionPool);
+        assertEquals("97x97mm. trykimp.", allPosts.get(0).getDescription());
+        assertEquals("træ", allPosts.get(0).getType());
+        assertEquals("stolpe", allPosts.get(0).getFunction());
     }
 
     @Test
-    void getMaterialsForCarport() throws DatabaseException{
-        Map<Material, Integer> materialsOrderId1 = OrderMapper.getMaterialsForCarport(1, connectionPool);
-        Map<Material, Integer> materialsOrderId3 = OrderMapper.getMaterialsForCarport(3, connectionPool);
-        assertEquals(3, materialsOrderId1.size());
-        for(Map.Entry<Material, Integer> m: materialsOrderId3.entrySet()){
-            assertEquals("97x97mm. trykimp.", m.getKey().getDescription());
-            assertEquals(8, m.getValue());
-        }
+    void getAllRafters() throws DatabaseException {
+        List<Rafter> allRafters = MaterialMapper.getAllRafters(connectionPool);
+        assertEquals("45x195mm. spærtræ", allRafters.get(0).getDescription());
+        assertEquals("træ", allRafters.get(0).getType());
+        assertEquals("spær", allRafters.get(0).getFunction());
+    }
+
+    @Test
+    void getAllPurlins() throws DatabaseException {
+        List<Purlin> allPurlins = MaterialMapper.getAllPurlins(connectionPool);
+        assertEquals("45x195mm. spærtræ", allPurlins.get(0).getDescription());
+        assertEquals("træ", allPurlins.get(0).getType());
+        assertEquals("rem", allPurlins.get(0).getFunction());
     }
 }

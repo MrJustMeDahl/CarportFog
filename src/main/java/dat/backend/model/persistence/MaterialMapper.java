@@ -29,7 +29,7 @@ public class MaterialMapper {
      */
     public static List<Post> getAllPosts(ConnectionPool connectionPool) throws DatabaseException {
         List<Post> allPosts = new ArrayList<>();
-        String SQL = "SELECT * FROM fog.allMaterialsView WHERE buildFunction = 'stolpe'";
+        String SQL = "SELECT * FROM allMaterialsView WHERE buildFunction = 'stolpe'";
         try(Connection connection = connectionPool.getConnection()){
             try(PreparedStatement ps = connection.prepareStatement(SQL)){
                 ResultSet rs = ps.executeQuery();
@@ -61,7 +61,7 @@ public class MaterialMapper {
      */
     public static List<Rafter> getAllRafters(ConnectionPool connectionPool) throws DatabaseException{
         List<Rafter> allRafters = new ArrayList<>();
-        String SQL = "SELECT * FROM fog.allMaterialsView WHERE buildFunction = 'spær'";
+        String SQL = "SELECT * FROM allMaterialsView WHERE buildFunction = 'spær'";
         try(Connection connection = connectionPool.getConnection()){
             try(PreparedStatement ps = connection.prepareStatement(SQL)){
                 ResultSet rs = ps.executeQuery();
@@ -93,7 +93,7 @@ public class MaterialMapper {
      */
     public static List<Purlin> getAllPurlins(ConnectionPool connectionPool) throws DatabaseException{
         List<Purlin> allPurlins = new ArrayList<>();
-        String SQL = "SELECT * FROM fog.allMaterialsView WHERE buildFunction = 'rem'";
+        String SQL = "SELECT * FROM allMaterialsView WHERE buildFunction = 'rem'";
         try(Connection connection = connectionPool.getConnection()){
             try(PreparedStatement ps = connection.prepareStatement(SQL)){
                 ResultSet rs = ps.executeQuery();
