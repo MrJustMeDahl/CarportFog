@@ -52,7 +52,7 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <li><a class="nav-item nav-link"
-                                       href="${pageContext.request.contextPath}/updatematerials">Materialer</a></li>
+                                       href="${pageContext.request.contextPath}/updatematerials">Materiale side</a></li>
                             </ul>
                         </div>
                     </c:if>

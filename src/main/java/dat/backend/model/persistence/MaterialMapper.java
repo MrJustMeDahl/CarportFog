@@ -11,6 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This class contains all the methods used to retrieve and alter materials from the database.
@@ -113,5 +115,73 @@ public class MaterialMapper {
         Comparator<Material> materialComparator = Comparator.comparing(Material::getDescription).thenComparing(Material::getLength);
         Collections.sort(allPurlins, materialComparator);
         return allPurlins;
+    }
+
+    public static List<Material> getAllTypes(ConnectionPool connectionPool) throws DatabaseException{
+        List<Material> allMaterialTypes = new ArrayList<>();
+        String SQL = "SELECT * FROM fog.materialType";
+        try(Connection connection = connectionPool.getConnection()){
+            try(PreparedStatement ps = connection.prepareStatement(SQL)){
+                ResultSet rs = ps.executeQuery();
+                while(rs.next()){
+                    int materialTypeId = rs.getInt("materialTypeId");
+                    String type = rs.getString("type");
+                    allMaterialTypes.add(new Material(materialTypeId, type));
+                }
+            }
+        } catch(SQLException e){
+            throw new DatabaseException("Failed to retrieve post data.");
+        }
+        Comparator<Material> materialComparator = Comparator.comparing(Material::getDescription).thenComparing(Material::getLength);
+        Collections.sort(allPurlins, materialComparator);
+        return allPurlins;
+    }
+
+    /**
+     * This method updates the material in DB, from updatematerial.jsp, with inputs from an admin
+     * @param materialId the selected material in updatematerial.jsp
+     * @param newPrice changeable for admin via inputform
+     * @param newDescription changeable for admin via inputform
+     * @param newMaterialType changeable for admin via inputform
+     * @param newFunction changeable for admin via inputform
+     * @param connectionPool required to establish connection to the database.
+     * @throws DatabaseException is thrown if connection to database fails.
+     * @author CarstenJuhl
+     */
+
+    public static void updateMaterial(int materialId, int newPrice, String newDescription, String newMaterialType, String newFunction, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "UPDATE material Where (materialId, price, description, materialType, function) VALUES (?,?,?,?,?) ";
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                ps.setInt(1, materialId);
+                ps.setFloat(2, newPrice);
+                ps.setString(3, newDescription);
+                ps.setString(4, newMaterialType);
+                ps.setString(5, newFunction);
+                ps.execute();
+            }
+
+        } catch (SQLException e) {
+            throw new DatabaseException("Failed to update material in database");
+        }
+    }
+
+
+    public static void createNewMaterial(String description, String materialType, String materialFunction, int price, ConnectionPool connectionPool) throws  DatabaseException {
+        Logger.getLogger("web").log(Level.INFO, "");
+        String sql ="INSERT into material (price, description, materialType, materialBuildFunction) VALUES (?,?,?,?)";
+        try(Connection connection  = connectionPool.getConnection()){
+            try (PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.NO_GENERATED_KEYS)){
+                ps.setDouble(1,price);
+                ps.setString(2,description);
+                ps.setString(3,materialType);
+                ps.setString(4,materialFunction);
+                ps.executeUpdate();
+            }
+        } catch (SQLException e){
+            throw new DatabaseException("Failed to create a new material");
+        }
+
+
     }
 }

@@ -28,4 +28,11 @@ public class MaterialFacade {
     }
 
 
+    public static void updateMaterial(int materialId, int newprice, String newDescription, String newMaterialType, String newFunction, ConnectionPool connectionPool) throws DatabaseException {
+        MaterialMapper.updateMaterial(materialId,newprice,newDescription,newMaterialType,newFunction,connectionPool);
+    }
+
+    public static void newMaterial(String description, String materialType, String materialFunction, int price, ConnectionPool connectionPool) throws DatabaseException {
+        MaterialMapper.createNewMaterial(description,materialType,materialFunction,price,connectionPool);
+    }
 }
