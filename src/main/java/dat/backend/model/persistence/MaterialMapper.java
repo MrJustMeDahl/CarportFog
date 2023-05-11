@@ -115,6 +115,13 @@ public class MaterialMapper {
         return allPurlins;
     }
 
+    /**
+     * This method retrieves a list of all material types from the databse.
+     * @param connectionPool required to establish connection to the database.
+     * @return List of strings with material types.
+     * @throws DatabaseException Is thrown if any SQL exception is thrown.
+     * @author MrJustMeDahl
+     */
     public static List<String> getAllMaterialTypes(ConnectionPool connectionPool) throws DatabaseException{
         List<String> allTypes = new ArrayList<>();
         String SQL = "SELECT * FROM materialType";
@@ -131,6 +138,13 @@ public class MaterialMapper {
         }
     }
 
+    /**
+     * This method retrieves a list of all material build functions from the databse.
+     * @param connectionPool required to establish connection to the database.
+     * @return List of strings with material build functions.
+     * @throws DatabaseException Is thrown if any SQL exception is thrown.
+     * @author MrJustMeDahl
+     */
     public static List<String> getAllMaterialFunctions(ConnectionPool connectionPool) throws DatabaseException {
         List<String> allFunctions = new ArrayList<>();
         String SQL = "SELECT * FROM materialBuildFunction";
