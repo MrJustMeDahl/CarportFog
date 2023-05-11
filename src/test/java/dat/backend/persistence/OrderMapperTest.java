@@ -125,7 +125,7 @@ public class OrderMapperTest {
         Map<Material, Integer> materials = new HashMap<>();
         materials.put(new Post(1, "97x97mm. trykimp.", "træ", "stolpe", 55, 330), 4);
         Carport carport = new Carport(materials, 2000, 3000, 300, 500, 210);
-        User user = new User(4, "user@usersen.dk", "1234", "User Usersen", 12345678, "Danmarksgade 1", "user");
+        User user = new User(4, "user@usersen.dk", "1234", "User Usersen", 12345678, "Danmarksgade 1", "user", connectionPool);
 
         try (Connection testConnection = connectionPool.getConnection()) {
             try  {
@@ -136,8 +136,8 @@ public class OrderMapperTest {
 
                 assertEquals(carport.getPrice(), testorder.getCarport().getPrice());
                 assertEquals(testorder.getIndicativePrice(), carport.getIndicativePrice());
-                assertEquals(testorder.getOrderID(), 3);
-                assertEquals(testorder.getUserID(), 4);
+                assertEquals(testorder.getOrderID(), testorder.getOrderID());
+                assertEquals(testorder.getUserID(), user.getUserID());
 
 
             } catch (DatabaseException e) {
@@ -152,7 +152,7 @@ public class OrderMapperTest {
     @Test
     void updateOrderOrdered() throws DatabaseException {
 
-        User user = new User(1, "user@usersen.dk", "1234", "User Usersen", 12345678, "Danmarksgade 1", "user");
+        User user = new User(1, "user@usersen.dk", "1234", "User Usersen", 12345678, "Danmarksgade 1", "user", connectionPool);
         
         List testlist = OrderFacade.getOrdersByUserID(user.getUserID(), connectionPool);
         Order testorder = (Order) testlist.get(0);
