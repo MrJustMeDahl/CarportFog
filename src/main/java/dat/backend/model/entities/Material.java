@@ -37,7 +37,9 @@ public abstract class Material {
      * @return Cost price of the material
      * @author MrJustMeDahl
      */
-    public abstract double getPrice();
+    public double getPrice(){
+        return price;
+    }
 
     public int getMaterialID() {
         return materialID;

@@ -87,17 +87,20 @@
                                         <td>
                                             <select name="materialdescription" id="editmaterialdescription"
                                                     class="input-group table align-center mt-2 table-responsive table-responsive-sm">
-                                                <c:if test="${sessionScope.chosenmaterialId != -1}">
-                                                    <option value="${sessionScope.chosenmaterialId}"> ${sessionScope.editmateriallist.get(requestScope.chosenmaterialId - 1).description}
+                                                <c:if test="${requestScope.chosenmaterialId != -1}">
+                                                    <option value="${requestScope.chosenMaterial.materialID}"> ${requestScope.chosenMaterial.description}
+                                                        - ${requestScope.chosenMaterial.length}
                                                     </option>
                                                 </c:if>
                                                 <c:forEach items="${sessionScope.editmateriallist}"
                                                            var="editmateriallist">
                                                     <option value="${editmateriallist.materialID}"> ${editmateriallist.description}
+                                                        - ${editmateriallist.length}
                                                     </option>
                                                 </c:forEach>
                                             </select>
                                         </td>
+
                                         <td>
                                             <button formaction="deletechosenmaterial"
                                                     class="btn btn-outline-danger mb-3 float-right"
@@ -118,11 +121,12 @@
                                --%>
                         <tr>
                             <td>
-                                <input class="input-group mb-3">
-                                <input class="form-control table-responsive table-responsive-sm"
-                                       id="changematerialdescription" class="d-inline form-control 2-10" type="text"
-                                       name="changematerialdescription">${requestScope.editmateriallist.get(requestScope.chosenmaterialId).description}</input>
-                                <span class="input-group-text" id="basis-materialdescription"> beskrivelse</span>
+                                <div class="input-group mb-3">
+                                    <input class="form-control table-responsive table-responsive-sm"
+                                           id="changematerialdescription" class="d-inline form-control 2-10" type="text"
+                                           name="changematerialdescription" value="${requestScope.chosenMaterial.description}">
+                                    <span class="input-group-text" id="basis-materialdescription"> beskrivelse</span>
+                                </div>
                             </td>
                         </tr>
 
@@ -132,12 +136,8 @@
                         <tr>
                             <td>
                                 <select name="changematerialtype" id="type"
-                                        class="table align-center mt-2 table-responsive table-responsive-sm">
-                                    <option value="1"> ${applicationScope.allMaterialFunctions.get(0)}
-                                    </option>
-                                    <option value="2"> ${applicationScope.allMaterialFunctions.get(1)}
-                                    </option>
-                                    <option value="3"> ${applicationScope.allMaterialFunctions.get(2)}
+                                        class="table align-center mt-2 table-responsive table-responsive-sm" disabled>
+                                    <option value="${requestScope.chosenMaterial.function}"> ${requestScope.chosenMaterial.function}
                                     </option>
                                 </select>
                             </td>
@@ -152,7 +152,7 @@
                                     <input class="form-control table-responsive table-responsive-sm" id="average"
                                            class="d-inline form-control 2-10" type="number"
                                            name="changeprice"
-                                           step="0.1" min="0.0">
+                                           step="0.1" min="0.0" value="${requestScope.chosenMaterial.price}">
                                     <span class="input-group-text" id="updateprice"> kr/mtr</span>
                                 </div>
                             </td>

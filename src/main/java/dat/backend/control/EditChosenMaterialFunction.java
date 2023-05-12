@@ -36,11 +36,10 @@ public class EditChosenMaterialFunction extends HttpServlet {
         int chosenmaterialId = -1;
         int materialfunction = Integer.parseInt(request.getParameter("materialfunction"));
         List<Material> chosenmaterials = null;
-        String materialfunctionname = request.getParameter("materialfunction");
         List<Material>postList = (List<Material>) request.getServletContext().getAttribute("allPosts");
         List<Material>rafterList = (List<Material>) request.getServletContext().getAttribute("allRafters");
         List<Material>purlinList = (List<Material>) request.getServletContext().getAttribute("allPurlins");
-        int selectedMaterial;
+        Material chosenMaterial = null;
 
         try {
             chosenmaterials = (List<Material>) session.getAttribute("editmateriallist");
@@ -48,35 +47,51 @@ public class EditChosenMaterialFunction extends HttpServlet {
 
         try{
         if(materialfunction == 1){
+            session.setAttribute("editmateriallist",postList);
             if (chosenmaterials == postList) {
                 chosenmaterialId = Integer.parseInt(request.getParameter("materialdescription"));
+                for(Material m: chosenmaterials){
+                    if(m.getMaterialID() == chosenmaterialId){
+                        chosenMaterial = m;
+                    }
+                }
             }else {
                 chosenmaterialId = -1;
             }
-            session.setAttribute("editmateriallist",postList);
         }
 
         else if (materialfunction == 2){
+            session.setAttribute("editmateriallist",purlinList);
             if(chosenmaterials == purlinList) {
                 chosenmaterialId = Integer.parseInt(request.getParameter("materialdescription"));
+                for(Material m: chosenmaterials){
+                    if(m.getMaterialID() == chosenmaterialId){
+                        chosenMaterial = m;
+                    }
+                }
             }else {
                 chosenmaterialId = -1;
             }
-            session.setAttribute("editmateriallist",purlinList);
         }
         else if (materialfunction == 3){
+            session.setAttribute("editmateriallist",rafterList);
             if(chosenmaterials == rafterList) {
                 chosenmaterialId = Integer.parseInt(request.getParameter("materialdescription"));
+                for(Material m: chosenmaterials){
+                    if(m.getMaterialID() == chosenmaterialId){
+                        chosenMaterial = m;
+                    }
+                }
             }else {
                 chosenmaterialId = -1;
             }
-            session.setAttribute("editmateriallist",rafterList);
         }
-        }catch(NullPointerException e){
+        }catch(Exception e){
             request.setAttribute("errormessage", e);
             request.getRequestDispatcher("error.jsp").forward(request,response);
         }
 
+        request.setAttribute("chosenMaterial", chosenMaterial);
         request.setAttribute("materialfunction",materialfunction);
         request.setAttribute("chosenmaterialId",chosenmaterialId);
         request.getRequestDispatcher("WEB-INF/updatematerials.jsp").forward(request,response);
