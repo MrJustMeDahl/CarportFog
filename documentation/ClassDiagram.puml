@@ -82,7 +82,8 @@ class OrderMapper{
 + void updateApproveOrder (int orderID, ConnectionPool connectionPool) throws DatabaseException
 + void updateOrderPayment (int orderID, ConnectionPool connectionPool) throws DatabaseException
 + void deleteOrder ( int orderID, ConnectionPool connectionPool) throws DatabaseException
-+ getCarportForOrder(int orderID, ConnectionPool connectionPool) throws DatabaseException
++ Map<Material, Integer> getMaterialsForCarport(int orderID, ConnectionPool connectionPool) throws DatabaseException
++ List<Order> getNewOrders(ConnectionPool connectionPool) throws DatabaseException
 }
 
 class MaterialMapper{
