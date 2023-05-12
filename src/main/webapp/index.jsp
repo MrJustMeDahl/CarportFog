@@ -24,6 +24,16 @@
         </div>
         <div class="container mt-5">
             <div class="row text-center">
+                <div class="col-8">
+                    <h1>Få tilbud på carport efter egne mål,<br/><a href="login.jsp">log ind her for at komme i gang.</a> </h1>
+                </div>
+                <div class="col-4">
+                    <img src="${pageContext.request.contextPath}/images/forside4.png" width="80%" class="img-fluid"/>
+                </div>
+            </div>
+        </div>
+        <div class="container mt-5">
+            <div class="row text-center">
                 <div class="col-4">
                     <img src="${pageContext.request.contextPath}/images/forside2.png" width="80%"
                          class="img-fluid"/>
