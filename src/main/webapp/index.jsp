@@ -9,7 +9,7 @@
     </jsp:attribute>
 
     <jsp:attribute name="footer">
-        Welcome to the frontpage
+        Velkommen hos Fog Carporte
     </jsp:attribute>
 
     <jsp:body>
