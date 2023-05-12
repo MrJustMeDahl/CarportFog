@@ -117,56 +117,64 @@
                                ****** the materialID for the chosen material, can't be changed ******
                                --%>
                         <tr>
-                            <input class="input-group mb-3">
-                            <input class="form-control table-responsive table-responsive-sm"
-                                   id="changematerialdescription" class="d-inline form-control 2-10" type="text"
-                                   name="changematerialdescription">${requestScope.editmateriallist.get(requestScope.chosenmaterialId).description}</input>
-                            <span class="input-group-text" id="basis-materialdescription"> beskrivelse</span>
+                            <td>
+                                <input class="input-group mb-3">
+                                <input class="form-control table-responsive table-responsive-sm"
+                                       id="changematerialdescription" class="d-inline form-control 2-10" type="text"
+                                       name="changematerialdescription">${requestScope.editmateriallist.get(requestScope.chosenmaterialId).description}</input>
+                                <span class="input-group-text" id="basis-materialdescription"> beskrivelse</span>
+                            </td>
                         </tr>
 
                             <%--
                             ****** change the type for the chosen material with a dropdown menu ******
                             --%>
                         <tr>
-                            <select name="changematerialtype" id="type"
-                                    class="table align-center mt-2 table-responsive table-responsive-sm">
-                                <option value="1"> ${applicationScope.allMaterialFunctions.get(0)}
-                                </option>
-                                <option value="2"> ${applicationScope.allMaterialFunctions.get(1)}
-                                </option>
-                                <option value="3"> ${applicationScope.allMaterialFunctions.get(2)}
-                                </option>
-                            </select>
+                            <td>
+                                <select name="changematerialtype" id="type"
+                                        class="table align-center mt-2 table-responsive table-responsive-sm">
+                                    <option value="1"> ${applicationScope.allMaterialFunctions.get(0)}
+                                    </option>
+                                    <option value="2"> ${applicationScope.allMaterialFunctions.get(1)}
+                                    </option>
+                                    <option value="3"> ${applicationScope.allMaterialFunctions.get(2)}
+                                    </option>
+                                </select>
+                            </td>
                         </tr>
 
                             <%--
                             ****** change the indicative price for the chosen material ******
                             --%>
                         <tr>
-                            <div class="input-group mb-3">
-                                <input class="form-control table-responsive table-responsive-sm" id="average"
-                                       class="d-inline form-control 2-10" type="number"
-                                       name="changeprice"
-                                       step="0.1" min="0.0">
-                                <span class="input-group-text" id="updateprice"> kr/mtr</span>
-                            </div>
+                            <td>
+                                <div class="input-group mb-3">
+                                    <input class="form-control table-responsive table-responsive-sm" id="average"
+                                           class="d-inline form-control 2-10" type="number"
+                                           name="changeprice"
+                                           step="0.1" min="0.0">
+                                    <span class="input-group-text" id="updateprice"> kr/mtr</span>
+                                </div>
+                            </td>
                         </tr>
 
                             <%--
                             ****** Button to forward the request to change the chosen material in the DB ******
                             --%>
-                        <td>
-                            <button formaction="editmaterial" class="btn btn-dark float-end"
-                                    name="changematerial">
-                                opdater
-                            </button>
+                        <tr>
+                            <td>
+                                <button formaction="editmaterial" class="btn btn-dark float-end"
+                                        name="changematerial">
+                                    opdater
+                                </button>
 
-                        </td>
+                            </td>
+                        </tr>
                     </form>
                     <br/><br/>
-                    </table>
+                </table>
 
-                    <table class="table align-center mt-5 table-responsive table-responsive-sm">
+                <table class="table align-center mt-5 table-responsive table-responsive-sm">
                     <form>
 
 
