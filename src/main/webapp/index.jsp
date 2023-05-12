@@ -16,7 +16,7 @@
 
         <div class="container">
             <div class="text-center">
-                <img src="${pageContext.request.contextPath}/images/Forside.png" width="70%" class="img-fluid"/>
+                <img src="${pageContext.request.contextPath}/images/forside3.png" width="90%" class="img-fluid"/>
                 <h1 class="h1" style="font-size: 700%">
                     Fog Carporte
                 </h1>
