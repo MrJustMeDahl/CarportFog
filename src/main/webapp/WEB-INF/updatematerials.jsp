@@ -18,7 +18,7 @@
 
             <div class="card-body">
 
-                <tabl class="table align-center mt-5 table-responsive table-responsive-sm">
+                <table class="table align-center mt-5 table-responsive table-responsive-sm">
                     <thead>
                     <tr>
                         <h3> Ændre materiale </h3>
@@ -56,16 +56,19 @@
                                 </td>
                             </tr>
                         </div>
-                        <c:choose>
-                            <c:when test="${requestScope.materialfunction==null}">
-                                <tr>
-                                    <div class="input-group">
+                        <tr>
 
-                                        <select name="materialdescription" id="editmaterialdescriptions"
-                                                class="input-group table align-center mt-2 table-responsive table-responsive-sm"
-                                                disabled>
-                                            <option value="-1"> Vælg kategori ovenfor</option>
-                                        </select>
+                            <c:choose>
+                                <c:when test="${requestScope.materialfunction==null}">
+
+                                    <div class="input-group">
+                                        <td>
+                                            <select name="materialdescription" id="editmaterialdescriptions"
+                                                    class="input-group table align-center mt-2 table-responsive table-responsive-sm"
+                                                    disabled>
+                                                <option value="-1"> Vælg kategori ovenfor</option>
+                                            </select>
+                                        </td>
                                         <td>
                                             <button formaction="deletechosenmaterial"
                                                     class="btn btn-outline-danger mb-3 float-right"
@@ -75,24 +78,26 @@
                                             </button>
                                         </td>
                                     </div>
-                                </tr>
-                            </c:when>
-                            <c:otherwise>
-                                <tr>
-                                    <div class="input-group">
 
-                                        <select name="materialdescription" id="editmaterialdescription"
-                                                class="input-group table align-center mt-2 table-responsive table-responsive-sm">
-                                            <c:if test="${requestScope.chosenmaterialId != -1}">
-                                                <option value="${requestScope.chosenmaterialId}"> ${requestScope.editmateriallist.get(requestScope.chosenmaterialId - 1).description}
-                                                </option>
-                                            </c:if>
-                                            <c:forEach items="${requestScope.editmateriallist}"
-                                                       var="editmateriallist">
-                                                <option value="${editmateriallist.materialID}"> ${editmateriallist.description}
-                                                </option>
-                                            </c:forEach>
-                                        </select>
+                                </c:when>
+
+                                <c:otherwise>
+
+                                    <div class="input-group">
+                                        <td>
+                                            <select name="materialdescription" id="editmaterialdescription"
+                                                    class="input-group table align-center mt-2 table-responsive table-responsive-sm">
+                                                <c:if test="${sessionScope.chosenmaterialId != -1}">
+                                                    <option value="${sessionScope.chosenmaterialId}"> ${sessionScope.editmateriallist.get(requestScope.chosenmaterialId - 1).description}
+                                                    </option>
+                                                </c:if>
+                                                <c:forEach items="${sessionScope.editmateriallist}"
+                                                           var="editmateriallist">
+                                                    <option value="${editmateriallist.materialID}"> ${editmateriallist.description}
+                                                    </option>
+                                                </c:forEach>
+                                            </select>
+                                        </td>
                                         <td>
                                             <button formaction="deletechosenmaterial"
                                                     class="btn btn-outline-danger mb-3 float-right"
@@ -102,12 +107,15 @@
                                             </button>
                                         </td>
                                     </div>
-                                </tr>
-                            </c:otherwise>
-                        </c:choose>
+
+                                </c:otherwise>
+
+                            </c:choose>
+
+                        </tr>
                             <%--
-                            ****** the materialID for the chosen material, can't be changed ******
-                            --%>
+                               ****** the materialID for the chosen material, can't be changed ******
+                               --%>
                         <tr>
                             <input class="input-group mb-3">
                             <input class="form-control table-responsive table-responsive-sm"
@@ -156,135 +164,139 @@
                         </td>
                     </form>
                     <br/><br/>
+                    </table>
 
-                        <%--
-                        ****** Add a new material to the DB ******
-                        --%>
+                    <table class="table align-center mt-5 table-responsive table-responsive-sm">
+                    <form>
 
-                    <tr>
-                        <h3>Tilføj nyt materiale</h3>
-                    </tr>
 
-                        <%--
-                        ****** add a description to the material ******
-                        --%>
-                    <tr>
-                        <form action="list" method="post">
+                            <%--
+                            ****** Add a new material to the DB ******
+                            --%>
+
+                        <th>
+                            <h3>Tilføj nyt materiale</h3>
+                        </th>
+
+                            <%--
+                            ****** add a description to the material ******
+                            --%>
+                        <tr>
+                            <form action="list" method="post">
+                                <td>
+                                    <input id="descriptiontext" class="d-inline form-control w-5" type="text"
+                                           name="description"
+                                           placeholder="Materiale Beskrivelse">
+                                </td>
+
+                                    <%--
+                                    ****** choose a type for the material in the dropdown ******
+                                    --%>
+                        <tr>
+                            <div class="input-group">
+                                <td>
+
+                                    <select name="newmaterialtype" id="newmaterialtype"
+                                            class="table align-center mt-2 table-responsive table-responsive-sm">
+                                        <option value="1"> ${applicationScope.allMaterialTypes.get(0)}
+                                        </option>
+                                        <option value="2"> ${applicationScope.allMaterialTypes.get(1)}
+                                        </option>
+                                        <option value="3"> ${applicationScope.allMaterialTypes.get(2)}
+                                        </option>
+                                    </select>
+                                </td>
+                            </div>
+                        </tr>
+
+                            <%--
+                            ****** add a new type in the DB ******
+
+                            <div class="input-group">
                             <td>
-                                <input id="descriptiontext" class="d-inline form-control w-5" type="text"
-                                       name="description"
-                                       placeholder="Materiale Beskrivelse">
+                                <input class="form-control" id="typetext" class="d-inline form-control w-5" type="text"
+                                       name="type"
+                                       placeholder="New Material Type">
                             </td>
+                                <td>
+                                    <button formaction="addnewfunction" class="btn btn-outline-dark float-end"
+                                            name="function">Tilføj
+                                    </button>
+                                </td>
+                            </div>
+                            --%>
 
-                                <%--
-                                ****** choose a type for the material in the dropdown ******
-                                --%>
-                    <tr>
-                        <div class="input-group">
+                            <%--
+                            ****** choose a function for the material in the dropdown ******
+                            --%>
+                        <tr>
                             <td>
-
-                                <select name="newmaterialtype" id="newmaterialtype"
+                                <select name="newmaterialfunction" id="newmaterialfunction"
                                         class="table align-center mt-2 table-responsive table-responsive-sm">
-                                    <option value="1"> ${applicationScope.allMaterialTypes.get(0)}
+                                    <option value="1"> ${applicationScope.allMaterialFunctions.get(0)}
                                     </option>
-                                    <option value="2"> ${applicationScope.allMaterialTypes.get(1)}
+                                    <option value="2"> ${applicationScope.allMaterialFunctions.get(1)}
                                     </option>
-                                    <option value="3"> ${applicationScope.allMaterialTypes.get(2)}
+                                    <option value="3"> ${applicationScope.allMaterialFunctions.get(2)}
                                     </option>
                                 </select>
                             </td>
-                        </div>
-                    </tr>
 
-                        <%--
-                        ****** add a new type in the DB ******
+                        </tr>
+                        <tr>
 
-                        <div class="input-group">
-                        <td>
-                            <input class="form-control" id="typetext" class="d-inline form-control w-5" type="text"
-                                   name="type"
-                                   placeholder="New Material Type">
-                        </td>
+                                <%--
+                                ****** add a new function in the DB ******
+
+                                <div class="input-group">
+                                <td>
+                                    <input id="functiontext" class="d-inline form-control w-5" type="text"
+                                           name="function"
+                                           placeholder="New Material Function">
+                                </td>
+                                    <td>
+                                        <button formaction="addnewfunction" class="btn btn-outline-dark float-end"
+                                                name="typeid">Tilføj
+                                        </button>
+                                    </td>
+                                </div>
+                                --%>
+
+                                <%--
+                                ****** set the indicative price for the item  ******
+                                --%>
+
                             <td>
-                                <button formaction="addnewfunction" class="btn btn-outline-dark float-end"
-                                        name="function">Tilføj
-                                </button>
+                                <div class="input-group mb-3">
+                                    <input class="form-control" id="price" class="d-inline form-control 2-10"
+                                           type="number"
+                                           name="price"
+                                           step="0.1" min="0.0">
+                                    <span class="input-group-text"> kr/mtr</span>
+                                </div>
                             </td>
-                        </div>
-                        --%>
-
-                        <%--
-                        ****** choose a function for the material in the dropdown ******
-                        --%>
-                    <tr>
-                        <td>
-                            <select name="newmaterialfunction" id="newmaterialfunction"
-                                    class="table align-center mt-2 table-responsive table-responsive-sm">
-                                <option value="1"> ${applicationScope.allMaterialFunctions.get(0)}
-                                </option>
-                                <option value="2"> ${applicationScope.allMaterialFunctions.get(1)}
-                                </option>
-                                <option value="3"> ${applicationScope.allMaterialFunctions.get(2)}
-                                </option>
-                            </select>
-                        </td>
-
-                    </tr>
-
-                        <%--
-                        ****** add a new function in the DB ******
-
-                        <div class="input-group">
-                        <td>
-                            <input id="functiontext" class="d-inline form-control w-5" type="text"
-                                   name="function"
-                                   placeholder="New Material Function">
-                        </td>
                             <td>
-                                <button formaction="addnewfunction" class="btn btn-outline-dark float-end"
-                                        name="typeid">Tilføj
+                                <button formaction="addnewitem" class="btn btn-dark float-end"
+                                        name="itemId">Tilføj
                                 </button>
+                                <br/>
+                                <br/>
+                                <c:if test="${requestScope.allFormsarefilled}">
+                                    <p> Du har tilføjet et nyt materiale </p>
+                                </c:if>
+
+                                <c:if test="${requestscope.notAllFormsfilled}">
+
+                                    <p> alle felter skal være udfyldt for at tilføje et nyt produkt. </p>
+
+                                </c:if>
+
+
                             </td>
-                        </div>
-                        --%>
-
-                        <%--
-                        ****** set the indicative price for the item  ******
-                        --%>
-
-                    <td>
-                        <div class="input-group mb-3">
-                            <input class="form-control" id="price" class="d-inline form-control 2-10" type="number"
-                                   name="price"
-                                   step="0.1" min="0.0">
-                            <span class="input-group-text"> kr/mtr</span>
-                        </div>
-                    </td>
-                    <td>
-                        <button formaction="addnewitem" class="btn btn-dark float-end"
-                                name="itemId">Tilføj
-                        </button>
-                        <br/>
-                        <br/>
-                        <c:if test="${requestScope.allFormsarefilled}">
-                            <p> Du har tilføjet et nyt materiale </p>
-                        </c:if>
-
-                        <c:if test="${requestscope.notAllFormsfilled}">
-
-                            <p> alle felter skal være udfyldt for at tilføje et nyt produkt. </p>
-
-                        </c:if>
-
-
-                    </td>
+                        </tr>
                     </form>
-                    </tr>
-                </tabl>
+                </table>
             </div>
-        </div>
-
-
         </div>
 
 
