@@ -29,13 +29,14 @@
                          class="img-fluid"/>
                 </div>
                 <div class="col-8">
-                    <p style="font-size: 120%">Lorem Ipsum is simply dummy text of the printing and typesetting
-                        industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                        when an unknown printer took a galley of type and scrambled it to make a type specimen
-                        book. It has survived not only five centuries, but also the leap into electronic
-                        typesetting, remaining essentially unchanged. It was popularised in the 1960s with the
-                        release of Letraset sheets containing Lorem Ipsum passages, and more recently with
-                        desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                    <p style="font-size: 120%">Hos Fog benytter vi udelukkende bæredygtigt træ, som er certificeret af
+                        FSC (Forest Stewardship Council) eller PEFC (Programme for the Endorsement of Forest
+                        Certification).
+                        Ved at vælge bæredygtigt træ kan vi bidrage til at bevare vores skove,
+                        mindske negativ indvirkning på miljøet og støtte lokale samfund, der er afhængige af
+                        skovressourcer. Det er vigtigt at være opmærksom på, hvor vores træprodukter kommer fra, og
+                        bestræbe os på at vælge produkter, der er produceret ansvarligt og bæredygtigt.
+                    </p>
                 </div>
             </div>
         </div>
