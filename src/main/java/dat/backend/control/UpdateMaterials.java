@@ -35,13 +35,6 @@ public class UpdateMaterials extends HttpServlet {
             List<Post>postList = (List<Post>) request.getServletContext().getAttribute("allPosts");
             List<Rafter>rafterList = (List<Rafter>) request.getServletContext().getAttribute("allRafters");
             List<Purlin>purlinList = (List<Purlin>) request.getServletContext().getAttribute("allPurlins");
-
-
-
-
-
-
-
             request.setAttribute("post", postList);
             request.setAttribute("rafter",rafterList);
             request.setAttribute("purlin",purlinList);

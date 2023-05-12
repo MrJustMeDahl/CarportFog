@@ -42,17 +42,37 @@ public class EditMaterial extends HttpServlet {
         HttpSession session = request.getSession();
         User admin = (User) session.getAttribute("admin");
 
-        int materialId = Integer.parseInt(request.getParameter("materialId"));
-        int newprice = Integer.parseInt(request.getParameter("price"));
-        String newDescription = request.getParameter("description");
-        String newMaterialType = request.getParameter("type");
-        String newFunction = request.getParameter("function");
+        int materialId = Integer.parseInt(request.getParameter("materialdescription"));
+        int newprice = Integer.parseInt(request.getParameter("changeprice"));
+        String newDescription = request.getParameter("changematerialdescription");
+        int newMaterialType = Integer.parseInt(request.getParameter("changematerialtype"));
 
         try {
-            MaterialFacade.updateMaterial(materialId, newprice, newDescription, newMaterialType, newFunction, connectionPool);
+            MaterialFacade.updateMaterial(materialId, newprice, newDescription, newMaterialType, connectionPool);
         } catch (DatabaseException e) {
             request.setAttribute("errormessage", e);
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }
+
+        try {
+            MaterialFacade.updateMaterialPrice(materialId, newprice, connectionPool);
+        } catch (DatabaseException e) {
+            request.setAttribute("errormessage", e);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+        }
+        try {
+            MaterialFacade.updateMaterialDescription(materialId, newDescription, connectionPool);
+        } catch (DatabaseException e) {
+            request.setAttribute("errormessage", e);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+        }
+        try {
+            MaterialFacade.updateMaterialType(materialId, newMaterialType, connectionPool);
+        } catch (DatabaseException e) {
+            request.setAttribute("errormessage", e);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+        }
+
+        request.getRequestDispatcher("WEB-INF/updatematerials.jsp");
     }
 }

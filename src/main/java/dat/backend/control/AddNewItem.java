@@ -41,13 +41,50 @@ public class AddNewItem extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         User admin = (User) session.getAttribute("admin");
+        String description = null;
+        int materialType = -1;
+        String materialFunction = null;
+        float price = -1;
+        boolean notAllFormsfilled = false;
+        int formsfilled = 0;
 
-        Material material = null;
 
-        String description = request.getParameter("description");
-        String materialType = request.getParameter("type");
-        String materialFunction = request.getParameter("function");
-        int price = Integer.parseInt(request.getParameter("price"));
+
+
+
+
+        try{
+            description = request.getParameter("description");
+            formsfilled++;
+        } catch(IllegalArgumentException e){
+            request.setAttribute("errormessage", e);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+        }
+
+        try{
+            materialType = Integer.parseInt(request.getParameter("type"));
+            formsfilled++;
+        } catch (IllegalArgumentException e){
+            request.setAttribute("errormessage", e);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+        }
+
+        try{
+            materialFunction = request.getParameter("function");
+            formsfilled++;
+        }catch (IllegalArgumentException e){
+            request.setAttribute("errormessage", e);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+        }
+
+        try{
+            price = Float.parseFloat(request.getParameter("price"));
+            formsfilled++;
+        }catch (IllegalArgumentException e){
+            request.setAttribute("errormessage", e);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+        }
+
 
         try {
 
@@ -57,5 +94,13 @@ public class AddNewItem extends HttpServlet {
             request.setAttribute("errormessage", e);
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }
+
+        if(formsfilled <= 3){
+            notAllFormsfilled = true;
+        }
+
+        request.setAttribute("notAllFormsfilled", notAllFormsfilled);
+        request.getRequestDispatcher("WEB-INF/updatematerials.jsp");
+
     }
 }
