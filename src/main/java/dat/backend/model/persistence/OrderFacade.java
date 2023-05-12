@@ -49,4 +49,7 @@ public class OrderFacade {
         OrderMapper.updateOrderOrdered(orderId, connectionPool);
     }
 
+    public static List<Order> getNewOrders(ConnectionPool connectionPool) throws DatabaseException {
+        return OrderMapper.getNewOrders(connectionPool);
+    }
 }
