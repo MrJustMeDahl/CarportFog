@@ -3,7 +3,9 @@ package dat.backend.persistence;
 import dat.backend.model.entities.*;
 import dat.backend.model.exceptions.DatabaseException;
 import dat.backend.model.persistence.ConnectionPool;
+import dat.backend.model.persistence.OrderFacade;
 import dat.backend.model.persistence.OrderMapper;
+import dat.backend.model.persistence.UserFacade;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,6 +14,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -72,9 +75,9 @@ public class OrderMapperTest {
                         "(55, '97x97mm. trykimp.', 1, 1), (35, '45x195mm. spærtræ', 1, 2), (35, '45x195mm. spærtræ', 1, 3);");
                 stmt.execute("INSERT into fog_test.materialVariant (length, materialId) VALUES (330, 1), (420, 2), (360, 3);");
                 stmt.execute("INSERT INTO fog_test.orders (price, indicativePrice, orderStatus, userId, carportLength, carportWidth, carportMinHeight, carportPrice, carportIndicativePrice) VALUES " +
-                        "(1000, 1500, 'pending', 1, 500, 300, 210, 1000, 1500), (800, 1350, 'paid', 2, 400, 250, 180, 800, 1500);");
+                        "(1000, 1500, 'pending', 1, 500, 300, 210, 1000, 1500), (800, 1350, 'paid', 2, 400, 250, 180, 800, 1500), (0, 200, 'closed', 1, 800, 250, 210, 0, 200);");
                 stmt.execute("INSERT INTO fog_test.itemList (amount, orderId, materialVariantId, partFor) VALUES (4, 1, 1, 'carport'), (10, 1, 2, 'carport'), (8, 1, 3, 'carport'), " +
-                        "(4, 2, 1, 'carport'), (2, 2, 2, 'carport'), (30, 2, 3, 'carport')");
+                        "(4, 2, 1, 'carport'), (2, 2, 2, 'carport'), (30, 2, 3, 'carport'), (8, 3, 1, 'carport')");
             }
         } catch (SQLException throwables) {
             System.out.println(throwables.getMessage());
@@ -93,10 +96,8 @@ public class OrderMapperTest {
 
     @Test
     void getOrdersByUserID() throws DatabaseException {
-        User user = new User(1, "user@usersen.dk", "1234", "User Usersen", 12345678, "Danmarksgade 1", "user");
-        User admin = new User(2, "admin@adminsen.dk", "1234", "Admin Adminsen", 87654321, "Danmarksgade 2", "admin");
-        user.loadOrders(connectionPool);
-        admin.loadOrders(connectionPool);
+        User user = new User(1, "user@usersen.dk", "1234", "User Usersen", 12345678, "Danmarksgade 1", "user", connectionPool);
+        User admin = new User(2, "admin@adminsen.dk", "1234", "Admin Adminsen", 87654321, "Danmarksgade 2", "admin", connectionPool);
         assertEquals(1, user.getOrders().get(0).getUserID());
         assertEquals(2, admin.getOrders().get(0).getUserID());
 
@@ -111,7 +112,56 @@ public class OrderMapperTest {
     @Test
     void getMaterialsForCarport() throws DatabaseException{
         Map<Material, Integer> materialsOrderId1 = OrderMapper.getMaterialsForCarport(1, connectionPool);
-        Map<Material, Integer> materialsOrderId2 = OrderMapper.getMaterialsForCarport(2, connectionPool);
+        Map<Material, Integer> materialsOrderId3 = OrderMapper.getMaterialsForCarport(3, connectionPool);
+        assertEquals(3, materialsOrderId1.size());
+        for(Map.Entry<Material, Integer> m: materialsOrderId3.entrySet()){
+            assertEquals("97x97mm. trykimp.", m.getKey().getDescription());
+            assertEquals(8, m.getValue());
+        }
+    }
+
+    @Test
+    void createOrder() {
+        Map<Material, Integer> materials = new HashMap<>();
+        materials.put(new Post(1, "97x97mm. trykimp.", "træ", "stolpe", 55, 330), 4);
+        Carport carport = new Carport(materials, 2000, 3000, 300, 500, 210);
+        User user = new User(4, "user@usersen.dk", "1234", "User Usersen", 12345678, "Danmarksgade 1", "user", connectionPool);
+
+        try (Connection testConnection = connectionPool.getConnection()) {
+            try  {
+
+                OrderFacade.createOrder(carport,user.getUserID(), 2000, 3000, connectionPool);
+                List testlist = OrderFacade.getOrdersByUserID(user.getUserID(), connectionPool);
+                Order testorder = (Order) testlist.get(0);
+
+                assertEquals(carport.getPrice(), testorder.getCarport().getPrice());
+                assertEquals(testorder.getIndicativePrice(), carport.getIndicativePrice());
+                assertEquals(testorder.getOrderID(), testorder.getOrderID());
+                assertEquals(testorder.getUserID(), user.getUserID());
+
+
+            } catch (DatabaseException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException throwables) {
+            System.out.println(throwables.getMessage());
+            fail("Database connection failed");
+        }
+    }
+
+    @Test
+    void updateOrderOrdered() throws DatabaseException {
+
+        User user = new User(1, "user@usersen.dk", "1234", "User Usersen", 12345678, "Danmarksgade 1", "user", connectionPool);
+        
+        List testlist = OrderFacade.getOrdersByUserID(user.getUserID(), connectionPool);
+        Order testorder = (Order) testlist.get(0);
+
+        assertEquals(testorder.getOrderStatus(), "pending");
+        OrderFacade.updateOrderOrdered(testorder.getOrderID(), connectionPool);
+        testlist = OrderFacade.getOrdersByUserID(user.getUserID(), connectionPool);
+        testorder = (Order) testlist.get(0);
+        assertEquals(testorder.getOrderStatus(), "ordered");
 
     }
 }

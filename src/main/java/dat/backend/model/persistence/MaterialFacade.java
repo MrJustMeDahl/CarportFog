@@ -27,5 +27,11 @@ public class MaterialFacade {
         return MaterialMapper.getAllPurlins(connectionPool);
     }
 
+    public static List<String> getAllMaterialTypes(ConnectionPool connectionPool) throws DatabaseException{
+        return MaterialMapper.getAllMaterialTypes(connectionPool);
+    }
 
+    public static List<String> getAllMaterialFunctions(ConnectionPool connectionPool) throws DatabaseException{
+        return MaterialMapper.getAllMaterialFunctions(connectionPool);
+    }
 }

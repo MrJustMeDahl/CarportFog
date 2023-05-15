@@ -17,7 +17,7 @@ public class Rafter extends Material{
      */
     @Override
     public double getPrice() {
-        return price * (length / 100);
+        return price * ((double) length / 100);
     }
 
 }

@@ -11,7 +11,7 @@ Class User {
 - List<Order> orders
 
 + User(int userID, String email, String password, String name,int phoneNumber, String address, String role)
-+ void loadOrders(ConnectionPool connectionPool)
++ User(int userID, String email, String password, String name,int phoneNumber, String address, String role, ConnectionPool connectionPool)
 }
 
 Class Order{
@@ -30,8 +30,8 @@ Class Carport{
 - double indicativePrice
 - Map<Material, Integer> materials
 
-+ Carport(Map<Material, Integer materials)
-+ Carport(Map<Material, Integer materials, double price, double indicativePrice)
++ Carport(Map<Material, Integer materials, int width, int length, int minHeight)
++ Carport(Map<Material, Integer materials, double price, double indicativePrice, int width, int length, int minHeight)
 - double calculatePrice()
 - double calculateIndicativePrice()
 }
@@ -87,13 +87,15 @@ class OrderMapper{
 
 class MaterialMapper{
 <<static>>
-void materialPriceUpdate (int materialID, double price, ConnectionPool connectionPool) throws DatabaseException
-void materialAdd (String name, double price,String materialTypeDescription, String materialDescription, String functionDescription, ConnectionPool connectionPool) throws DatabaseException
-void materialDelte (int materialID, ConnectionPool connectionPool) throws DatabaseException
-List<Rafter> rafters (ConnectionPool connectionPool) throws DatabaseException
-List<Post> posts (ConnectionPool connectionPool) throws DatabaseException
-List<Purlin> purlins (ConnectionPool connectionPool) throws DatabaseException
-list<Materials> partList (int OrderId, rafters, posts, purlins, ConnectionPool connectionPool) throws DatabaseException
++ void materialPriceUpdate (int materialID, double price, ConnectionPool connectionPool) throws DatabaseException
++ void materialAdd (String name, double price,String materialTypeDescription, String materialDescription, String functionDescription, ConnectionPool connectionPool) throws DatabaseException
++ void materialDelte (int materialID, ConnectionPool connectionPool) throws DatabaseException
++ List<Rafter> rafters (ConnectionPool connectionPool) throws DatabaseException
++ List<Post> posts (ConnectionPool connectionPool) throws DatabaseException
++ List<Purlin> purlins (ConnectionPool connectionPool) throws DatabaseException
++ list<Materials> partList (int OrderId, rafters, posts, purlins, ConnectionPool connectionPool) throws DatabaseException
++ List<String> getAllMaterialTypes(ConnectionPool connectionPool)
++ List<String> getAllMaterialBuildFunctions(ConnectionPool connectionPool)
 }
 
 class ConnectionPool{
