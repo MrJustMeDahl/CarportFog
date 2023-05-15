@@ -180,7 +180,7 @@ public class MaterialMapper {
      * @author CarstenJuhl
      */
 
-    public static void updateMaterial(int materialId, double newPrice, String newDescription, ConnectionPool connectionPool) throws DatabaseException {
+    public static boolean updateMaterial(int materialId, double newPrice, String newDescription, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "UPDATE material SET price = ?, description = ?  WHERE materialId = ?";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -196,6 +196,7 @@ public class MaterialMapper {
         } catch (SQLException e) {
             throw new DatabaseException("Failed to update material in database");
         }
+        return true;
     }
 
     /**
@@ -210,8 +211,8 @@ public class MaterialMapper {
      * @author CarstenJuhl
      */
 
-    public static void createNewMaterial(String description, int materialType, int materialFunction, double price, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "INSERT into material (price, description, materialType, materialBuildFunction) VALUES (?,?,?,?)";
+    public static boolean createNewMaterial(String description, int materialType, int materialFunction, double price, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "INSERT into material (price, description, materialTypeId, materialBuildFunctionId) VALUES (?,?,?,?)";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.NO_GENERATED_KEYS)) {
                 ps.setDouble(1, price);
@@ -219,6 +220,7 @@ public class MaterialMapper {
                 ps.setInt(3, materialType);
                 ps.setInt(4, materialFunction);
                 ps.executeUpdate();
+                return true;
             }
         } catch (SQLException e) {
             throw new DatabaseException("Failed to create a new material");

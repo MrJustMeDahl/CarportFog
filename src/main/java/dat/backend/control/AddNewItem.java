@@ -11,6 +11,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet(name = "AddNewItem", value = "/addnewitem")
 public class AddNewItem extends HttpServlet {
@@ -37,6 +38,7 @@ public class AddNewItem extends HttpServlet {
      * @throws IOException
      * @author CarstenJuhl
      */
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
@@ -49,6 +51,12 @@ public class AddNewItem extends HttpServlet {
         boolean allFormsAreFilled = false;
         boolean notAllFormsAreFilled = false;
         int formsfilled = 0;
+
+
+
+
+
+
 
         try {
             description = request.getParameter("newmaterialdescription");
@@ -106,6 +114,11 @@ public class AddNewItem extends HttpServlet {
         }else{
             notAllFormsAreFilled = true;
             request.setAttribute("notAllFormsAreFilled", notAllFormsAreFilled);
+
+            request.setAttribute("materialfunction", -1);
+            request.setAttribute("chosenmaterialId", -1);
+            request.setAttribute("chosenMaterial", null);
+            session.setAttribute("editmateriallist", null);
 
             request.getRequestDispatcher("WEB-INF/updatematerials.jsp").forward(request,response);
         }
