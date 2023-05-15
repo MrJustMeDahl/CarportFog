@@ -108,18 +108,18 @@ class UserMapper {
 
     /**
      * This methods retrieves a Set of user objects from the database, who are owners of one or more orders from the given list.
-     * @param newOrders List of Order objects
+     * @param orders List of Order objects
      * @param connectionPool required to establish connection to the database.
      * @return Set of User objects
      * @throws DatabaseException Is thrown if there is no connection to the database or if data is invalid.
      * @author MrJustMeDahl
      */
-    static Set<User> getUsersForOrders(List<Order> newOrders, ConnectionPool connectionPool) throws DatabaseException {
+    static Set<User> getUsersForOrders(List<Order> orders, ConnectionPool connectionPool) throws DatabaseException {
         Set<User> userSet = new HashSet<>();
         String SQL = "SELECT * FROM user WHERE userId = ?";
         try(Connection connection = connectionPool.getConnection()){
             try(PreparedStatement ps = connection.prepareStatement(SQL)){
-                for(Order o: newOrders){
+                for(Order o: orders){
                     ps.setInt(1, o.getUserID());
                     User user = null;
                     ResultSet rs = ps.executeQuery();
