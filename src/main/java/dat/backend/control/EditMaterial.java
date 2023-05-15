@@ -29,7 +29,7 @@ public class EditMaterial extends HttpServlet {
 
     /**
      * The editmaterialServlet is used to edit items already in the database.
-     * only the admin user can use this servlet, and is can to change up to 4 variables
+     * only the admin user can use this servlet, and can change the price and description of a material
      *
      * @param request
      * @param response
@@ -39,40 +39,24 @@ public class EditMaterial extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
         User admin = (User) session.getAttribute("admin");
-
         int materialId = Integer.parseInt(request.getParameter("materialdescription"));
-        int newprice = Integer.parseInt(request.getParameter("changeprice"));
+        double newPrice = Double.parseDouble(request.getParameter("changeprice"));
         String newDescription = request.getParameter("changematerialdescription");
-        int newMaterialType = Integer.parseInt(request.getParameter("changematerialtype"));
 
         try {
-            MaterialFacade.updateMaterial(materialId, newprice, newDescription, newMaterialType, connectionPool);
-        } catch (DatabaseException e) {
-            request.setAttribute("errormessage", e);
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-        }
-
-        try {
-            MaterialFacade.updateMaterialPrice(materialId, newprice, connectionPool);
-        } catch (DatabaseException e) {
-            request.setAttribute("errormessage", e);
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-        }
-        try {
-            MaterialFacade.updateMaterialDescription(materialId, newDescription, connectionPool);
-        } catch (DatabaseException e) {
-            request.setAttribute("errormessage", e);
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-        }
-        try {
-            MaterialFacade.updateMaterialType(materialId, newMaterialType, connectionPool);
+            MaterialFacade.updateMaterial(materialId, newPrice, newDescription, connectionPool);
         } catch (DatabaseException e) {
             request.setAttribute("errormessage", e);
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }
 
-        request.getRequestDispatcher("WEB-INF/updatematerials.jsp");
+        //TODO Her skal det nye applicationScope laves med updaterede ændringer
+
+
+
+        request.getRequestDispatcher("WEB-INF/updatematerials.jsp").forward(request,response);
     }
 }

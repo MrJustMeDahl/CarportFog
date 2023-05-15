@@ -89,13 +89,13 @@
                                                     class="input-group table align-center mt-2 table-responsive table-responsive-sm">
                                                 <c:if test="${requestScope.chosenmaterialId != -1}">
                                                     <option value="${requestScope.chosenMaterial.materialID}"> ${requestScope.chosenMaterial.description}
-                                                        - ${requestScope.chosenMaterial.length}
+                                                        - ${requestScope.chosenMaterial.length} mm
                                                     </option>
                                                 </c:if>
                                                 <c:forEach items="${sessionScope.editmateriallist}"
                                                            var="editmateriallist">
                                                     <option value="${editmateriallist.materialID}"> ${editmateriallist.description}
-                                                        - ${editmateriallist.length}
+                                                        - ${editmateriallist.length} mm
                                                     </option>
                                                 </c:forEach>
                                             </select>
@@ -175,7 +175,7 @@
                 </table>
 
                 <table class="table align-center mt-5 table-responsive table-responsive-sm">
-                    <form>
+                    <form action="list" method="post">
 
 
                             <%--
@@ -193,7 +193,7 @@
                             <form action="list" method="post">
                                 <td>
                                     <input id="descriptiontext" class="d-inline form-control w-5" type="text"
-                                           name="description"
+                                           name="newmaterialdescription"
                                            placeholder="Materiale Beskrivelse">
                                 </td>
 
@@ -278,7 +278,7 @@
                                 <div class="input-group mb-3">
                                     <input class="form-control" id="price" class="d-inline form-control 2-10"
                                            type="number"
-                                           name="price"
+                                           name="newmaterialprice"
                                            step="0.1" min="0.0">
                                     <span class="input-group-text"> kr/mtr</span>
                                 </div>
@@ -289,11 +289,11 @@
                                 </button>
                                 <br/>
                                 <br/>
-                                <c:if test="${requestScope.allFormsarefilled}">
+                                <c:if test="${requestScope.allFormsAreFilled}">
                                     <p> Du har tilføjet et nyt materiale </p>
                                 </c:if>
 
-                                <c:if test="${requestscope.notAllFormsfilled}">
+                                <c:if test="${requestscope.notAllFormsAreFilled}">
 
                                     <p> alle felter skal være udfyldt for at tilføje et nyt produkt. </p>
 

@@ -31,7 +31,7 @@ public class EditChosenMaterialFunction extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws
-            ServletException, IOException {
+        ServletException, IOException {
         HttpSession session = request.getSession();
         int chosenmaterialId = -1;
         int materialfunction = Integer.parseInt(request.getParameter("materialfunction"));

@@ -34,23 +34,12 @@ public class MaterialFacade {
     public static List<String> getAllMaterialFunctions(ConnectionPool connectionPool) throws DatabaseException{
         return MaterialMapper.getAllMaterialFunctions(connectionPool);
     }
-    public static void updateMaterial(int materialId, int newprice, String newDescription, int newMaterialType, ConnectionPool connectionPool) throws DatabaseException {
-        MaterialMapper.updateMaterial(materialId,newprice,newDescription,newMaterialType,connectionPool);
+    public static void updateMaterial(int materialId, double newPrice, String newDescription, ConnectionPool connectionPool) throws DatabaseException {
+        MaterialMapper.updateMaterial(materialId,newPrice,newDescription,connectionPool);
     }
-    public  static void updateMaterialPrice(int materialId, double newprice, ConnectionPool connectionPool) throws DatabaseException{
-        MaterialMapper.updateMaterialPrice(materialId,newprice,connectionPool);
-    }
-
-    public static void newMaterial(String description, int materialType, String materialFunction, float price, ConnectionPool connectionPool) throws DatabaseException {
+    public static void newMaterial(String description, int materialType, int materialFunction, double price, ConnectionPool connectionPool) throws DatabaseException {
         MaterialMapper.createNewMaterial(description,materialType,materialFunction,price,connectionPool);
     }
 
-    public static void updateMaterialDescription(int materialId, String newDescription, ConnectionPool connectionPool) throws DatabaseException{
-        MaterialMapper.updateMaterialDescription(materialId,newDescription,connectionPool);
-    }
-
-    public static void updateMaterialType(int materialId, int newMaterialType, ConnectionPool connectionPool) throws DatabaseException {
-        MaterialMapper.updateMaterialType(materialId,newMaterialType,connectionPool);
-    }
 
 }

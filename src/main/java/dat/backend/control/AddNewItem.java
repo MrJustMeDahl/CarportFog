@@ -39,68 +39,76 @@ public class AddNewItem extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
         User admin = (User) session.getAttribute("admin");
         String description = null;
         int materialType = -1;
-        String materialFunction = null;
-        float price = -1;
-        boolean notAllFormsfilled = false;
+        int materialFunction = -1;
+        double price = -1;
+        boolean allFormsAreFilled = false;
+        boolean notAllFormsAreFilled = false;
         int formsfilled = 0;
 
-
-
-
-
-
-        try{
-            description = request.getParameter("description");
+        try {
+            description = request.getParameter("newmaterialdescription");
             formsfilled++;
-        } catch(IllegalArgumentException e){
+            System.out.println("description added" + description);
+        } catch (IllegalArgumentException e) {
             request.setAttribute("errormessage", e);
             request.getRequestDispatcher("error.jsp").forward(request, response);
+            System.out.println("Error adding description");
         }
-
-        try{
-            materialType = Integer.parseInt(request.getParameter("type"));
-            formsfilled++;
-        } catch (IllegalArgumentException e){
-            request.setAttribute("errormessage", e);
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-        }
-
-        try{
-            materialFunction = request.getParameter("function");
-            formsfilled++;
-        }catch (IllegalArgumentException e){
-            request.setAttribute("errormessage", e);
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-        }
-
-        try{
-            price = Float.parseFloat(request.getParameter("price"));
-            formsfilled++;
-        }catch (IllegalArgumentException e){
-            request.setAttribute("errormessage", e);
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-        }
-
 
         try {
-
-            MaterialFacade.newMaterial(description, materialType, materialFunction, price, connectionPool);
-
-        } catch (DatabaseException e) {
+            materialType = Integer.parseInt(request.getParameter("newmaterialtype"));
+            formsfilled++;
+            System.out.println("type added" + materialType);
+        } catch (IllegalArgumentException e) {
             request.setAttribute("errormessage", e);
             request.getRequestDispatcher("error.jsp").forward(request, response);
+            System.out.println("Error adding type");
         }
 
-        if(formsfilled <= 3){
-            notAllFormsfilled = true;
+        try {
+            materialFunction = Integer.parseInt(request.getParameter("newmaterialfunction"));
+            formsfilled++;
+            System.out.println("function added" + materialFunction);
+        } catch (IllegalArgumentException e) {
+            request.setAttribute("errormessage", e);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            System.out.println("Error adding function");
         }
 
-        request.setAttribute("notAllFormsfilled", notAllFormsfilled);
-        request.getRequestDispatcher("WEB-INF/updatematerials.jsp");
+        try {
+            price = Double.parseDouble(request.getParameter("newmaterialprice"));
+            formsfilled++;
+            System.out.println("price added" + price);
+        } catch (IllegalArgumentException e) {
+            request.setAttribute("errormessage", e);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            System.out.println("Error adding price");
+        }
+
+        if (formsfilled == 4) {
+            allFormsAreFilled = true;
+            System.out.println("Formsfilled = 4");
+            try {
+                MaterialFacade.newMaterial(description, materialType, materialFunction, price, connectionPool);
+                request.setAttribute("allFormsAreFilled", allFormsAreFilled);
+                request.getRequestDispatcher("WEB-INF/updatematerials.jsp").forward(request,response);
+                System.out.println("New item added");
+
+            } catch (DatabaseException e) {
+                request.setAttribute("errormessage", e);
+                request.getRequestDispatcher("error.jsp").forward(request, response);
+            }
+        }else{
+            notAllFormsAreFilled = true;
+            request.setAttribute("notAllFormsAreFilled", notAllFormsAreFilled);
+
+            request.getRequestDispatcher("WEB-INF/updatematerials.jsp").forward(request,response);
+        }
 
     }
 }
