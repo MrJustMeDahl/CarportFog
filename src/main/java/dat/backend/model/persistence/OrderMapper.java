@@ -203,4 +203,28 @@ public class OrderMapper {
         }
         return newOrders;
     }
+
+    public static boolean deleteOrder(int orderID, ConnectionPool connectionPool) throws DatabaseException{
+        String ordersSQL = "DELETE FROM orders WHERE orderId = ?";
+        String itemListSQL = "DELETE FROM itemList WHERE orderId = ?";
+        boolean itemList = false;
+        boolean orders = false;
+        try(Connection connection = connectionPool.getConnection()){
+            try(PreparedStatement ps = connection.prepareStatement(itemListSQL)){
+                ps.setInt(1, orderID);
+                if(ps.executeUpdate() == 1){
+                    itemList = true;
+                }
+            }
+            try(PreparedStatement ps = connection.prepareStatement(ordersSQL)){
+                ps.setInt(1, orderID);
+                if(ps.executeUpdate() == 1){
+                    orders = true;
+                }
+            }
+        } catch (SQLException e){
+            throw new DatabaseException("Failed to delete order with ordernumber: " + orderID + " from the database.");
+        }
+        return itemList && orders;
+    }
 }

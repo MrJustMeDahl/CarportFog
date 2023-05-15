@@ -57,4 +57,7 @@ public class OrderFacade {
         OrderMapper.updateOrderPayed(orderId, connectionPool);
     }
 
+    public static boolean deleteOrder(int orderID, ConnectionPool connectionPool) throws DatabaseException{
+        return OrderMapper.deleteOrder(orderID, connectionPool);
+    }
 }
