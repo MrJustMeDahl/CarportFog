@@ -9,6 +9,7 @@ import dat.backend.model.persistence.OrderFacade;
 import dat.backend.model.persistence.OrderMapper;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +34,20 @@ public class OrderAndPayment extends HttpServlet
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
+
+
+        try {
+            System.out.println("SERVLET TEST L 39");
+
+            System.out.println("SERVLET TEST L 41");
+            OrderFacade.updateOrderPayed(Integer.parseInt(request.getParameter("currentID")), connectionPool);
+            System.out.println("SERVLET TEST L43");
+
+            request.getRequestDispatcher("orders").forward(request, response);
+        } catch (DatabaseException e) {
+            request.setAttribute("errormessage", e);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+        }
 
 
     }
