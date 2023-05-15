@@ -154,5 +154,22 @@ public class OrderMapper {
             throw new DatabaseException("Failed to update paid in database");
         }
     }
+    public static void updateOrderPayed (int orderId, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "UPDATE orders SET orders.orderStatus = ? WHERE orderId = ?";
+
+        System.out.println("TEST 1 LINJE 159");
+
+        try(Connection connection = connectionPool.getConnection()){
+            try(PreparedStatement ps = connection.prepareStatement(sql)){
+
+                ps.setString(1, "payed");
+                ps.setInt(2, orderId);
+                ps.execute();
+            }
+        } catch(SQLException e){
+            throw new DatabaseException("Failed to update paid in database");
+        }
+
+    }
 
 }

@@ -49,4 +49,8 @@ public class OrderFacade {
         OrderMapper.updateOrderOrdered(orderId, connectionPool);
     }
 
+    public static void updateOrderPayed(int orderId, ConnectionPool connectionPool) throws DatabaseException{
+        OrderMapper.updateOrderPayed(orderId, connectionPool);
+    }
+
 }
