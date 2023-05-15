@@ -8,6 +8,7 @@ import dat.backend.model.exceptions.DatabaseException;
 import dat.backend.model.persistence.ConnectionPool;
 import dat.backend.model.persistence.OrderFacade;
 import dat.backend.model.persistence.OrderMapper;
+import dat.backend.model.persistence.UserFacade;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,7 +19,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Map;
 
-@WebServlet(name = "createaccount", urlPatterns = {"/createaccount"} )
+@WebServlet(name = "createaccount", urlPatterns = {"/signup"} )
 public class CreateAccount extends HttpServlet
 {
     private ConnectionPool connectionPool;
@@ -37,7 +38,7 @@ public class CreateAccount extends HttpServlet
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
         // You shouldn't end up here with a GET-request, thus you get sent back to frontpage
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("register.jsp");
 
     }
 
@@ -47,20 +48,29 @@ public class CreateAccount extends HttpServlet
      */
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
-
         response.setContentType("text/html");
         HttpSession session = request.getSession();
         session.setAttribute("user",null);
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String fullName = request.getParameter("fullName");
-        String phoneNumberStr = request.getParameter("phoneNumber");
+        String phoneNumber = request.getParameter("phoneNumber");
         String address = request.getParameter("address");
+
+
 
         try{
 
-            int phoneNumber = Integer.parseInt("phoneNumberStr");
-            User user
+            User user = new User(0, null, null, null, 0, null, "user");
+
+
+
+            user = UserFacade.createUser(email, password, Integer.parseInt(phoneNumber), address, fullName, "user", connectionPool);
+            session=request.getSession();
+            session.setAttribute("user", user);
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+
+
 
 
 

@@ -3,6 +3,7 @@ package dat.backend.model.entities;
 import dat.backend.model.exceptions.DatabaseException;
 import dat.backend.model.persistence.ConnectionPool;
 import dat.backend.model.persistence.OrderFacade;
+import dat.backend.model.persistence.UserFacade;
 
 import java.util.List;
 import java.util.Objects;
@@ -41,6 +42,16 @@ public class User {
         this.address = address;
         this.role = role;
     }
+
+    public User(String email, String password, String name, int phoneNumber, String address) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.role = "user";
+    }
+
 
     public String getEmail() {
         return email;
@@ -117,4 +128,13 @@ public class User {
                 ", rolle='" + role + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean createUserCheck() throws DatabaseException {
+
+        User user = UserFacade.createUser(null, null, 0, null, null, role, new ConnectionPool());
+
+        return false;
+    }
+
 }
