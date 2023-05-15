@@ -34,4 +34,14 @@ public class MaterialFacade {
     public static List<String> getAllMaterialFunctions(ConnectionPool connectionPool) throws DatabaseException{
         return MaterialMapper.getAllMaterialFunctions(connectionPool);
     }
+    public static boolean updateMaterial(int materialId, double newPrice, String newDescription, ConnectionPool connectionPool) throws DatabaseException {
+        MaterialMapper.updateMaterial(materialId,newPrice,newDescription,connectionPool);
+        return true;
+    }
+    public static boolean newMaterial(String description, int materialType, int materialFunction, double price, ConnectionPool connectionPool) throws DatabaseException {
+        MaterialMapper.createNewMaterial(description,materialType,materialFunction,price,connectionPool);
+        return true;
+    }
+
+
 }

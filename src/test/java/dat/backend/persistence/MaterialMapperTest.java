@@ -119,4 +119,7 @@ public class MaterialMapperTest {
         assertEquals("rem", allFunctions.get(1));
         assertEquals("spær", allFunctions.get(2));
     }
+
+
+
 }

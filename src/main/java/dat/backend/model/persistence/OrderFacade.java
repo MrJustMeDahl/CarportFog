@@ -52,4 +52,9 @@ public class OrderFacade {
     public static List<Order> getNewOrders(ConnectionPool connectionPool) throws DatabaseException {
         return OrderMapper.getNewOrders(connectionPool);
     }
+
+    public static void updateOrderPayed(int orderId, ConnectionPool connectionPool) throws DatabaseException{
+        OrderMapper.updateOrderPayed(orderId, connectionPool);
+    }
+
 }

@@ -4,10 +4,13 @@ import dat.backend.model.config.ApplicationStart;
 import dat.backend.model.exceptions.DatabaseException;
 import dat.backend.model.persistence.ConnectionPool;
 import dat.backend.model.persistence.OrderFacade;
+import dat.backend.model.persistence.UserFacade;
 
 import java.net.CookieHandler;
 import java.util.List;
 import java.util.Objects;
+
+
 
 /**
  * This class contains all the data that represents a user of the application, including methods that alters the user's information.
@@ -74,6 +77,16 @@ public class User {
         }
     }
 
+    public User(String email, String password, String name, int phoneNumber, String address) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.role = "user";
+    }
+
+
     public String getEmail() {
         return email;
     }
@@ -138,5 +151,30 @@ public class User {
                 ", kodeord='" + password + '\'' +
                 ", rolle='" + role + '\'' +
                 '}';
+    }
+
+
+    public boolean checkEmail(String email) {
+
+        if (email.contains("@")&& email.contains(".")){
+            return true;
+        }
+
+
+
+        return false;
+    }
+
+
+    public boolean checkPhoneNumber(String phoneNumber) {
+
+
+        return phoneNumber.matches("\\d+");
+    }
+
+
+    public boolean checkName(String fullName) {
+
+        return !fullName.matches("\\d+");
     }
 }

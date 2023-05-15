@@ -22,8 +22,7 @@ public class OrderMapper {
 
     /**
      * This method retrieves a list of orders belonging to a specific user, from the database.
-     *
-     * @param userID         user ID number - generated in the database.
+     * @param userID user ID number - generated in the database.
      * @param connectionPool Required to establish connection to the database.
      * @return List of instances from the Order.java class - data for each instance is retrieved from the database.
      * @throws DatabaseException is thrown if there is no connection to the database, or if data retrieved from the database is invalid.
@@ -33,11 +32,11 @@ public class OrderMapper {
         List<Order> allOrders = new ArrayList<>();
         String sql = "SELECT * FROM orders WHERE userId = ?";
 
-        try (Connection conn = connectionPool.getConnection()) {
-            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        try(Connection conn = connectionPool.getConnection()){
+            try(PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setInt(1, userID);
                 ResultSet rs = ps.executeQuery();
-                while (rs.next()) {
+                while(rs.next()){
                     int orderID = rs.getInt("orderId");
                     Carport carport = new Carport(getMaterialsForCarport(orderID, connectionPool), rs.getInt("carportPrice"), rs.getInt("carportIndicativePrice"), rs.getInt("carportWidth"), rs.getInt("carportLength"), rs.getInt("carportMinHeight"));
                     String orderStatus = rs.getString("orderStatus");
@@ -46,7 +45,7 @@ public class OrderMapper {
                     allOrders.add(new Order(orderID, userID, carport, orderStatus, price, indicativePrice));
                 }
             }
-        } catch (SQLException e) {
+        } catch (SQLException e){
             throw new DatabaseException("Error retrieving orders from database.");
         }
         return allOrders;
@@ -64,13 +63,14 @@ public class OrderMapper {
     public static Map<Material, Integer> getMaterialsForCarport(int orderID, ConnectionPool connectionPool) throws DatabaseException {
         Map<Material, Integer> materials = new HashMap<>();
         String SQL = "SELECT * FROM itemListView WHERE orderId = ?";
-        try (Connection conn = connectionPool.getConnection()) {
-            try (PreparedStatement ps = conn.prepareStatement(SQL)) {
+        try(Connection conn = connectionPool.getConnection()){
+            try(PreparedStatement ps = conn.prepareStatement(SQL)){
                 ps.setInt(1, orderID);
                 ResultSet rs = ps.executeQuery();
-                while (rs.next()) {
-                    if (rs.getString("partFor").equals("carport")) {
+                while(rs.next()){
+                    if(rs.getString("partFor").equals("carport")) {
                         int materialID = rs.getInt("materialId");
+                        int materialVariantID = rs.getInt("materialVariantId");
                         String description = rs.getString("materialDescription");
                         String type = rs.getString("materialType");
                         String function = rs.getString("buildFunction");
@@ -80,13 +80,13 @@ public class OrderMapper {
                         Material newMaterial = null;
                         switch (rs.getString("buildFunction")) {
                             case "stolpe":
-                                newMaterial = new Post(materialID, description, type, function, price, length);
+                                newMaterial = new Post(materialID, materialVariantID, description, type, function, price, length);
                                 break;
                             case "rem":
-                                newMaterial = new Purlin(materialID, description, type, function, price, length);
+                                newMaterial = new Purlin(materialID, materialVariantID, description, type, function, price, length);
                                 break;
                             case "spær":
-                                newMaterial = new Rafter(materialID, description, type, function, price, length);
+                                newMaterial = new Rafter(materialID, materialVariantID, description, type, function, price, length);
                                 break;
                             default:
                                 throw new DatabaseException("Function of: " + description + " " + materialID + " is not recognised in database.");
@@ -156,6 +156,24 @@ public class OrderMapper {
             throw new DatabaseException("Failed to update paid in database");
         }
     }
+    public static void updateOrderPayed (int orderId, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "UPDATE orders SET orders.orderStatus = ? WHERE orderId = ?";
+
+        System.out.println("TEST 1 LINJE 159");
+
+        try(Connection connection = connectionPool.getConnection()){
+            try(PreparedStatement ps = connection.prepareStatement(sql)){
+
+                ps.setString(1, "payed");
+                ps.setInt(2, orderId);
+                ps.execute();
+            }
+        } catch(SQLException e){
+            throw new DatabaseException("Failed to update paid in database");
+        }
+
+    }
+
 
     /**
      * This method returns a list of Order, where all orders have order status "ordered".
