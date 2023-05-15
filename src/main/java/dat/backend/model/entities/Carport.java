@@ -55,7 +55,7 @@ public class Carport {
     public double calculatePrice(){
         double price = 0;
         for(Map.Entry<Material, Integer> m: materials.entrySet()){
-            price += m.getKey().getPrice()*m.getValue();
+            price += m.getKey().calculateActualPrice()*m.getValue();
         }
         return price;
     }

@@ -8,8 +8,8 @@ public class Rafter extends Material{
 
     private double actualPrice;
 
-    public Rafter(int materialID, String description, String type, String function, double price, int length){
-        super(materialID, description, type, function, price, length);
+    public Rafter(int materialID, int materialVariantID, String description, String type, String function, double price, int length){
+        super(materialID, materialVariantID, description, type, function, price, length);
         actualPrice = calculateActualPrice();
     }
 
@@ -19,8 +19,10 @@ public class Rafter extends Material{
      * @author MrJustMeDahl
      */
 
+    @Override
     public double calculateActualPrice() {
-        return price * ((double) length / 100);
+        actualPrice = price * ((double) length / 100);
+        return actualPrice;
     }
 
     public double getActualPrice() {

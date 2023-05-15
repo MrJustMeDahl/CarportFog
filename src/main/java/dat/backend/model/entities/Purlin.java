@@ -8,8 +8,8 @@ public class Purlin extends Material{
 
     private double actualPrice;
 
-    public Purlin(int materialID, String description, String type, String function, double price, int length){
-        super(materialID, description, type, function, price, length);
+    public Purlin(int materialID, int materialVariantID, String description, String type, String function, double price, int length){
+        super(materialID, materialVariantID, description, type, function, price, length);
         actualPrice = calculateActualPrice();
     }
 
@@ -19,6 +19,7 @@ public class Purlin extends Material{
      * @author MrJustMeDahl
      */
 
+    @Override
     public double calculateActualPrice() {
         return price * ((double) length / 100);
     }

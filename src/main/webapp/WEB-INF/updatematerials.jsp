@@ -88,13 +88,13 @@
                                             <select name="materialdescription" id="editmaterialdescription"
                                                     class="input-group table align-center mt-2 table-responsive table-responsive-sm">
                                                 <c:if test="${requestScope.chosenmaterialId != -1}">
-                                                    <option value="${requestScope.chosenMaterial.materialID}"> ${requestScope.chosenMaterial.description}
+                                                    <option value="${requestScope.chosenMaterial.materialVariantID}"> ${requestScope.chosenMaterial.description}
                                                         - ${requestScope.chosenMaterial.length} mm
                                                     </option>
                                                 </c:if>
                                                 <c:forEach items="${sessionScope.editmateriallist}"
                                                            var="editmateriallist">
-                                                    <option value="${editmateriallist.materialID}"> ${editmateriallist.description}
+                                                    <option value="${editmateriallist.materialVariantID}"> ${editmateriallist.description}
                                                         - ${editmateriallist.length} mm
                                                     </option>
                                                 </c:forEach>
@@ -164,7 +164,7 @@
                         <tr>
                             <td>
                                 <button formaction="editmaterial" class="btn btn-dark float-end"
-                                        name="changematerial">
+                                        name="changematerial" value="${requestScope.chosenMaterial.materialID}">
                                     opdater
                                 </button>
 

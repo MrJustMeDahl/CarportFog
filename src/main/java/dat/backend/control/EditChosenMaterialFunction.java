@@ -51,7 +51,7 @@ public class EditChosenMaterialFunction extends HttpServlet {
             if (chosenmaterials == postList) {
                 chosenmaterialId = Integer.parseInt(request.getParameter("materialdescription"));
                 for(Material m: chosenmaterials){
-                    if(m.getMaterialID() == chosenmaterialId){
+                    if(m.getMaterialVariantID() == chosenmaterialId){
                         chosenMaterial = m;
                     }
                 }
@@ -65,7 +65,7 @@ public class EditChosenMaterialFunction extends HttpServlet {
             if(chosenmaterials == purlinList) {
                 chosenmaterialId = Integer.parseInt(request.getParameter("materialdescription"));
                 for(Material m: chosenmaterials){
-                    if(m.getMaterialID() == chosenmaterialId){
+                    if(m.getMaterialVariantID() == chosenmaterialId){
                         chosenMaterial = m;
                     }
                 }
@@ -78,7 +78,7 @@ public class EditChosenMaterialFunction extends HttpServlet {
             if(chosenmaterials == rafterList) {
                 chosenmaterialId = Integer.parseInt(request.getParameter("materialdescription"));
                 for(Material m: chosenmaterials){
-                    if(m.getMaterialID() == chosenmaterialId){
+                    if(m.getMaterialVariantID() == chosenmaterialId){
                         chosenMaterial = m;
                     }
                 }
