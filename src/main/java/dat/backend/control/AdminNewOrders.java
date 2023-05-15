@@ -30,11 +30,13 @@ public class AdminNewOrders extends HttpServlet {
         if(newOrders == null){
             try {
                 newOrders = OrderFacade.getNewOrders(connectionPool);
+                session.setAttribute("newOrders", newOrders);
             } catch (DatabaseException e){
                 request.setAttribute("errormessage", e);
-                request.getRequestDispatcher("error.jsp");
+                request.getRequestDispatcher("error.jsp").forward(request, response);
             }
         }
+        request.getRequestDispatcher("newordersadministration.jsp").forward(request, response);
     }
 
     @Override
