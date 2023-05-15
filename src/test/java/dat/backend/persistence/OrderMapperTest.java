@@ -172,4 +172,10 @@ public class OrderMapperTest {
         assertEquals(1, newOrders.get(0).getCarport().getMaterials().size());
         assertEquals(1, newOrders.get(0).getUserID());
     }
+
+    @Test
+    void deleteOrder() throws DatabaseException {
+        assertTrue(OrderFacade.deleteOrder(1, connectionPool));
+        assertFalse(OrderFacade.deleteOrder(1, connectionPool));
+    }
 }

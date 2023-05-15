@@ -114,7 +114,7 @@ class UserMapper {
      * @throws DatabaseException Is thrown if there is no connection to the database or if data is invalid.
      * @author MrJustMeDahl
      */
-    public static Set<User> getUsersForOrders(List<Order> newOrders, ConnectionPool connectionPool) throws DatabaseException {
+    static Set<User> getUsersForOrders(List<Order> newOrders, ConnectionPool connectionPool) throws DatabaseException {
         Set<User> userSet = new HashSet<>();
         String SQL = "SELECT * FROM user WHERE userId = ?";
         try(Connection connection = connectionPool.getConnection()){

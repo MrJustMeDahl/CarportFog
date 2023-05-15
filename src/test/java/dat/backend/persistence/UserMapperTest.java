@@ -1,5 +1,7 @@
 package dat.backend.persistence;
 
+import dat.backend.model.entities.Carport;
+import dat.backend.model.entities.Order;
 import dat.backend.model.entities.User;
 import dat.backend.model.exceptions.DatabaseException;
 import dat.backend.model.persistence.ConnectionPool;
@@ -11,6 +13,10 @@ import org.junit.jupiter.api.Test;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -95,5 +101,15 @@ class UserMapperTest {
 
 
          */
+    }
+
+    @Test
+    void getUsersForOrders() throws DatabaseException {
+        List<Order> orders = new ArrayList<>();
+        orders.add(new Order(1, 1, new Carport(new HashMap<>(), 300, 580, 210), "ordered", 1000, 1500));
+        orders.add(new Order(2, 2, new Carport(new HashMap<>(), 300, 580, 210), "ordered", 1000, 1500));
+        orders.add(new Order(3, 2, new Carport(new HashMap<>(), 300, 580, 210), "ordered", 1000, 1500));
+        Set<User> users = UserFacade.getUsersForOrders(orders, connectionPool);
+        assertEquals(2, users.size());
     }
 }
