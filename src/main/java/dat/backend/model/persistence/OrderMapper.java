@@ -204,6 +204,14 @@ public class OrderMapper {
         return newOrders;
     }
 
+    /**
+     * This method deletes an order from the database, it deletes everything to do with the order in orders table and itemList table.
+     * @param orderID ID number for the order you want to delete.
+     * @param connectionPool required to establish connection to the database.
+     * @return True if both statements succeeded in removing lines.
+     * @throws DatabaseException Is thrown if there isn't a valid connection to the database.
+     * @author MrJustMeDahl
+     */
     public static boolean deleteOrder(int orderID, ConnectionPool connectionPool) throws DatabaseException{
         String ordersSQL = "DELETE FROM orders WHERE orderId = ?";
         String itemListSQL = "DELETE FROM itemList WHERE orderId = ?";
@@ -212,7 +220,7 @@ public class OrderMapper {
         try(Connection connection = connectionPool.getConnection()){
             try(PreparedStatement ps = connection.prepareStatement(itemListSQL)){
                 ps.setInt(1, orderID);
-                if(ps.executeUpdate() == 1){
+                if(ps.executeUpdate() > 0){
                     itemList = true;
                 }
             }

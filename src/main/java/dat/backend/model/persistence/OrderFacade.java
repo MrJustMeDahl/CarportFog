@@ -49,6 +49,13 @@ public class OrderFacade {
         OrderMapper.updateOrderOrdered(orderId, connectionPool);
     }
 
+    /**
+     * This method returns a list of Order, where all orders have order status "ordered".
+     * @param connectionPool required to establish connection to the database.
+     * @return List of Order.
+     * @throws DatabaseException Is thrown if there isn't a valid connection to the database or if the data in the database is invalid.
+     * @author MrJustMeDahl
+     */
     public static List<Order> getNewOrders(ConnectionPool connectionPool) throws DatabaseException {
         return OrderMapper.getNewOrders(connectionPool);
     }
@@ -57,6 +64,14 @@ public class OrderFacade {
         OrderMapper.updateOrderPayed(orderId, connectionPool);
     }
 
+    /**
+     * This method deletes an order from the database, it deletes everything to do with the order in orders table and itemList table.
+     * @param orderID ID number for the order you want to delete.
+     * @param connectionPool required to establish connection to the database.
+     * @return True if both statements succeeded in removing lines.
+     * @throws DatabaseException Is thrown if there isn't a valid connection to the database.
+     * @author MrJustMeDahl
+     */
     public static boolean deleteOrder(int orderID, ConnectionPool connectionPool) throws DatabaseException{
         return OrderMapper.deleteOrder(orderID, connectionPool);
     }

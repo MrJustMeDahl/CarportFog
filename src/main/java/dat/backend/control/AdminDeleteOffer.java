@@ -14,6 +14,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * This servlet handles deleting orders from the database and updating the list on the sessionScope if removal is successful.
+ * @author MrJustMeDahl
+ */
 @WebServlet(name = "AdminDeleteOffer", value = "/admindeleteoffer")
 public class AdminDeleteOffer extends HttpServlet {
 
@@ -30,6 +34,17 @@ public class AdminDeleteOffer extends HttpServlet {
 
     }
 
+    /**
+     * This method handles deleting orders from the database and updating the list on the sessionScope if removal is successful.
+     * It retrieves the orderID from the request object and tries to delete it everything in the database connected to that order ID.
+     * If successful it will remove the Order object from the List of Orders that are saved on sessionScope.
+     * It redirects to adminneworders servlet and from there back to newordersadministration.jsp
+     * @param request Http request object
+     * @param response Http response object
+     * @throws ServletException
+     * @throws IOException
+     * @author MrJustMeDahl
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int orderID = Integer.parseInt(request.getParameter("orderID"));

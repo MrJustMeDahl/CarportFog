@@ -35,7 +35,15 @@ public class UserFacade
         return UserMapper.createUser(email, password, phoneNumber, address, fullName, role, connectionPool);
     }
 
-    public static Set<User> getUsersWithNewOrders(List<Order> newOrders, ConnectionPool connectionPool) throws DatabaseException {
-        return UserMapper.getUsersWithNewOrders(newOrders, connectionPool);
+    /**
+     * This methods retrieves a Set of user objects from the database, who are owners of one or more orders from the given list.
+     * @param newOrders List of Order objects
+     * @param connectionPool required to establish connection to the database.
+     * @return Set of User objects
+     * @throws DatabaseException Is thrown if there is no connection to the database or if data is invalid.
+     * @author MrJustMeDahl
+     */
+    public static Set<User> getUsersForOrders(List<Order> newOrders, ConnectionPool connectionPool) throws DatabaseException {
+        return UserMapper.getUsersForOrders(newOrders, connectionPool);
     }
 }

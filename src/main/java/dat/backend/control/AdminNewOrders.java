@@ -15,6 +15,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * This is servlet that loads in the data needed to display newordersadministration.jsp.
+ * @author MrJustMeDahl
+ */
 @WebServlet(name = "AdminNewOrders", value = "/adminneworders")
 public class AdminNewOrders extends HttpServlet {
 
@@ -26,6 +30,17 @@ public class AdminNewOrders extends HttpServlet {
         this.connectionPool = ApplicationStart.getConnectionPool();
     }
 
+    /**
+     * This method loads in the data needed to display newordersadministration.jsp.
+     * The data includes a List of Order objects with order status 'ordered', and a Set of User objects who own 1 or more of the before mentioned orders.
+     * The List and the Set are saved on sessionScope, so that it will only be retrieved from the database once.
+     * If an orderID exists on the requestScope, it will save that on the requestScope.
+     * @param request Http servlet request object
+     * @param response Http servlet response object
+     * @throws ServletException
+     * @throws IOException
+     * @author MrJustMeDahl
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
@@ -34,7 +49,7 @@ public class AdminNewOrders extends HttpServlet {
         if(newOrders == null || newOrdersUsers == null){
             try {
                 newOrders = OrderFacade.getNewOrders(connectionPool);
-                newOrdersUsers = UserFacade.getUsersWithNewOrders(newOrders, connectionPool);
+                newOrdersUsers = UserFacade.getUsersForOrders(newOrders, connectionPool);
                 session.setAttribute("newOrders", newOrders);
                 session.setAttribute("newOrdersUsers", newOrdersUsers);
             } catch (DatabaseException e){
