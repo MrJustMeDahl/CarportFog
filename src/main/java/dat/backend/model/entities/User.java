@@ -10,6 +10,8 @@ import java.net.CookieHandler;
 import java.util.List;
 import java.util.Objects;
 
+
+
 /**
  * This class contains all the data that represents a user of the application, including methods that alters the user's information.
  * @author MrJustMeDahl
@@ -151,12 +153,28 @@ public class User {
                 '}';
     }
 
-    @Override
-    public boolean createUserCheck() throws DatabaseException {
 
-        User user = UserFacade.createUser(null, null, 0, null, null, role, new ConnectionPool());
+    public boolean checkEmail(String email) {
+
+        if (email.contains("@")&& email.contains(".")){
+            return true;
+        }
+
+
 
         return false;
     }
 
+
+    public boolean checkPhoneNumber(String phoneNumber) {
+
+
+        return phoneNumber.matches("\\d+");
+    }
+
+
+    public boolean checkName(String fullName) {
+
+        return !fullName.matches("\\d+");
+    }
 }

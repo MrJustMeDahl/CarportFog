@@ -58,19 +58,24 @@ public class CreateAccount extends HttpServlet
         String address = request.getParameter("address");
 
 
+        User user = new User(0, null, null, null, 0, null, "user");
+
 
         try{
 
-            User user = new User(0, null, null, null, 0, null, "user");
 
 
-
-            user = UserFacade.createUser(email, password, Integer.parseInt(phoneNumber), address, fullName, "user", connectionPool);
-            session=request.getSession();
-            session.setAttribute("user", user);
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            boolean emailPassed = user.checkEmail(email);
+            boolean phoneNumberPassed = user.checkPhoneNumber(phoneNumber);
+            boolean namePassed = user.checkName(fullName);
 
 
+            if(emailPassed && phoneNumberPassed && namePassed) {
+
+                user = UserFacade.createUser(email, password, Integer.parseInt(phoneNumber), address, fullName, "user", connectionPool);
+            }else {
+                user = null;
+            }
 
 
 
@@ -83,6 +88,9 @@ public class CreateAccount extends HttpServlet
             request.setAttribute("errorMessage", "Hov, der skete en fejl ved registreringen, prøv igen..");
             request.getRequestDispatcher("register.jsp").forward(request, response);
         }
+        session=request.getSession();
+        session.setAttribute("user", user);
+        request.getRequestDispatcher("login.jsp").forward(request, response);
 
     }
 

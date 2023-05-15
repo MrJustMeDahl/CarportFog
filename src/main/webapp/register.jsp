@@ -29,7 +29,9 @@
             <label for="address">addresse</label>
             <input type="address" id="address" name="address"/>
             <input type="submit"  value="Opret"/>
+
         </form>
+
 
     </jsp:body>
 </t:pagetemplate>
