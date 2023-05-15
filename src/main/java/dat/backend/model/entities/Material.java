@@ -7,6 +7,7 @@ package dat.backend.model.entities;
 public abstract class Material {
 
     protected int materialID;
+    protected int materialVariantID;
     protected String description;
     protected String type;
     protected String function;
@@ -23,8 +24,9 @@ public abstract class Material {
      * @param length The length of the material.
      * @author MrJustMeDahl
      */
-    protected Material(int materialID, String description, String type, String function, double price, int length){
+    protected Material(int materialID, int materialVariantID, String description, String type, String function, double price, int length){
         this.materialID = materialID;
+        this.materialVariantID = materialVariantID;
         this.description = description;
         this.type = type;
         this.function = function;
@@ -45,6 +47,10 @@ public abstract class Material {
         return materialID;
     }
 
+    public int getMaterialVariantID(){
+        return materialVariantID;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -59,5 +65,13 @@ public abstract class Material {
 
     public int getLength() {
         return length;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 }

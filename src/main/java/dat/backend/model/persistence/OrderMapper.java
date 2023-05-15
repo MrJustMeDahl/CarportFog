@@ -68,6 +68,7 @@ public class OrderMapper {
                 while(rs.next()){
                     if(rs.getString("partFor").equals("carport")) {
                         int materialID = rs.getInt("materialId");
+                        int materialVariantID = rs.getInt("materialVariantId");
                         String description = rs.getString("materialDescription");
                         String type = rs.getString("materialType");
                         String function = rs.getString("buildFunction");
@@ -77,13 +78,13 @@ public class OrderMapper {
                         Material newMaterial = null;
                         switch (rs.getString("buildFunction")) {
                             case "stolpe":
-                                newMaterial = new Post(materialID, description, type, function, price, length);
+                                newMaterial = new Post(materialID, materialVariantID, description, type, function, price, length);
                                 break;
                             case "rem":
-                                newMaterial = new Purlin(materialID, description, type, function, price, length);
+                                newMaterial = new Purlin(materialID, materialVariantID, description, type, function, price, length);
                                 break;
                             case "spær":
-                                newMaterial = new Rafter(materialID, description, type, function, price, length);
+                                newMaterial = new Rafter(materialID, materialVariantID, description, type, function, price, length);
                                 break;
                             default:
                                 throw new DatabaseException("Function of: "+ description + " " + materialID + " is not recognised in database.");

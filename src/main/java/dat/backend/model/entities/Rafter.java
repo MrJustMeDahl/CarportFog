@@ -8,8 +8,8 @@ public class Rafter extends Material{
 
     private double actualPrice;
 
-    public Rafter(int materialID, String description, String type, String function, double price, int length){
-        super(materialID, description, type, function, price, length);
+    public Rafter(int materialID, int materialVariantID, String description, String type, String function, double price, int length){
+        super(materialID, materialVariantID, description, type, function, price, length);
         actualPrice = calculateActualPrice();
     }
 

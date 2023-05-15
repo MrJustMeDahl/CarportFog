@@ -39,12 +39,13 @@ public class MaterialMapper {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
                     int materialID = rs.getInt("materialId");
+                    int materialVariantID = rs.getInt("materialVariantId");
                     int length = rs.getInt("length");
                     double price = rs.getDouble("price");
                     String description = rs.getString("description");
                     String type = rs.getString("type");
                     String buildFunction = rs.getString("buildFunction");
-                    allPosts.add(new Post(materialID, description, type, buildFunction, price, length));
+                    allPosts.add(new Post(materialID, materialVariantID, description, type, buildFunction, price, length));
                 }
             }
         } catch (SQLException e) {
@@ -72,12 +73,13 @@ public class MaterialMapper {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
                     int materialID = rs.getInt("materialId");
+                    int materialVariantID = rs.getInt("materialVariantId");
                     int length = rs.getInt("length");
                     double price = rs.getDouble("price");
                     String description = rs.getString("description");
                     String type = rs.getString("type");
                     String buildFunction = rs.getString("buildFunction");
-                    allRafters.add(new Rafter(materialID, description, type, buildFunction, price, length));
+                    allRafters.add(new Rafter(materialID, materialVariantID, description, type, buildFunction, price, length));
                 }
             }
         } catch (SQLException e) {
@@ -105,12 +107,13 @@ public class MaterialMapper {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
                     int materialID = rs.getInt("materialId");
+                    int materialVariantID = rs.getInt("materialVariantId");
                     int length = rs.getInt("length");
                     double price = rs.getDouble("price");
                     String description = rs.getString("description");
                     String type = rs.getString("type");
                     String buildFunction = rs.getString("buildFunction");
-                    allPurlins.add(new Purlin(materialID, description, type, buildFunction, price, length));
+                    allPurlins.add(new Purlin(materialID, materialVariantID, description, type, buildFunction, price, length));
                 }
             }
         } catch (SQLException e) {

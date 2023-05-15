@@ -104,7 +104,7 @@ public class OrderMapperTest {
         assertEquals(1500, user.getOrders().get(0).getIndicativePrice());
         assertEquals(800, admin.getOrders().get(0).getPrice());
         Map<Material, Integer> materials = new HashMap<>();
-        materials.put(new Post(-1, "97x97mm. trykimp.", "træ", "stolpe", 55, 330), 4);
+        materials.put(new Post(-1, -1, "97x97mm. trykimp.", "træ", "stolpe", 55, 330), 4);
         Carport carport = new Carport(materials, 1000, 1500, 300, 500, 210);
         assertEquals(carport.getLength(), user.getOrders().get(0).getCarport().getLength());
     }
@@ -123,7 +123,7 @@ public class OrderMapperTest {
     @Test
     void createOrder() {
         Map<Material, Integer> materials = new HashMap<>();
-        materials.put(new Post(1, "97x97mm. trykimp.", "træ", "stolpe", 55, 330), 4);
+        materials.put(new Post(1, 1,"97x97mm. trykimp.", "træ", "stolpe", 55, 330), 4);
         Carport carport = new Carport(materials, 2000, 3000, 300, 500, 210);
         User user = new User(4, "user@usersen.dk", "1234", "User Usersen", 12345678, "Danmarksgade 1", "user", connectionPool);
 
