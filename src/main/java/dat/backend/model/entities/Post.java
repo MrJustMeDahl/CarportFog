@@ -19,8 +19,10 @@ public class Post extends Material{
      * @author MrJustMeDahl
      */
 
+    @Override
     public double calculateActualPrice() {
-        return price * ((double) length / 100);
+        actualPrice = price * ((double) length / 100);
+        return actualPrice;
     }
 
     public double getActualPrice() {

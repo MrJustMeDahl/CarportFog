@@ -19,6 +19,7 @@ public class Purlin extends Material{
      * @author MrJustMeDahl
      */
 
+    @Override
     public double calculateActualPrice() {
         return price * ((double) length / 100);
     }

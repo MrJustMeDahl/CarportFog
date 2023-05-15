@@ -74,4 +74,6 @@ public abstract class Material {
     public void setPrice(double price) {
         this.price = price;
     }
+
+    public abstract double calculateActualPrice();
 }
