@@ -10,9 +10,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>
-        <jsp:invoke fragment="header"/>
-    </title>
+    <title><jsp:invoke fragment="header"/></title>
     <link rel="stylesheet" href="<%=request.getContextPath()%>/css/style.css">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -23,7 +21,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
             <a class="navbar-brand" href="index.jsp">
-                <img src="${pageContext.request.contextPath}/images/cphbusiness.png" width="400px;" class="img-fluid"/>
+                <img src="${pageContext.request.contextPath}/images/Logo.png" width="50px;" class="img-fluid"/>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
                     aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,7 +35,12 @@
                     <c:if test="${sessionScope.user != null }">
                     <a class="nav-item nav-link" href="${pageContext.request.contextPath}/shoppingbasket">Indkøbskurv</a>
                     </c:if>
-                    <a class="nav-item nav-link" href="${pageContext.request.contextPath}/">Page 3</a>
+                    <c:if test="${sessionScope.user == null }">
+                 <a class="nav-item nav-link" href="${pageContext.request.contextPath}/signup">registrer</a>
+                    </c:if>
+                    <c:if test="${sessionScope.user != null}">
+                        <a class="nav-item nav-link" href="${pageContext.request.contextPath}/orders">Ordrer</a>
+                    </c:if>
                     <c:if test="${sessionScope.user == null }">
                         <a class="nav-item nav-link" href="${pageContext.request.contextPath}/login.jsp">Login</a>
                     </c:if>
@@ -63,9 +66,7 @@
 </header>
 
 <div id="body" class="container mt-4" style="min-height: 400px;">
-    <h1>
-        <jsp:invoke fragment="header"/>
-    </h1>
+    <h1><jsp:invoke fragment="header"/></h1>
     <jsp:doBody/>
 </div>
 
@@ -74,17 +75,16 @@
     <hr/>
     <div class="row mt-4">
         <div class="col">
-            Nørgaardsvej 30<br/>
+            Firskovvej 20<br/>
             2800 Lyngby
         </div>
         <div class="col">
-            <jsp:invoke fragment="footer"/>
-            <br/>
-            <p>&copy; 2022 Cphbusiness</p>
+            <jsp:invoke fragment="footer"/><br/>
+            <p>&copy; 2023 Fog Carporte</p>
         </div>
         <div class="col">
-            Datamatikeruddannelsen<br/>
-            2. semester efterår 2022
+           CVR-nr.<br/>
+            16314439
         </div>
     </div>
 

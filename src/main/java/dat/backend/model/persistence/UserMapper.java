@@ -64,22 +64,30 @@ class UserMapper {
         return user;
     }
 
-    static User createUser(String email, String password, String role, ConnectionPool connectionPool) throws DatabaseException
+    static User createUser(String email, String password, int phoneNumber, String address, String fullName, String role, ConnectionPool connectionPool) throws DatabaseException
     {
+        System.out.println("Start");
         Logger.getLogger("web").log(Level.INFO, "");
         User user;
-        String sql = "insert into user (email, password, role) values (?,?,?)";
+        String sql = "INSERT INTO user(email, password, phoneNumber, address, fullName, role) values (?,?,?,?,?,?)";
         try (Connection connection = connectionPool.getConnection())
         {
+            System.out.println("linje 69");
             try (PreparedStatement ps = connection.prepareStatement(sql))
             {
                 ps.setString(1, email);
                 ps.setString(2, password);
-                ps.setString(3, role);
+                ps.setInt(3, phoneNumber);
+                ps.setString(4, address);
+                ps.setString(5, fullName);
+                ps.setString(6, "user");
+                System.out.println("L78");
                 int rowsAffected = ps.executeUpdate();
+                System.out.println("L80");
                 if (rowsAffected == 1)
                 {
-                    //user = new User(email, password, role);
+                    System.out.println("L81");
+                    user = new User(email, password, fullName, phoneNumber, address);
                 } else
                 {
                     throw new DatabaseException("The user with email = " + email + " could not be inserted into the database");
@@ -90,7 +98,7 @@ class UserMapper {
         {
             throw new DatabaseException(ex, "Could not insert username into database");
         }
-        return null;
+        return user;
     }
 
 
