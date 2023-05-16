@@ -1,14 +1,13 @@
 package dat.backend.control;
 
 import dat.backend.model.config.ApplicationStart;
-import dat.backend.model.entities.Carport;
-import dat.backend.model.entities.Material;
-import dat.backend.model.entities.User;
+import dat.backend.model.entities.*;
 import dat.backend.model.exceptions.DatabaseException;
 import dat.backend.model.persistence.ConnectionPool;
 import dat.backend.model.persistence.OrderFacade;
 import dat.backend.model.persistence.OrderMapper;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @WebServlet(name = "carport", urlPatterns = {"/carport"} )
@@ -60,20 +60,21 @@ public class Carports extends HttpServlet
     {
         response.setContentType("text/html");
         HttpSession session = request.getSession();
-        Map<Material, Integer> materials = null;
+        ServletContext applicationScope = getServletContext();
         User user = (User) session.getAttribute("user");
 
         int width = Integer.parseInt(request.getParameter("width"));
         int length = Integer.parseInt(request.getParameter("length"));
         int  height = Integer.parseInt(request.getParameter("height"));
+        ItemList itemList = new ItemList(length, width, height, (List<Post>) applicationScope.getAttribute("allPosts"), (List<Purlin>) applicationScope.getAttribute("allPurlins"), (List<Rafter>) applicationScope.getAttribute("allRafters"));
 
-        Carport carport = new Carport(materials, 5000, 6000, width, length, height);
+        Carport carport = new Carport(itemList.getMaterialsForCarport(), width, length, height);
 
 
 
 
         try{
-            OrderFacade.createOrder(carport, user.getUserID(), carport.getPrice(), carport.getIndicativePrice(), connectionPool);
+            OrderFacade.createOrder(carport, user.getUserID(), carport.getPrice(), carport.getIndicativePrice(), itemList, connectionPool);
             request.getRequestDispatcher("shoppingbasket").forward(request, response);
         }
         catch (DatabaseException e){

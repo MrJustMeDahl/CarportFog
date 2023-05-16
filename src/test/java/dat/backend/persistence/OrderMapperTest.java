@@ -100,6 +100,7 @@ public class OrderMapperTest {
         User admin = new User(2, "admin@adminsen.dk", "1234", "Admin Adminsen", 87654321, "Danmarksgade 2", "admin", connectionPool);
         assertEquals(1, user.getOrders().get(0).getUserID());
         assertEquals(2, admin.getOrders().get(0).getUserID());
+        assertEquals(1, user.getOrders().get(1).getUserID());
 
         assertEquals(1500, user.getOrders().get(0).getIndicativePrice());
         assertEquals(800, admin.getOrders().get(0).getPrice());
@@ -107,17 +108,7 @@ public class OrderMapperTest {
         materials.put(new Post(-1, "97x97mm. trykimp.", "træ", "stolpe", 55, 330), 4);
         Carport carport = new Carport(materials, 1000, 1500, 300, 500, 210);
         assertEquals(carport.getLength(), user.getOrders().get(0).getCarport().getLength());
-    }
-
-    @Test
-    void getMaterialsForCarport() throws DatabaseException{
-        Map<Material, Integer> materialsOrderId1 = OrderMapper.getMaterialsForCarport(1, connectionPool);
-        Map<Material, Integer> materialsOrderId3 = OrderMapper.getMaterialsForCarport(3, connectionPool);
-        assertEquals(3, materialsOrderId1.size());
-        for(Map.Entry<Material, Integer> m: materialsOrderId3.entrySet()){
-            assertEquals("97x97mm. trykimp.", m.getKey().getDescription());
-            assertEquals(8, m.getValue());
-        }
+        assertEquals(330, user.getOrders().get(1).getItemList().getMaterials().get(0).getMaterial().getLength());
     }
 
     @Test
@@ -130,7 +121,7 @@ public class OrderMapperTest {
         try (Connection testConnection = connectionPool.getConnection()) {
             try  {
 
-                OrderFacade.createOrder(carport,user.getUserID(), 2000, 3000, connectionPool);
+                OrderFacade.createOrder(carport,user.getUserID(), 2000, 3000,null, connectionPool);
                 List testlist = OrderFacade.getOrdersByUserID(user.getUserID(), connectionPool);
                 Order testorder = (Order) testlist.get(0);
 

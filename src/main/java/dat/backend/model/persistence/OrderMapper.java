@@ -8,9 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This class contains all methods used to retrieve or alter order data in the database.
@@ -37,11 +35,16 @@ public class OrderMapper {
                 ResultSet rs = ps.executeQuery();
                 while(rs.next()){
                     int orderID = rs.getInt("orderId");
-                    Carport carport = new Carport(getMaterialsForCarport(orderID, connectionPool), rs.getInt("carportPrice"), rs.getInt("carportIndicativePrice"), rs.getInt("carportWidth"), rs.getInt("carportLength"), rs.getInt("carportMinHeight"));
+                    int carportLength = rs.getInt("carportLength");
+                    int carportWidth = rs.getInt("carportWidth");
+                    int carportMinHeight = rs.getInt("carportMinHeight");
+                    ItemList itemList = new ItemList(carportLength, carportWidth, carportMinHeight);
+                    itemList = getItemListContentForOrder(orderID, itemList, connectionPool);
+                    Carport carport = new Carport(itemList.getMaterialsForCarport(), rs.getInt("carportPrice"), rs.getInt("carportIndicativePrice"), carportWidth, carportLength, carportMinHeight);
                     String orderStatus = rs.getString("orderStatus");
                     double price = rs.getDouble("price");
                     double indicativePrice = rs.getDouble("indicativePrice");
-                    allOrders.add(new Order(orderID, userID, carport, orderStatus, price, indicativePrice));
+                    allOrders.add(new Order(orderID, userID, carport, orderStatus, price, indicativePrice, itemList));
                 }
             }
         } catch (SQLException e){
@@ -58,8 +61,7 @@ public class OrderMapper {
      * @throws DatabaseException is thrown if there isn't a connection to the database or if the data in the database is invalid.
      * @author MrJustMeDahl
      */
-    public static Map<Material, Integer> getMaterialsForCarport(int orderID, ConnectionPool connectionPool) throws DatabaseException{
-        Map<Material, Integer> materials = new HashMap<>();
+    public static ItemList getItemListContentForOrder(int orderID, ItemList itemList, ConnectionPool connectionPool) throws DatabaseException{
         String SQL = "SELECT * FROM itemListView WHERE orderId = ?";
         try(Connection conn = connectionPool.getConnection()){
             try(PreparedStatement ps = conn.prepareStatement(SQL)){
@@ -74,6 +76,7 @@ public class OrderMapper {
                         double price = rs.getDouble("price");
                         int length = rs.getInt("length");
                         int amount = rs.getInt("amount");
+                        String message = rs.getString("message");
                         Material newMaterial = null;
                         switch (rs.getString("buildFunction")) {
                             case "stolpe":
@@ -88,14 +91,14 @@ public class OrderMapper {
                             default:
                                 throw new DatabaseException("Function of: "+ description + " " + materialID + " is not recognised in database.");
                         }
-                        materials.put(newMaterial, amount);
+                        itemList.addMaterialToItemList(new ItemListMaterial(newMaterial, amount, message));
                     }
                 }
             }
         }catch(SQLException e){
             throw new DatabaseException("Error retrieving carport for order: " + orderID);
         }
-        return materials;
+        return itemList;
     }
 
     /**
@@ -107,7 +110,7 @@ public class OrderMapper {
      * @return Will return the order, which is being created by the method.
      * @throws DatabaseException is thrown if there isn't a connection to the database or if the data in the database is invalid.
      */
-    public static Order createOrder (Carport carport, int userId, double price, double indicativePrice, ConnectionPool connectionPool) throws DatabaseException {
+    public static Order createOrder (Carport carport, int userId, double price, double indicativePrice,ItemList itemList, ConnectionPool connectionPool) throws DatabaseException {
         int orderId = 0;
         String SQL = "INSERT INTO orders (price, indicativePrice, orderStatus, userId, carportLength, carportWidth, carportMinHeight, carportPrice, carportIndicativePrice) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     try(Connection connection = connectionPool.getConnection()){
@@ -128,7 +131,7 @@ public class OrderMapper {
     catch (SQLException ex){
         throw new DatabaseException(ex, "Error creating order in the Database");
     }
-    return new Order(orderId, userId, carport, "pending", price, indicativePrice);
+    return new Order(orderId, userId, carport, "pending", price, indicativePrice, itemList);
     }
 
 

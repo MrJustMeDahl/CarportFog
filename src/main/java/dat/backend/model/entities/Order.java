@@ -12,6 +12,7 @@ public class Order {
     private String orderStatus;
     private double price;
     private double indicativePrice;
+    private ItemList itemList;
 
     /**
      * Constructor is used for creating a new order and generating an existing order from the database.
@@ -23,13 +24,18 @@ public class Order {
      * @param indicativePrice Suggested sales price of the entire order.
      * @author MrJustMeDahl
      */
-    public Order(int orderID, int userID, Carport carport, String orderStatus, double price, double indicativePrice){
+    public Order(int orderID, int userID, Carport carport, String orderStatus, double price, double indicativePrice, ItemList itemList){
         this.orderID = orderID;
         this.userID = userID;
         this.carport = carport;
         this.orderStatus = orderStatus;
         this.price = price;
         this.indicativePrice = indicativePrice;
+        this.itemList = itemList;
+    }
+
+    public ItemList getItemList() {
+        return itemList;
     }
 
     public int getOrderID() {

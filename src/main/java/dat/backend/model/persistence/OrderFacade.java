@@ -1,6 +1,7 @@
 package dat.backend.model.persistence;
 
 import dat.backend.model.entities.Carport;
+import dat.backend.model.entities.ItemList;
 import dat.backend.model.entities.Order;
 import dat.backend.model.exceptions.DatabaseException;
 
@@ -34,8 +35,8 @@ public class OrderFacade {
      * @return Will return the order, which is being created by the method.
      * @throws DatabaseException is thrown if there isn't a connection to the database or if the data in the database is invalid.
      */
-    public static Order createOrder (Carport carport, int userId, double price, double indicativePrice, ConnectionPool connectionPool) throws DatabaseException {
-        return OrderMapper.createOrder(carport, userId, price, indicativePrice, connectionPool);
+    public static Order createOrder (Carport carport, int userId, double price, double indicativePrice, ItemList itemList, ConnectionPool connectionPool) throws DatabaseException {
+        return OrderMapper.createOrder(carport, userId, price, indicativePrice, itemList, connectionPool);
     }
 
     /**
