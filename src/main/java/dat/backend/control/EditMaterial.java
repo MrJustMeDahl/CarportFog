@@ -29,7 +29,7 @@ public class EditMaterial extends HttpServlet {
 
     /**
      * The editmaterialServlet is used to edit items already in the database.
-     * only the admin user can use this servlet, and can change the price and description of a material
+     * only the admin user can use this servlet, and he/she can change the price and description of a material
      *
      * @param request
      * @param response
@@ -65,7 +65,7 @@ public class EditMaterial extends HttpServlet {
                     if (m.getMaterialID() == materialId) {
                         m.setPrice(newPrice);
                         m.setDescription(newDescription);
-                        if(chosenMaterialId == m.getMaterialVariantID()){
+                        if (chosenMaterialId == m.getMaterialVariantID()) {
                             chosenMaterial = m;
                         }
                     }
@@ -76,7 +76,7 @@ public class EditMaterial extends HttpServlet {
                     if (m.getMaterialID() == materialId) {
                         m.setPrice(newPrice);
                         m.setDescription(newDescription);
-                        if(chosenMaterialId == m.getMaterialVariantID()){
+                        if (chosenMaterialId == m.getMaterialVariantID()) {
                             chosenMaterial = m;
                         }
                     }
@@ -87,14 +87,13 @@ public class EditMaterial extends HttpServlet {
                     if (m.getMaterialID() == materialId) {
                         m.setPrice(newPrice);
                         m.setDescription(newDescription);
-                        if(chosenMaterialId == m.getMaterialVariantID()){
+                        if (chosenMaterialId == m.getMaterialVariantID()) {
                             chosenMaterial = m;
                         }
                     }
                 }
                 break;
         }
-        //TODO Her skal det nye applicationScope laves med updaterede ændringer
 
         request.setAttribute("chosenMaterial", chosenMaterial);
         request.setAttribute("materialfunction", materialfunction);

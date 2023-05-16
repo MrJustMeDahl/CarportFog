@@ -191,7 +191,7 @@ public class MaterialMapper {
                 ps.setString(2, newDescription);
                 ps.setInt(3, materialId);
                 int rowsAffected = ps.executeUpdate();
-                if(rowsAffected != 1){
+                if (rowsAffected != 1) {
                     throw new DatabaseException("did not update");
                 }
             }
@@ -203,32 +203,68 @@ public class MaterialMapper {
     }
 
     /**
-     * This method creates a new material in the DB, by filling out 4 forms, the admin can add a new item to the material DB
+     * This method creates a new materialtype in the DB, by filling out 4 forms, the admin can add a new item to the material DB
      *
-     * @param description The description of the product, this is added as a String, from a userinput
-     * @param materialType The Type of material, added as an int, via a dropdown from the user
+     * @param description      The description of the product, this is added as a String, from a userinput
+     * @param materialType     The Type of material, added as an int, via a dropdown from the user
      * @param materialFunction The Function this pruduct has, also saved as an int, also from a dropdown
-     * @param price The indicative price. Added as a double, from a userinput
-     * @param connectionPool required to establish connection to the database.
+     * @param price            The indicative price. Added as a double, from a userinput
+     * @param connectionPool   required to establish connection to the database.
+     * @return the newly created materialId
      * @throws DatabaseException is thrown if connection to database fails.
      * @author CarstenJuhl
      */
 
-    public static boolean createNewMaterial(String description, int materialType, int materialFunction, double price, ConnectionPool connectionPool) throws DatabaseException {
+    public static int createNewMaterial(String description, int materialType, int materialFunction, double price, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "INSERT into material (price, description, materialTypeId, materialBuildFunctionId) VALUES (?,?,?,?)";
+        int newmaterialId = -1;
         try (Connection connection = connectionPool.getConnection()) {
-            try (PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.NO_GENERATED_KEYS)) {
+
+            try (PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
                 ps.setDouble(1, price);
                 ps.setString(2, description);
                 ps.setInt(3, materialType);
                 ps.setInt(4, materialFunction);
                 ps.executeUpdate();
-                return true;
+                ResultSet generatedKeys = ps.getGeneratedKeys();
+                while (generatedKeys.next()) {
+                    newmaterialId = generatedKeys.getInt(1);
+
+                }
             }
         } catch (SQLException e) {
             throw new DatabaseException("Failed to create a new material");
         }
-
+        return newmaterialId;
     }
 
+    /**
+     * The addLength method is part of creating a new materialvariant, after the type is created in the createNewMaterial method, the materialId is rturned, and used here to add a length and therefor
+     * creates a new material
+     *
+     * @param materialId     is used to combine the new materialtype, with the new material. if no new material is created, then it takes the materialId from the existing material insted
+     * @param length         the length of the new material, an input from the user, stored as an int.
+     * @param connectionPool required to establish connection to the database.
+     * @return the newly created materialvariantId
+     * @throws DatabaseException
+     */
+    public static int addLength(int materialId, int length, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "INSERT into materialVariant (length, materialId) VALUES (?,?)";
+        int newMaterialVariantId = -1;
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+                ps.setInt(1, length);
+                ps.setInt(2, materialId);
+                ps.executeUpdate();
+                ResultSet materialVariantKey = ps.getGeneratedKeys();
+                while (materialVariantKey.next()) {
+                    newMaterialVariantId = materialVariantKey.getInt(1);
+                }
+
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Failed to create a new material");
+        }
+        return newMaterialVariantId;
+    }
 }

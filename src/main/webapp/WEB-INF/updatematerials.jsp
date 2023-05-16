@@ -19,16 +19,17 @@
             <div class="card-body">
 
                 <table class="table align-center mt-5 table-responsive table-responsive-sm">
-                    <thead>
-                    <tr>
-                        <h3> Ændre materiale </h3>
-                    </tr>
-                    </thead>
 
                     <form action="list" method="post">
+                    <th>
+                    <h3> Ændre materiale </h3>
+                    </th>
+
+
 
                             <%--
                             ****** Choose a functiontypegroup for the admin to update ******
+                                    ****** With the last chosen type saved in the request scope ******
                             --%>
                         <div class="input-group">
 
@@ -58,6 +59,11 @@
                         </div>
                         <tr>
 
+                                <%--
+                                ****** Choose the material the admin can update ******
+                                   ****** With the last chosen type stored in the request scope ******
+                                --%>
+
                             <c:choose>
                                 <c:when test="${requestScope.materialfunction==null}">
 
@@ -68,14 +74,6 @@
                                                     disabled>
                                                 <option value="-1"> Vælg kategori ovenfor</option>
                                             </select>
-                                        </td>
-                                        <td>
-                                            <button formaction="deletechosenmaterial"
-                                                    class="btn btn-outline-danger mb-3 float-right"
-                                                    name="deletematerial"
-                                                    type="button"
-                                                    id="button-addons">Slet
-                                            </button>
                                         </td>
                                     </div>
 
@@ -89,26 +87,21 @@
                                                     class="input-group table align-center mt-2 table-responsive table-responsive-sm">
                                                 <c:if test="${requestScope.chosenmaterialId != -1}">
                                                     <option value="${requestScope.chosenMaterial.materialVariantID}"> ${requestScope.chosenMaterial.description}
-                                                        - ${requestScope.chosenMaterial.length} mm
+                                                        - ${requestScope.chosenMaterial.type}
+                                                        - ${requestScope.chosenMaterial.length} cm
                                                     </option>
                                                 </c:if>
                                                 <c:forEach items="${sessionScope.editmateriallist}"
                                                            var="editmateriallist">
                                                     <option value="${editmateriallist.materialVariantID}"> ${editmateriallist.description}
-                                                        - ${editmateriallist.length} mm
+                                                        - ${editmateriallist.type}
+                                                        - ${editmateriallist.length} cm
                                                     </option>
                                                 </c:forEach>
                                             </select>
                                         </td>
 
-                                        <td>
-                                            <button formaction="deletechosenmaterial"
-                                                    class="btn btn-outline-danger mb-3 float-right"
-                                                    name="deletematerial"
-                                                    type="button"
-                                                    id="button-addon">Slet
-                                            </button>
-                                        </td>
+
                                     </div>
 
                                 </c:otherwise>
@@ -117,14 +110,15 @@
 
                         </tr>
                             <%--
-                               ****** the materialID for the chosen material, can't be changed ******
+                               ****** the materialdescription for the chosen material ******
                                --%>
                         <tr>
                             <td>
                                 <div class="input-group mb-3">
                                     <input class="form-control table-responsive table-responsive-sm"
                                            id="changematerialdescription" class="d-inline form-control 2-10" type="text"
-                                           name="changematerialdescription" value="${requestScope.chosenMaterial.description}">
+                                           name="changematerialdescription"
+                                           value="${requestScope.chosenMaterial.description}">
                                     <span class="input-group-text" id="basis-materialdescription"> beskrivelse</span>
                                 </div>
                             </td>
@@ -156,12 +150,12 @@
                                     <span class="input-group-text" id="updateprice"> kr/mtr</span>
                                 </div>
                             </td>
-                        </tr>
 
-                            <%--
-                            ****** Button to forward the request to change the chosen material in the DB ******
-                            --%>
-                        <tr>
+
+                                <%--
+                                ****** Button to forward the request to change the chosen material in the DB ******
+                                --%>
+
                             <td>
                                 <button formaction="editmaterial" class="btn btn-dark float-end"
                                         name="changematerial" value="${requestScope.chosenMaterial.materialID}">
@@ -170,6 +164,7 @@
 
                             </td>
                         </tr>
+
                     </form>
                     <br/><br/>
                 </table>
@@ -283,26 +278,36 @@
                                     <span class="input-group-text"> kr/mtr</span>
                                 </div>
                             </td>
+                        </tr>
+                            <%--
+                            ******Add a length to the new material******
+                            --%>
+                        <tr>
+                            <td>
+                                <div class="input-group mb-3">
+                                    <input class="form-control" id="length" class="d-inline form-control 2-10"
+                                           type="number"
+                                           name="newmateriallength"
+                                           step="30" min="270" max="600">
+                                    <span class="input-group-text"> cm</span>
+                                </div>
+                            </td>
                             <td>
                                 <button formaction="addnewitem" class="btn btn-dark float-end"
                                         name="itemId">Tilføj
                                 </button>
                                 <br/>
                                 <br/>
-                                <c:if test="${requestScope.allFormsAreFilled}">
-                                    <p> Du har tilføjet et nyt materiale </p>
-                                </c:if>
 
-                                <c:if test="${requestscope.notAllFormsAreFilled}">
-
-                                    <p> alle felter skal være udfyldt for at tilføje et nyt produkt. </p>
-
-                                </c:if>
+                                <c:if test="${requestScope.materialCreatedMessage != null}">
+                                    <p> ${requestScope.materialCreatedMessage}</p></c:if>
 
 
                             </td>
                         </tr>
+
                     </form>
+
                 </table>
             </div>
         </div>
