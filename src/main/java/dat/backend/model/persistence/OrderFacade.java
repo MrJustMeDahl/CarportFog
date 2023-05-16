@@ -1,10 +1,12 @@
 package dat.backend.model.persistence;
 
 import dat.backend.model.entities.Carport;
+import dat.backend.model.entities.Material;
 import dat.backend.model.entities.Order;
 import dat.backend.model.exceptions.DatabaseException;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class is a facade for OrderMapper.java. For the sake of simplicity and making the class easier to read.
@@ -49,8 +51,27 @@ public class OrderFacade {
         OrderMapper.updateOrderOrdered(orderId, connectionPool);
     }
 
+    /**
+     * This method will update the orderstatus for an order in the DB to "payed"
+     * @param orderId Is the ID for the order itself.
+     * @param connectionPool Is required for establishing connection to the DB.
+     * @throws DatabaseException is thrown if there isn't a connection to the database or if the data in the database is invalid.
+     */
+
     public static void updateOrderPayed(int orderId, ConnectionPool connectionPool) throws DatabaseException{
         OrderMapper.updateOrderPayed(orderId, connectionPool);
+    }
+
+    /**
+     * This method will iterate through the hashmap which contains the materials needed for the carport. It will then be
+     * put into the DB.
+     * @param itemList The Hashmap of the materials. The key is the object of the material, while the value is the amount
+     * @param orderId Is the ID for the order itself.
+     * @param connectionPool Is required for establishing connection to the DB.
+     * @throws DatabaseException is thrown if there isn't a connection to the database or if the data in the database is invalid.
+     */
+    public static void addItemlistToDB(Map<Material, Integer> itemList, int orderId, ConnectionPool connectionPool) throws DatabaseException {
+        OrderMapper.addItemlistToDB(itemList, orderId, connectionPool);
     }
 
 }

@@ -4,10 +4,7 @@ import dat.backend.model.entities.*;
 import dat.backend.model.exceptions.DatabaseException;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This class contains all methods used to retrieve or alter order data in the database.
@@ -158,10 +155,15 @@ public class OrderMapper {
             throw new DatabaseException("Failed to update paid in database");
         }
     }
+
+    /**
+     * This method will update the orderstatus for an order in the DB to "payed"
+     * @param orderId Is the ID for the order itself.
+     * @param connectionPool Is required for establishing connection to the DB.
+     * @throws DatabaseException is thrown if there isn't a connection to the database or if the data in the database is invalid.
+     */
     public static void updateOrderPayed (int orderId, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "UPDATE orders SET orders.orderStatus = ? WHERE orderId = ?";
-
-        System.out.println("TEST 1 LINJE 159");
 
         try(Connection connection = connectionPool.getConnection()){
             try(PreparedStatement ps = connection.prepareStatement(sql)){
@@ -173,7 +175,40 @@ public class OrderMapper {
         } catch(SQLException e){
             throw new DatabaseException("Failed to update paid in database");
         }
+    }
+
+    /**
+     * This method will iterate through the hashmap which contains the materials needed for the carport. It will then be
+     * put into the DB.
+     * @param itemList The Hashmap of the materials. The key is the object of the material, while the value is the amount
+     * @param orderId Is the ID for the order itself.
+     * @param connectionPool Is required for establishing connection to the DB.
+     * @throws DatabaseException is thrown if there isn't a connection to the database or if the data in the database is invalid.
+     */
+    public static void addItemlistToDB(Map<Material, Integer> itemList, int orderId, ConnectionPool connectionPool) throws DatabaseException {
+
+        String SQL = "INSERT INTO itemList (amount, orderId, materialVariantId, partFor) VALUES (?, ?, ?, ?)";
+        try(Connection connection = connectionPool.getConnection()){
+            Iterator it = itemList.entrySet().iterator();
+                while (it.hasNext()){
+                    try (PreparedStatement ps = connection.prepareStatement(SQL)) {
+                        Map.Entry pair = (Map.Entry)it.next();
+
+                        ps.setInt(1, (Integer) pair.getValue());
+                        ps.setInt(2, orderId);
+                        Material material = (Material) pair.getKey();
+                        ps.setInt(3, material.getMaterialVariantID());
+                        ps.setString(4, "carport");
+                        ps.execute();
+
+                }
+            }
+        }
+        catch (SQLException ex){
+            throw new DatabaseException(ex, "Error creating order in the Database");
+        }
 
     }
+
 
 }

@@ -1,7 +1,10 @@
 package dat.backend.model.persistence;
 
+import dat.backend.model.entities.Material;
 import dat.backend.model.entities.User;
 import dat.backend.model.exceptions.DatabaseException;
+
+import java.util.Map;
 
 /**
  * This class is a facade for UserMapper.java. For the sake of simplicity and making the class easier to read.
@@ -27,7 +30,7 @@ public class UserFacade
 
     public static User createUser(String email, String password, int phoneNumber, String address, String fullName, String role, ConnectionPool connectionPool) throws DatabaseException
     {
-        System.out.println("L30 UF");
         return UserMapper.createUser(email, password, phoneNumber, address, fullName, role, connectionPool);
     }
+
 }
