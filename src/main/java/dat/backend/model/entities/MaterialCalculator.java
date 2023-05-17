@@ -37,6 +37,7 @@ public class MaterialCalculator {
      * Calculates which post fulfill the requirements for the carport and shed if the carport has a shed.
      * @param allPosts List of posts to choose from.
      * @return Set of ItemListMaterial - the material here is the same, but the message and amounts differs depending on if the carport has a shed.
+     * @throws NoMaterialFoundException Is thrown if there is no material in the list that fulfill the requirements.
      * @author MrJustMeDahl
      */
     public Set<ItemListMaterial> calculatePosts(List<Post> allPosts) throws NoMaterialFoundException{
@@ -72,6 +73,7 @@ public class MaterialCalculator {
      * Calculates which purlins fulfill the requirements for the carport.
      * @param allPurlins List of purlins to choose from.
      * @return Set of ItemListMaterial - if the length of the carport is long enough, 2 different purlins are required, the length of these purlins will be calculated towards being assembled on top of the middle post.
+     * @throws NoMaterialFoundException Is thrown if there is no material in the list that fulfill the requirements.
      * @author MrJustMeDahl
      */
     public Set<ItemListMaterial> calculatePurlins(List<Purlin> allPurlins) throws NoMaterialFoundException{
@@ -122,6 +124,7 @@ public class MaterialCalculator {
      * Calculates which rafter fulfill the requirements for the carport.
      * @param allRafters List of purlins to choose from.
      * @return ItemListMaterial which contains the chosen rafter and how many are needed for the size.
+     * @throws NoMaterialFoundException Is thrown if there is no material in the list that fulfill the requirements.
      * @author MrJustMeDahl
      */
     public ItemListMaterial calculateRafters(List<Rafter> allRafters) throws NoMaterialFoundException{
