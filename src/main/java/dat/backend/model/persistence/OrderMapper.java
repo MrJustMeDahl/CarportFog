@@ -243,11 +243,25 @@ public class OrderMapper {
                 while (rs.next()) {
                     int orderID = rs.getInt("orderId");
                     int userID = rs.getInt("userId");
-                    Carport carport = new Carport(getMaterialsForCarport(orderID, connectionPool), rs.getDouble("carportPrice"), rs.getDouble("carportIndicativePrice"), rs.getInt("carportWidth"), rs.getInt("carportLength"), rs.getInt("carportMinHeight"));
+                    int carportLength = rs.getInt("carportLength");
+                    int carportWidth = rs.getInt("carportWidth");
+                    int carportMinHeight = rs.getInt("carportMinHeight");
+                    int shedLength = rs.getInt("shedLength");
+                    int shedWidth = rs.getInt("shedWidth");
+                    double shedPrice = rs.getDouble("shedPrice");
+                    double shedIndicativePrice = rs.getDouble("shedIndicativePrice");
+                    ItemList itemList;
+                    if (shedLength == 0) {
+                        itemList = new ItemList(carportLength, carportWidth, carportMinHeight, false);
+                    } else {
+                        itemList = new ItemList(carportLength, carportWidth, carportMinHeight, true);
+                    }
+                    itemList = getItemListContentForOrder(orderID, itemList, connectionPool);
+                    Carport carport = new Carport(itemList.getMaterialsForCarport(), rs.getDouble("carportPrice"), rs.getDouble("carportIndicativePrice"), carportWidth, carportLength, carportMinHeight);
                     String orderStatus = rs.getString("orderStatus");
                     double price = rs.getDouble("price");
                     double indicativePrice = rs.getDouble("indicativePrice");
-                    newOrders.add(new Order(orderID, userID, carport, orderStatus, price, indicativePrice));
+                    newOrders.add(new Order(orderID, userID, carport, orderStatus, price, indicativePrice, itemList));
                 }
             }
         } catch (SQLException e) {

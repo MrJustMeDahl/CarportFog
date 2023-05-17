@@ -106,9 +106,9 @@ class UserMapperTest {
     @Test
     void getUsersForOrders() throws DatabaseException {
         List<Order> orders = new ArrayList<>();
-        orders.add(new Order(1, 1, new Carport(new HashMap<>(), 300, 580, 210), "ordered", 1000, 1500));
-        orders.add(new Order(2, 2, new Carport(new HashMap<>(), 300, 580, 210), "ordered", 1000, 1500));
-        orders.add(new Order(3, 2, new Carport(new HashMap<>(), 300, 580, 210), "ordered", 1000, 1500));
+        orders.add(new Order(1, 1, new Carport(new HashMap<>(), 300, 580, 210), "ordered", 1000, 1500, null));
+        orders.add(new Order(2, 2, new Carport(new HashMap<>(), 300, 580, 210), "ordered", 1000, 1500, null));
+        orders.add(new Order(3, 2, new Carport(new HashMap<>(), 300, 580, 210), "ordered", 1000, 1500, null));
         Set<User> users = UserFacade.getUsersForOrders(orders, connectionPool);
         assertEquals(2, users.size());
     }
