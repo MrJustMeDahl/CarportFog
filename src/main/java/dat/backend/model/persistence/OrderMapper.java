@@ -197,20 +197,17 @@ public class OrderMapper {
      * @param connectionPool Is required for establishing connection to the DB.
      * @throws DatabaseException is thrown if there isn't a connection to the database or if the data in the database is invalid.
      */
-    public static void addItemlistToDB(Map<Material, Integer> itemList, int orderId, ConnectionPool connectionPool) throws DatabaseException {
+    public static void addItemlistToDB(ItemList itemList, int orderId, ConnectionPool connectionPool) throws DatabaseException {
 
-        String SQL = "INSERT INTO itemList (amount, orderId, materialVariantId, partFor) VALUES (?, ?, ?, ?)";
+        String SQL = "INSERT INTO itemList (amount, orderId, materialVariantId, partFor, message) VALUES (?, ?, ?, ?, ?)";
         try(Connection connection = connectionPool.getConnection()){
-            Iterator it = itemList.entrySet().iterator();
-                while (it.hasNext()){
+                for(ItemListMaterial i: itemList.getMaterials()){
                     try (PreparedStatement ps = connection.prepareStatement(SQL)) {
-                        Map.Entry pair = (Map.Entry)it.next();
-
-                        ps.setInt(1, (Integer) pair.getValue());
+                        ps.setInt(1, i.getAmount());
                         ps.setInt(2, orderId);
-                        Material material = (Material) pair.getKey();
-                        ps.setInt(3, material.getMaterialVariantID());
+                        ps.setInt(3, i.getMaterial().getMaterialVariantID());
                         ps.setString(4, "carport");
+                        ps.setString(5, i.getMessage());
                         ps.execute();
 
                 }

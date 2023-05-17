@@ -165,15 +165,14 @@ public class OrderMapperTest {
         Purlin purlin1 = new Purlin(3, 3, "'45x195mm. spærtræ'", "træ", "spær", 38, 300);
         Rafter rafter1 = new Rafter(2, 2, "'45x195mm. spærtræ'", "træ", "rem", 40, 300);
 
-        Map<Material, Integer> materials = new HashMap<Material, Integer>();
+        ItemList itemList = new ItemList(500, 300, 210);
+        itemList.addMaterialToItemList(new ItemListMaterial(pole1, 1, "stolpe"));
+        itemList.addMaterialToItemList(new ItemListMaterial(purlin1, 1, "rem"));
+        itemList.addMaterialToItemList(new ItemListMaterial(rafter1, 1, "spær"));
 
-        materials.put(pole1, 1);
-        materials.put(purlin1, 1);
-        materials.put(rafter1, 1);
+        Carport carport = new Carport(itemList.getMaterialsForCarport(), 2000, 3000, 300, 500, 210);
 
-        Carport carport = new Carport(materials, 2000, 3000, 300, 500, 210);
-
-        OrderFacade.addItemlistToDB(materials, orderId, connectionPool);
+        OrderFacade.addItemlistToDB(itemList, orderId, connectionPool);
         List testlist = OrderFacade.getOrdersByUserID(1, connectionPool);
         Order testorder = (Order) testlist.get(0);
 

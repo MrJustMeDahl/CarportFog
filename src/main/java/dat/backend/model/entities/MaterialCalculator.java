@@ -1,5 +1,6 @@
 package dat.backend.model.entities;
 
+import java.text.DecimalFormat;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -9,6 +10,7 @@ public class MaterialCalculator {
     private int length;
     private int width;
     private int minHeight;
+    private final DecimalFormat df = new DecimalFormat("0.0");
 
     protected MaterialCalculator(int length, int width, int minHeight){
         this.length = length;
@@ -20,7 +22,7 @@ public class MaterialCalculator {
         Post chosenPost = null;
         int numberOfPosts = 4;
         for(int i = 0; i < allPosts.size(); i++){
-            if(allPosts.get(i).length > minHeight + 90){
+            if(allPosts.get(i).length >= minHeight + 90){
                 chosenPost = allPosts.get(i);
                 break;
             }
@@ -43,7 +45,7 @@ public class MaterialCalculator {
         int numberOfPurlins = 2;
         if(length <= 440){
             for(int i = 0; i < allPurlins.size(); i++){
-                if(allPurlins.get(i).length > length){
+                if(allPurlins.get(i).length >= length){
                     chosenPurlin1 = allPurlins.get(i);
                     break;
                 }
@@ -79,13 +81,13 @@ public class MaterialCalculator {
 
     protected ItemListMaterial calculateRafters(List<Rafter> allRafters){
         Rafter chosenRafter = null;
-        int numberOfRafters = (int) Math.ceil(length / 55);
+        int numberOfRafters = (int) Math.ceil(length / 55)+1;
         for(int i = 0; i < allRafters.size(); i++){
             if(allRafters.get(i).length > width){
                 chosenRafter = allRafters.get(i);
                 break;
             }
         }
-        return new ItemListMaterial(chosenRafter, numberOfRafters, "Spær monteres på rem - afstand mellem hvert spær: " + String.format("%.1f", length/numberOfRafters) + "cm.");
+        return new ItemListMaterial(chosenRafter, numberOfRafters, "Spær monteres på rem - afstand mellem hvert spær: " + df.format(length/numberOfRafters) + "cm.");
     }
 }
