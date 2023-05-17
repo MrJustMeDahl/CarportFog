@@ -59,6 +59,7 @@ public class ItemList {
      * @author MrJustMeDahl
      */
     public void generateItemListContent(List<Post> allPosts, List<Purlin> allPurlins, List<Rafter> allRafters){
+        materials = new ArrayList<>();
         for(ItemListMaterial i: materialCalculator.calculatePosts(allPosts)) {
             materials.add(i);
         }

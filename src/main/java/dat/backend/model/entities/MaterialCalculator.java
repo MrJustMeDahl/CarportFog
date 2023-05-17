@@ -52,12 +52,13 @@ public class MaterialCalculator {
         } else if (length - 130 > 620) {
             numberOfPosts += 4;
         }
-        if (width - 70 > 310) {
-            numberOfPosts += 2;
-        }
         posts.add(new ItemListMaterial(chosenPost, numberOfPosts, "Stolper nedgraves 90 cm. i jord", "carport"));
         if (hasShed) {
-            posts.add(new ItemListMaterial(chosenPost, 3, "Stolper nedgraves 90 cm. i jord", "shed"));
+            if (width - 70 > 310) {
+                posts.add(new ItemListMaterial(chosenPost, 3, "Stolper nedgraves 90 cm. i jord", "shed"));
+            } else {
+                posts.add(new ItemListMaterial(chosenPost, 1, "Stolper nedgraves 90 cm. i jord", "shed"));
+            }
         }
         return posts;
     }

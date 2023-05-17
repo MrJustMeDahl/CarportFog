@@ -5,17 +5,14 @@ import dat.backend.model.exceptions.DatabaseException;
 import dat.backend.model.persistence.ConnectionPool;
 import dat.backend.model.persistence.OrderFacade;
 import dat.backend.model.persistence.OrderMapper;
-import dat.backend.model.persistence.UserFacade;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -111,6 +108,15 @@ public class OrderMapperTest {
         Carport carport = new Carport(materials, 1000, 1500, 300, 500, 210);
         assertEquals(carport.getLength(), user.getOrders().get(0).getCarport().getLength());
         assertEquals(330, user.getOrders().get(1).getItemList().getMaterials().get(0).getMaterial().getLength());
+    }
+
+    @Test
+    void getItemListContentForOrder() throws DatabaseException{
+        ItemList itemList = new ItemList(400, 350, 210, false);
+        OrderMapper.getItemListContentForOrder(1, itemList, connectionPool);
+        assertEquals(3, itemList.getMaterials().size());
+        assertEquals(10, itemList.getMaterials().get(1).getAmount());
+        assertEquals(3, itemList.getMaterials().get(2).getMaterial().getMaterialVariantID());
     }
 
     @Test
