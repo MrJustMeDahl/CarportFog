@@ -199,4 +199,10 @@ public class OrderMapperTest {
         assertEquals(carport.getMaterials().size() + 3, testorder.getCarport().getMaterials().size());
 
     }
+
+    @Test
+    void sendOfferToCustomer() throws DatabaseException{
+        assertTrue(OrderFacade.sendOfferToCustomer(3, 500, connectionPool));
+        assertFalse(OrderFacade.sendOfferToCustomer(4, 2000, connectionPool));
+    }
 }

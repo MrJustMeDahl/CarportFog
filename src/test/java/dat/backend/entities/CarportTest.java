@@ -30,6 +30,6 @@ public class CarportTest {
 
     @Test
     void calculateIndicativePrice(){
-        assertEquals(7702.86, carport.calculateIndicativePrice(), 0.01);
+        assertEquals(7703, carport.calculateIndicativePrice());
     }
 }
