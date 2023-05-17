@@ -74,7 +74,7 @@ public class OrderMapperTest {
                         "(55, '97x97mm. trykimp.', 1, 1), (35, '45x195mm. spærtræ', 1, 2), (35, '45x195mm. spærtræ', 1, 3);");
                 stmt.execute("INSERT into fog_test.materialVariant (length, materialId) VALUES (330, 1), (420, 2), (360, 3);");
                 stmt.execute("INSERT INTO fog_test.orders (price, indicativePrice, orderStatus, userId, carportLength, carportWidth, carportMinHeight, carportPrice, carportIndicativePrice) VALUES " +
-                        "(1000, 1500, 'pending', 1, 500, 300, 210, 1000, 1500), (800, 1350, 'paid', 2, 400, 250, 180, 800, 1500), (0, 200, 'closed', 1, 800, 250, 210, 0, 200);");
+                        "(1000, 1500, 'pending', 1, 500, 300, 210, 1000, 1500), (800, 1350, 'paid', 2, 400, 250, 180, 800, 1500), (0, 200, 'ordered', 1, 800, 250, 210, 0, 200);");
                 stmt.execute("INSERT INTO fog_test.itemList (amount, orderId, materialVariantId, partFor) VALUES (4, 1, 1, 'carport'), (10, 1, 2, 'carport'), (8, 1, 3, 'carport'), " +
                         "(4, 2, 1, 'carport'), (2, 2, 2, 'carport'), (30, 2, 3, 'carport'), (8, 3, 1, 'carport')");
             }
@@ -162,6 +162,20 @@ public class OrderMapperTest {
         testorder = (Order) testlist.get(0);
         assertEquals(testorder.getOrderStatus(), "ordered");
 
+    }
+
+    @Test
+    void getNewOrders() throws DatabaseException{
+        List<Order> newOrders = OrderMapper.getNewOrders(connectionPool);
+        assertEquals(1, newOrders.size());
+        assertEquals(1, newOrders.get(0).getCarport().getMaterials().size());
+        assertEquals(1, newOrders.get(0).getUserID());
+    }
+
+    @Test
+    void deleteOrder() throws DatabaseException {
+        assertTrue(OrderFacade.deleteOrder(1, connectionPool));
+        assertFalse(OrderFacade.deleteOrder(1, connectionPool));
     }
     @Test
     void addItemlistToDB() throws DatabaseException{

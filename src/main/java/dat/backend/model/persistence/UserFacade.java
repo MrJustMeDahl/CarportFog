@@ -1,10 +1,11 @@
 package dat.backend.model.persistence;
 
-import dat.backend.model.entities.Material;
+import dat.backend.model.entities.Order;
 import dat.backend.model.entities.User;
 import dat.backend.model.exceptions.DatabaseException;
 
-import java.util.Map;
+import java.util.List;
+import java.util.Set;
 
 /**
  * This class is a facade for UserMapper.java. For the sake of simplicity and making the class easier to read.
@@ -33,4 +34,15 @@ public class UserFacade
         return UserMapper.createUser(email, password, phoneNumber, address, fullName, role, connectionPool);
     }
 
+    /**
+     * This methods retrieves a Set of user objects from the database, who are owners of one or more orders from the given list.
+     * @param newOrders List of Order objects
+     * @param connectionPool required to establish connection to the database.
+     * @return Set of User objects
+     * @throws DatabaseException Is thrown if there is no connection to the database or if data is invalid.
+     * @author MrJustMeDahl
+     */
+    public static Set<User> getUsersForOrders(List<Order> newOrders, ConnectionPool connectionPool) throws DatabaseException {
+        return UserMapper.getUsersForOrders(newOrders, connectionPool);
+    }
 }

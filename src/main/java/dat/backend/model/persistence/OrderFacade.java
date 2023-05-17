@@ -53,6 +53,17 @@ public class OrderFacade {
     }
 
     /**
+     * This method returns a list of Order, where all orders have order status "ordered".
+     * @param connectionPool required to establish connection to the database.
+     * @return List of Order.
+     * @throws DatabaseException Is thrown if there isn't a valid connection to the database or if the data in the database is invalid.
+     * @author MrJustMeDahl
+     */
+    public static List<Order> getNewOrders(ConnectionPool connectionPool) throws DatabaseException {
+        return OrderMapper.getNewOrders(connectionPool);
+    }
+
+    /**
      * This method will update the orderstatus for an order in the DB to "payed"
      * @param orderId Is the ID for the order itself.
      * @param connectionPool Is required for establishing connection to the DB.
@@ -64,6 +75,17 @@ public class OrderFacade {
     }
 
     /**
+     * This method deletes an order from the database, it deletes everything to do with the order in orders table and itemList table.
+     * @param orderID ID number for the order you want to delete.
+     * @param connectionPool required to establish connection to the database.
+     * @return True if both statements succeeded in removing lines.
+     * @throws DatabaseException Is thrown if there isn't a valid connection to the database.
+     * @author MrJustMeDahl
+     */
+    public static boolean deleteOrder(int orderID, ConnectionPool connectionPool) throws DatabaseException{
+        return OrderMapper.deleteOrder(orderID, connectionPool);
+    }
+    /**
      * This method will iterate through the hashmap which contains the materials needed for the carport. It will then be
      * put into the DB.
      * @param itemList The Hashmap of the materials. The key is the object of the material, while the value is the amount
@@ -74,9 +96,4 @@ public class OrderFacade {
     public static void addItemlistToDB(ItemList itemList, int orderId, ConnectionPool connectionPool) throws DatabaseException {
         OrderMapper.addItemlistToDB(itemList, orderId, connectionPool);
     }
-
-    public static void deleteOrder(int orderId, ConnectionPool connectionPool) throws DatabaseException{
-        OrderMapper.deleteOrder(orderId, connectionPool);
-    }
-
 }
