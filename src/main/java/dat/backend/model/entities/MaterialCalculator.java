@@ -1,5 +1,7 @@
 package dat.backend.model.entities;
 
+import dat.backend.model.exceptions.NoMaterialFoundException;
+
 import java.text.DecimalFormat;
 import java.util.HashSet;
 import java.util.List;
@@ -37,7 +39,7 @@ public class MaterialCalculator {
      * @return Set of ItemListMaterial - the material here is the same, but the message and amounts differs depending on if the carport has a shed.
      * @author MrJustMeDahl
      */
-    public Set<ItemListMaterial> calculatePosts(List<Post> allPosts) {
+    public Set<ItemListMaterial> calculatePosts(List<Post> allPosts) throws NoMaterialFoundException{
         Set<ItemListMaterial> posts = new HashSet<>();
         Post chosenPost = null;
         int numberOfPosts = 4;
@@ -51,6 +53,9 @@ public class MaterialCalculator {
             numberOfPosts += 2;
         } else if (length - 130 > 620) {
             numberOfPosts += 4;
+        }
+        if(chosenPost == null){
+            throw new NoMaterialFoundException("Could not find a post that matches the measurements of the selected carport");
         }
         posts.add(new ItemListMaterial(chosenPost, numberOfPosts, "Stolper nedgraves 90 cm. i jord", "carport"));
         if (hasShed) {
@@ -69,7 +74,7 @@ public class MaterialCalculator {
      * @return Set of ItemListMaterial - if the length of the carport is long enough, 2 different purlins are required, the length of these purlins will be calculated towards being assembled on top of the middle post.
      * @author MrJustMeDahl
      */
-    public Set<ItemListMaterial> calculatePurlins(List<Purlin> allPurlins) {
+    public Set<ItemListMaterial> calculatePurlins(List<Purlin> allPurlins) throws NoMaterialFoundException{
         Set<ItemListMaterial> purlins = new HashSet<>();
         Purlin chosenPurlin1 = null;
         Purlin chosenPurlin2 = null;
@@ -103,6 +108,9 @@ public class MaterialCalculator {
                 }
             }
         }
+        if(chosenPurlin1 == null || (chosenPurlin2 == null && length > 750)){
+            throw new NoMaterialFoundException("Could not find a purlin that matches the measurements of the selected carport");
+        }
         purlins.add(new ItemListMaterial(chosenPurlin1, numberOfPurlins, "Remme i sider, sadles ned i stolper", "carport"));
         if (chosenPurlin2 != null) {
             purlins.add(new ItemListMaterial(chosenPurlin2, numberOfPurlins, "Remme i sider, sadles ned i stolper", "carport"));
@@ -116,14 +124,17 @@ public class MaterialCalculator {
      * @return ItemListMaterial which contains the chosen rafter and how many are needed for the size.
      * @author MrJustMeDahl
      */
-    public ItemListMaterial calculateRafters(List<Rafter> allRafters) {
+    public ItemListMaterial calculateRafters(List<Rafter> allRafters) throws NoMaterialFoundException{
         Rafter chosenRafter = null;
         int numberOfRafters = (int) Math.ceil(length / 55) + 1;
         for (int i = 0; i < allRafters.size(); i++) {
-            if (allRafters.get(i).length > width) {
+            if (allRafters.get(i).length >= width) {
                 chosenRafter = allRafters.get(i);
                 break;
             }
+        }
+        if(chosenRafter == null){
+            throw new NoMaterialFoundException("Could not find a rafter that matches the measurements of the selected carport");
         }
         return new ItemListMaterial(chosenRafter, numberOfRafters, "Spær monteres på rem - afstand mellem hvert spær: " + df.format(length / numberOfRafters) + "cm.", "carport");
     }

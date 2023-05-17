@@ -1,6 +1,7 @@
 package dat.backend.entities;
 
 import dat.backend.model.entities.*;
+import dat.backend.model.exceptions.NoMaterialFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,12 +31,14 @@ public class ItemListTest {
     }
 
     @Test
-    void generateItemListContent(){
+    void generateItemListContent() throws NoMaterialFoundException{
         List<Post> posts = new ArrayList<>();
         List<Purlin> purlins = new ArrayList<>();
         List<Rafter> rafters = new ArrayList<>();
-        itemList.generateItemListContent(posts, purlins, rafters);
-        assertEquals(null, itemList.getMaterials().get(1).getMaterial());
+        List<Purlin> finalPurlins = purlins;
+        List<Post> finalPosts = posts;
+        List<Rafter> finalRafters = rafters;
+        assertThrows(NoMaterialFoundException.class, () -> itemList.generateItemListContent(finalPosts, finalPurlins, finalRafters));
         posts = this.posts;
         purlins = this.purlins;
         rafters = this.rafters;

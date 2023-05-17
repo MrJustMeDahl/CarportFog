@@ -1,5 +1,7 @@
 package dat.backend.model.entities;
 
+import dat.backend.model.exceptions.NoMaterialFoundException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +29,7 @@ public class ItemList {
      * @param allRafters list of all Rafters that can be used for calculations
      * @author MrJustMeDahl
      */
-    public ItemList(int length, int width, int minHeight, boolean hasShed, List<Post> allPosts, List<Purlin> allPurlins, List<Rafter> allRafters){
+    public ItemList(int length, int width, int minHeight, boolean hasShed, List<Post> allPosts, List<Purlin> allPurlins, List<Rafter> allRafters) throws NoMaterialFoundException{
         this.materialCalculator = new MaterialCalculator(length, width, minHeight, hasShed);
         materials = new ArrayList<>();
         generateItemListContent(allPosts, allPurlins, allRafters);
@@ -58,7 +60,7 @@ public class ItemList {
      * @param allRafters List of Rafters
      * @author MrJustMeDahl
      */
-    public void generateItemListContent(List<Post> allPosts, List<Purlin> allPurlins, List<Rafter> allRafters){
+    public void generateItemListContent(List<Post> allPosts, List<Purlin> allPurlins, List<Rafter> allRafters) throws NoMaterialFoundException {
         materials = new ArrayList<>();
         for(ItemListMaterial i: materialCalculator.calculatePosts(allPosts)) {
             materials.add(i);

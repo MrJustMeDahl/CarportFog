@@ -3,6 +3,7 @@ package dat.backend.control;
 import dat.backend.model.config.ApplicationStart;
 import dat.backend.model.entities.*;
 import dat.backend.model.exceptions.DatabaseException;
+import dat.backend.model.exceptions.NoMaterialFoundException;
 import dat.backend.model.persistence.ConnectionPool;
 import dat.backend.model.persistence.OrderFacade;
 import dat.backend.model.persistence.OrderMapper;
@@ -66,8 +67,13 @@ public class Carports extends HttpServlet
         int width = Integer.parseInt(request.getParameter("width"));
         int length = Integer.parseInt(request.getParameter("length"));
         int  height = Integer.parseInt(request.getParameter("height"));
-        ItemList itemList = new ItemList(length, width, height, false, (List<Post>) applicationScope.getAttribute("allPosts"), (List<Purlin>) applicationScope.getAttribute("allPurlins"), (List<Rafter>) applicationScope.getAttribute("allRafters"));
-
+        ItemList itemList = null;
+        try {
+            itemList = new ItemList(length, width, height, false, (List<Post>) applicationScope.getAttribute("allPosts"), (List<Purlin>) applicationScope.getAttribute("allPurlins"), (List<Rafter>) applicationScope.getAttribute("allRafters"));
+        } catch (NoMaterialFoundException e){
+            request.setAttribute("errormessage", e);
+            request.getRequestDispatcher("error.jsp");
+        }
         Carport carport = new Carport(itemList.getMaterialsForCarport(), width, length, height);
 
 
