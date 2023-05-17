@@ -66,14 +66,12 @@ class UserMapper {
 
     static User createUser(String email, String password, int phoneNumber, String address, String fullName, String role, ConnectionPool connectionPool) throws DatabaseException
     {
-        System.out.println("Start");
         Logger.getLogger("web").log(Level.INFO, "");
-        User user;
+        User user = null;
         String sql = "INSERT INTO user(email, password, phoneNumber, address, fullName, role) values (?,?,?,?,?,?)";
         try (Connection connection = connectionPool.getConnection())
         {
-            try (PreparedStatement ps = connection.prepareStatement(sql))
-            {
+            try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 ps.setString(1, email);
                 ps.setString(2, password);
                 ps.setInt(3, phoneNumber);
@@ -81,13 +79,14 @@ class UserMapper {
                 ps.setString(5, fullName);
                 ps.setString(6, "user");
                 int rowsAffected = ps.executeUpdate();
-                if (rowsAffected == 1)
-                {
-                    user = new User(email, password, fullName, phoneNumber, address);
-                } else
-                {
-                    throw new DatabaseException("The user with email = " + email + " could not be inserted into the database");
-                }
+                ResultSet rs = ps.getGeneratedKeys();
+                while (rs.next()){
+                    if (rowsAffected == 1) {
+                        user = new User(rs.getInt(1), email, password, fullName, phoneNumber, address, "user");
+                    } else {
+                        throw new DatabaseException("The user with email = " + email + " could not be inserted into the database");
+                    }
+            }
             }
         }
         catch (SQLException ex)
