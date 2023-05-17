@@ -6,8 +6,11 @@ package dat.backend.model.entities;
  */
 public class Purlin extends Material{
 
-    public Purlin(int materialID, String description, String type, String function, double price, int length){
-        super(materialID, description, type, function, price, length);
+    private double actualPrice;
+
+    public Purlin(int materialID, int materialVariantID, String description, String type, String function, double price, int length){
+        super(materialID, materialVariantID, description, type, function, price, length);
+        actualPrice = calculateActualPrice();
     }
 
     /**
@@ -15,9 +18,13 @@ public class Purlin extends Material{
      * @return double - Price of the material.
      * @author MrJustMeDahl
      */
+
     @Override
-    public double getPrice() {
+    public double calculateActualPrice() {
         return price * ((double) length / 100);
     }
 
+    public double getActualPrice() {
+        return actualPrice;
+    }
 }

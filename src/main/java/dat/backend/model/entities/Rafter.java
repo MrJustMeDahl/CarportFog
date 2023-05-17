@@ -6,8 +6,11 @@ package dat.backend.model.entities;
  */
 public class Rafter extends Material{
 
-    public Rafter(int materialID, String description, String type, String function, double price, int length){
-        super(materialID, description, type, function, price, length);
+    private double actualPrice;
+
+    public Rafter(int materialID, int materialVariantID, String description, String type, String function, double price, int length){
+        super(materialID, materialVariantID, description, type, function, price, length);
+        actualPrice = calculateActualPrice();
     }
 
     /**
@@ -15,9 +18,14 @@ public class Rafter extends Material{
      * @return double - Price of the material.
      * @author MrJustMeDahl
      */
+
     @Override
-    public double getPrice() {
-        return price * ((double) length / 100);
+    public double calculateActualPrice() {
+        actualPrice = price * ((double) length / 100);
+        return actualPrice;
     }
 
+    public double getActualPrice() {
+        return actualPrice;
+    }
 }

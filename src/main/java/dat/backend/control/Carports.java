@@ -71,10 +71,9 @@ public class Carports extends HttpServlet
         Carport carport = new Carport(itemList.getMaterialsForCarport(), width, length, height);
 
 
-
-
         try{
-            OrderFacade.createOrder(carport, user.getUserID(), carport.getPrice(), carport.getIndicativePrice(), itemList, connectionPool);
+            Order order = OrderFacade.createOrder(carport, user.getUserID(), carport.getPrice(), carport.getIndicativePrice(), itemList, connectionPool);
+            OrderFacade.addItemlistToDB(carport.getMaterials(), order.getOrderID(), connectionPool);
             request.getRequestDispatcher("shoppingbasket").forward(request, response);
         }
         catch (DatabaseException e){

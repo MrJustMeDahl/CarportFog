@@ -35,6 +35,9 @@
                     <c:if test="${sessionScope.user != null }">
                     <a class="nav-item nav-link" href="${pageContext.request.contextPath}/shoppingbasket">Indkøbskurv</a>
                     </c:if>
+                    <c:if test="${sessionScope.user == null }">
+                 <a class="nav-item nav-link" href="${pageContext.request.contextPath}/signup">registrer</a>
+                    </c:if>
                     <c:if test="${sessionScope.user != null}">
                         <a class="nav-item nav-link" href="${pageContext.request.contextPath}/orders">Ordrer</a>
                     </c:if>
@@ -43,6 +46,18 @@
                     </c:if>
                     <c:if test="${sessionScope.user != null }">
                         <a class="nav-item nav-link" href="${pageContext.request.contextPath}/logout">Log out</a>
+                    </c:if>
+                    <c:if test="${sessionScope.user.role == 'admin'}">
+                        <div class="dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                Admin
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <li><a class="nav-item nav-link"
+                                       href="${pageContext.request.contextPath}/editchosenmaterialfunction">Materiale side</a></li>
+                            </ul>
+                        </div>
                     </c:if>
                 </div>
             </div>

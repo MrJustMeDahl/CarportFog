@@ -30,6 +30,7 @@ public class Orders extends HttpServlet
     }
 
 
+
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
         // You shouldn't end up here with a GET-request, thus you get sent back to frontpage
@@ -39,7 +40,6 @@ public class Orders extends HttpServlet
 
         try {
             List orderlist = OrderFacade.getOrdersByUserID(user.getUserID(), connectionPool);
-
             request.setAttribute("orderlist", orderlist);
 
 
@@ -48,13 +48,21 @@ public class Orders extends HttpServlet
             request.setAttribute("errormessage", e);
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }
-        request.getRequestDispatcher("WEB-INF/shoppingbasket.jsp").forward(request, response);
     }
 
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
+        response.setContentType("text/html");
+        try{
 
+            OrderFacade.deleteOrder(Integer.parseInt(request.getParameter("currentID")), connectionPool);
+            doGet(request, response);
+
+        }catch (DatabaseException e){
+            request.setAttribute("errormessage", e);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+        }
     }
 
 }

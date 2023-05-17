@@ -5,6 +5,7 @@ import dat.backend.model.entities.Purlin;
 import dat.backend.model.entities.Rafter;
 import dat.backend.model.exceptions.DatabaseException;
 import dat.backend.model.persistence.ConnectionPool;
+import dat.backend.model.persistence.MaterialFacade;
 import dat.backend.model.persistence.MaterialMapper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +28,7 @@ public class MaterialMapperTest {
 
     @BeforeAll
     public static void setUpClass() {
-        connectionPool =  new ConnectionPool(USER, PASSWORD, URL);
+        connectionPool = new ConnectionPool(USER, PASSWORD, URL);
 
         try (Connection testConnection = connectionPool.getConnection()) {
             try (Statement stmt = testConnection.createStatement()) {
@@ -119,4 +120,23 @@ public class MaterialMapperTest {
         assertEquals("rem", allFunctions.get(1));
         assertEquals("spær", allFunctions.get(2));
     }
+
+    @Test
+    void updateMaterial() throws DatabaseException {
+        assertTrue(MaterialFacade.updateMaterial(1, 60, "100x100. tryk.Imp", connectionPool));
+        assertThrows(DatabaseException.class, () -> MaterialFacade.updateMaterial(10, 50, "100x100", connectionPool));
+    }
+
+    @Test
+    void createNewMaterial() throws DatabaseException {
+        assertEquals(4, MaterialFacade.newMaterial("105x105", 1, 1, 50, connectionPool));
+    }
+
+    @Test
+    void addLength() throws DatabaseException {
+        assertEquals(4, MaterialFacade.addLength(1, 360, connectionPool));
+        assertThrows(DatabaseException.class, () -> MaterialFacade.addLength(7, 360, connectionPool));
+    }
+
+
 }

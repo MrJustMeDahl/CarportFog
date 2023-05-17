@@ -60,8 +60,25 @@
                                     ${order.carport.length}
                             </td>
 
-                        </tr>
 
+                            <c:if test="${order.orderStatus == 'confirmed'}">
+                                <td>
+                                    <button type="submit" name="currentID" value="${order.orderID}"
+                                            class="btn btn-sm - btn-outline-success" formaction="orderandpayment"
+                                            formmethod="get">Betal
+                                    </button>
+                                </td>
+                            </c:if>
+                            <c:if test="${order.orderStatus != 'payed' }">
+                            <td>
+
+                                <button type="submit" name="currentID" value="${order.orderID}"
+                                        class="btn btn-sm - btn-outline-success" formaction="orders"
+                                        formmethod="post">Annuller
+                                </button>
+                            </td>
+                            </c:if>
+                        </tr>
 
                         <tr></tr>
 

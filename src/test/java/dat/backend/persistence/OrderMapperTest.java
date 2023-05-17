@@ -11,9 +11,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -105,7 +107,7 @@ public class OrderMapperTest {
         assertEquals(1500, user.getOrders().get(0).getIndicativePrice());
         assertEquals(800, admin.getOrders().get(0).getPrice());
         Map<Material, Integer> materials = new HashMap<>();
-        materials.put(new Post(-1, "97x97mm. trykimp.", "træ", "stolpe", 55, 330), 4);
+        materials.put(new Post(-1, -1, "97x97mm. trykimp.", "træ", "stolpe", 55, 330), 4);
         Carport carport = new Carport(materials, 1000, 1500, 300, 500, 210);
         assertEquals(carport.getLength(), user.getOrders().get(0).getCarport().getLength());
         assertEquals(330, user.getOrders().get(1).getItemList().getMaterials().get(0).getMaterial().getLength());
@@ -114,7 +116,7 @@ public class OrderMapperTest {
     @Test
     void createOrder() {
         Map<Material, Integer> materials = new HashMap<>();
-        materials.put(new Post(1, "97x97mm. trykimp.", "træ", "stolpe", 55, 330), 4);
+        materials.put(new Post(1, 1,"97x97mm. trykimp.", "træ", "stolpe", 55, 330), 4);
         Carport carport = new Carport(materials, 2000, 3000, 300, 500, 210);
         User user = new User(4, "user@usersen.dk", "1234", "User Usersen", 12345678, "Danmarksgade 1", "user", connectionPool);
 
@@ -153,6 +155,29 @@ public class OrderMapperTest {
         testlist = OrderFacade.getOrdersByUserID(user.getUserID(), connectionPool);
         testorder = (Order) testlist.get(0);
         assertEquals(testorder.getOrderStatus(), "ordered");
+
+    }
+    @Test
+    void addItemlistToDB() throws DatabaseException{
+
+        int orderId = 1;
+        Post pole1 = new Post(1, 1, "'97x97mm. trykimp.'", "træ", "stolpe", 50, 360);
+        Purlin purlin1 = new Purlin(3, 3, "'45x195mm. spærtræ'", "træ", "spær", 38, 300);
+        Rafter rafter1 = new Rafter(2, 2, "'45x195mm. spærtræ'", "træ", "rem", 40, 300);
+
+        Map<Material, Integer> materials = new HashMap<Material, Integer>();
+
+        materials.put(pole1, 1);
+        materials.put(purlin1, 1);
+        materials.put(rafter1, 1);
+
+        Carport carport = new Carport(materials, 2000, 3000, 300, 500, 210);
+
+        OrderFacade.addItemlistToDB(materials, orderId, connectionPool);
+        List testlist = OrderFacade.getOrdersByUserID(1, connectionPool);
+        Order testorder = (Order) testlist.get(0);
+
+        assertEquals(carport.getMaterials().size() + 3, testorder.getCarport().getMaterials().size());
 
     }
 }

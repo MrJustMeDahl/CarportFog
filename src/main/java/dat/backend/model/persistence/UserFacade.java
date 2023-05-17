@@ -1,7 +1,10 @@
 package dat.backend.model.persistence;
 
+import dat.backend.model.entities.Material;
 import dat.backend.model.entities.User;
 import dat.backend.model.exceptions.DatabaseException;
+
+import java.util.Map;
 
 /**
  * This class is a facade for UserMapper.java. For the sake of simplicity and making the class easier to read.
@@ -25,8 +28,9 @@ public class UserFacade
         return UserMapper.login(email, password, connectionPool);
     }
 
-    public static User createUser(String username, String password, String role, ConnectionPool connectionPool) throws DatabaseException
+    public static User createUser(String email, String password, int phoneNumber, String address, String fullName, String role, ConnectionPool connectionPool) throws DatabaseException
     {
-        return UserMapper.createUser(username, password, role, connectionPool);
+        return UserMapper.createUser(email, password, phoneNumber, address, fullName, role, connectionPool);
     }
+
 }
