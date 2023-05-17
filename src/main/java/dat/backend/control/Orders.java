@@ -53,7 +53,16 @@ public class Orders extends HttpServlet
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
+        response.setContentType("text/html");
+        try{
 
+            OrderFacade.deleteOrder(Integer.parseInt(request.getParameter("currentID")), connectionPool);
+            doGet(request, response);
+
+        }catch (DatabaseException e){
+            request.setAttribute("errormessage", e);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+        }
     }
 
 }

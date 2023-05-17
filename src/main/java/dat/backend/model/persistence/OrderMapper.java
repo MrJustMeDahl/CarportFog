@@ -207,7 +207,20 @@ public class OrderMapper {
         catch (SQLException ex){
             throw new DatabaseException(ex, "Error creating order in the Database");
         }
+    }
 
+    public static void deleteOrder(int orderId, ConnectionPool connectionPool) throws DatabaseException{
+        String SQL = "DELETE FROM orders WHERE orderId = ?";
+
+        try(Connection connection = connectionPool.getConnection()){
+            try(PreparedStatement ps = connection.prepareStatement(SQL)){
+                ps.setInt(1, orderId);
+             ps.executeUpdate();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 
