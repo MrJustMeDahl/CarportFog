@@ -57,7 +57,7 @@ public class Carport {
         for(Map.Entry<Material, Integer> m: materials.entrySet()){
             price += m.getKey().calculateActualPrice()*m.getValue();
         }
-        return price;
+        return Math.ceil(price);
     }
 
     /**
@@ -67,7 +67,7 @@ public class Carport {
      */
     public double calculateIndicativePrice(){
         double indicativePrice = ((100*price)/61)*1.25;
-        return indicativePrice;
+        return Math.ceil(indicativePrice);
     }
 
     public double getPrice() {

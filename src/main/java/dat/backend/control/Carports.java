@@ -72,7 +72,7 @@ public class Carports extends HttpServlet
             itemList = new ItemList(length, width, height, false, (List<Post>) applicationScope.getAttribute("allPosts"), (List<Purlin>) applicationScope.getAttribute("allPurlins"), (List<Rafter>) applicationScope.getAttribute("allRafters"));
         } catch (NoMaterialFoundException e){
             request.setAttribute("errormessage", e);
-            request.getRequestDispatcher("error.jsp");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
         Carport carport = new Carport(itemList.getMaterialsForCarport(), width, length, height);
 

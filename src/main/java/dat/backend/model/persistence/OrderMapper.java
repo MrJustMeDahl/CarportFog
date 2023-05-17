@@ -301,4 +301,32 @@ public class OrderMapper {
         }
         return itemList && orders;
     }
+
+    /**
+     * This method handles when an offer is sent to the customer.
+     * It changes the price to match the price entered by the salesperson and changes order status to confirmed.
+     * @param orderID required to identify correct order.
+     * @param salesPrice Price entered by the salesperson.
+     * @param connectionPool required to establish connection to the database.
+     * @return true if there is changes at 1 line in the database.
+     * @throws DatabaseException Is thrown there is no connection to the database or if input data is invalid.
+     * @author MrJustMeDahl
+     */
+    public static boolean sendOfferToCustomer(int orderID, double salesPrice, ConnectionPool connectionPool) throws DatabaseException {
+        String SQL = "UPDATE orders SET orders.indicativePrice = ?, orderStatus = ? WHERE orderId = ?";
+        try(Connection connection = connectionPool.getConnection()){
+            try(PreparedStatement ps = connection.prepareStatement(SQL)){
+                ps.setDouble(1, salesPrice);
+                ps.setString(2, "confirmed");
+                ps.setInt(3, orderID);
+                int linesAffected = ps.executeUpdate();
+                if(linesAffected == 1){
+                    return true;
+                }
+            }
+        }catch (SQLException e){
+            throw new DatabaseException("Failed to send offer to customer - order id number: " + orderID);
+        }
+        return false;
+    }
 }

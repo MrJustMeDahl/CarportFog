@@ -38,50 +38,68 @@
                             <tbody>
                             <c:forEach items="${sessionScope.newOrders}" var="orders">
                                 <tr>
-                                    <c:forEach items="${sessionScope.newOrdersUsers}" var="user">
-                                        <c:if test="${orders.userID == user.userID}">
-                                            <c:choose>
-                                                <c:when test="${requestScope.chosenOrderID != orders.orderID}">
-                                            <td>${orders.orderID}</td>
-                                            <td>${user.name}</td>
-                                            <td>${user.email}</td>
-                                            <td>${user.phoneNumber}</td>
-                                            <td>${orders.carport.length}</td>
-                                            <td>${orders.carport.width}</td>
-                                            <td>${orders.carport.minHeight}</td>
-                                            <td>${orders.price}</td>
-                                            <td>${orders.indicativePrice}</td>
-                                            <td>
-                                                <button class="btn btn-outline-success" name="orderID"
-                                                        value="${orders.orderID}" type="submit"
-                                                        formaction="adminneworders" formmethod="get">Lav tilbud
-                                                </button>
-                                            </td>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <td>${orders.orderID}</td>
-                                                    <td>${user.name}</td>
-                                                    <td>${user.email}</td>
-                                                    <td>${user.phoneNumber}</td>
-                                                    <td>${orders.carport.length}</td>
-                                                    <td>${orders.carport.width}</td>
-                                                    <td>${orders.carport.minHeight}</td>
-                                                    <td>${orders.price}</td>
-                                                    <td><input type="number" class="table-responsive" value="${orders.indicativePrice}"></td>
-                                                    <td>
-                                                        <button class="btn btn-outline-success" name="orderID"
-                                                                value="${orders.orderID}" type="submit"
-                                                                formaction="sendoffer" formmethod="post">Send tilbud
-                                                        </button>
-                                                        <button class="btn btn-outline-danger mt-1" name="orderID"
-                                                                value="${orders.orderID}" type="submit"
-                                                                formaction="admindeleteoffer" formmethod="post">Slet tilbud
-                                                        </button>
-                                                    </td>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </c:if>
-                                    </c:forEach>
+                                <c:forEach items="${sessionScope.newOrdersUsers}" var="user">
+                                    <c:if test="${orders.userID == user.userID}">
+                                        <c:choose>
+                                            <c:when test="${requestScope.chosenOrderID != orders.orderID}">
+                                                <td>${orders.orderID}</td>
+                                                <td>${user.name}</td>
+                                                <td>${user.email}</td>
+                                                <td>${user.phoneNumber}</td>
+                                                <td>${orders.carport.length}</td>
+                                                <td>${orders.carport.width}</td>
+                                                <td>${orders.carport.minHeight}</td>
+                                                <td>${orders.price}</td>
+                                                <td>${orders.indicativePrice}</td>
+                                                <td>
+                                                    <button class="btn btn-outline-success" name="orderID"
+                                                            value="${orders.orderID}" type="submit"
+                                                            formaction="adminneworders" formmethod="get">Lav tilbud
+                                                    </button>
+                                                </td>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <td>${orders.orderID}</td>
+                                                <td>${user.name}</td>
+                                                <td>${user.email}</td>
+                                                <td>${user.phoneNumber}</td>
+                                                <td>${orders.carport.length}</td>
+                                                <td>${orders.carport.width}</td>
+                                                <td>${orders.carport.minHeight}</td>
+                                                <td>${orders.price}</td>
+                                                <td><input type="number" class="table-responsive"
+                                                           value="${orders.indicativePrice}" name="salesPrice">
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-outline-success" name="orderID"
+                                                            value="${orders.orderID}" type="submit"
+                                                            formaction="adminsendoffer" formmethod="post">Send tilbud
+                                                    </button>
+                                                    <button class="btn btn-outline-danger mt-1" name="orderID"
+                                                            value="${orders.orderID}" type="submit"
+                                                            formaction="admindeleteoffer" formmethod="post">Slet tilbud
+                                                    </button>
+                                                </td>
+                                                <tr class="table-primary">
+                                                    <th colspan="3">Stykliste</th>
+                                                    <th colspan="2">Beskrivelse:</th>
+                                                    <th colspan="2">Længde:</th>
+                                                    <th colspan="1">Antal:</th>
+                                                    <th colspan="2">Note:</th>
+                                                </tr>
+                                                <c:forEach items="${orders.itemList.materials}" var="itemListMaterial">
+                                                    <tr>
+                                                        <td colspan="3"></td>
+                                                        <td colspan="2">${itemListMaterial.material.description}</td>
+                                                        <td colspan="2">${itemListMaterial.material.length}</td>
+                                                        <td colspan="1">${itemListMaterial.amount}</td>
+                                                        <td colspan="2">${itemListMaterial.message} - ${itemListMaterial.partFor}</td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:if>
+                                </c:forEach>
                                 </tr>
                             </c:forEach>
                             </tbody>

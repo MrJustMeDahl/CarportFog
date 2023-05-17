@@ -1,13 +1,11 @@
 package dat.backend.model.persistence;
 
 import dat.backend.model.entities.Carport;
-import dat.backend.model.entities.Material;
 import dat.backend.model.entities.ItemList;
 import dat.backend.model.entities.Order;
 import dat.backend.model.exceptions.DatabaseException;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * This class is a facade for OrderMapper.java. For the sake of simplicity and making the class easier to read.
@@ -95,5 +93,19 @@ public class OrderFacade {
      */
     public static void addItemlistToDB(ItemList itemList, int orderId, ConnectionPool connectionPool) throws DatabaseException {
         OrderMapper.addItemlistToDB(itemList, orderId, connectionPool);
+    }
+
+    /**
+     * This method handles when an offer is sent to the customer.
+     * It changes the price to match the price entered by the salesperson and changes order status to confirmed.
+     * @param orderID required to identify correct order.
+     * @param salesPrice Price entered by the salesperson.
+     * @param connectionPool required to establish connection to the database.
+     * @return true if there is changes at 1 line in the database.
+     * @throws DatabaseException Is thrown there is no connection to the database or if input data is invalid.
+     * @author MrJustMeDahl
+     */
+    public static boolean sendOfferToCustomer(int orderID, double salesPrice, ConnectionPool connectionPool) throws DatabaseException {
+        return OrderMapper.sendOfferToCustomer(orderID, salesPrice, connectionPool);
     }
 }

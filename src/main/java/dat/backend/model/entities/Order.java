@@ -34,6 +34,14 @@ public class Order {
         this.itemList = itemList;
     }
 
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public void setIndicativePrice(double indicativePrice) {
+        this.indicativePrice = indicativePrice;
+    }
+
     public ItemList getItemList() {
         return itemList;
     }
