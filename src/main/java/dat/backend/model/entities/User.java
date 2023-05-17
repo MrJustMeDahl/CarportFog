@@ -165,14 +165,24 @@ public class User {
         return false;
     }
 
-
+    /**
+     * This method checks if theres only numbers in the user input, and returns a boolean
+     * @param phoneNumber
+     * @return
+     * @author Danyal
+     */
     public boolean checkPhoneNumber(String phoneNumber) {
 
 
         return phoneNumber.matches("\\d+");
     }
 
-
+    /**
+     * checks if the input is only strings
+     * @param fullName
+     * @return
+     * @author Danyal
+     */
     public boolean checkName(String fullName) {
 
         return !fullName.matches("\\d+");

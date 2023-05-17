@@ -44,7 +44,12 @@ public class CreateAccount extends HttpServlet
 
 
     /**
-
+     *
+     * @param request
+     * @param response
+     * @throws IOException
+     * @throws ServletException
+     * @author Danyal
      */
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
@@ -75,6 +80,7 @@ public class CreateAccount extends HttpServlet
                 user = UserFacade.createUser(email, password, Integer.parseInt(phoneNumber), address, fullName, "user", connectionPool);
             }else {
                 user = null;
+
             }
 
 

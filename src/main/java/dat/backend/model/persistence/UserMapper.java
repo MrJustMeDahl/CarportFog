@@ -72,7 +72,6 @@ class UserMapper {
         String sql = "INSERT INTO user(email, password, phoneNumber, address, fullName, role) values (?,?,?,?,?,?)";
         try (Connection connection = connectionPool.getConnection())
         {
-            System.out.println("linje 69");
             try (PreparedStatement ps = connection.prepareStatement(sql))
             {
                 ps.setString(1, email);
@@ -81,12 +80,9 @@ class UserMapper {
                 ps.setString(4, address);
                 ps.setString(5, fullName);
                 ps.setString(6, "user");
-                System.out.println("L78");
                 int rowsAffected = ps.executeUpdate();
-                System.out.println("L80");
                 if (rowsAffected == 1)
                 {
-                    System.out.println("L81");
                     user = new User(email, password, fullName, phoneNumber, address);
                 } else
                 {

@@ -30,6 +30,8 @@
             <input type="address" id="address" name="address"/>
             <input type="submit"  value="Opret"/>
 
+            <c:if test="${requestScope.errorMessage != null}"> <p>${requestScope.errorMessage}</p> </c:if>
+
         </form>
 
 
