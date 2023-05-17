@@ -108,4 +108,12 @@ public class OrderFacade {
     public static boolean sendOfferToCustomer(int orderID, double salesPrice, ConnectionPool connectionPool) throws DatabaseException {
         return OrderMapper.sendOfferToCustomer(orderID, salesPrice, connectionPool);
     }
+
+    public static boolean updateItemListForOrder(int orderID, ItemList itemList, ConnectionPool connectionPool) throws DatabaseException{
+        return OrderMapper.updateItemListForOrder(orderID, itemList, connectionPool);
+    }
+
+    public static boolean updateMeasurementsForOrder(int orderID, Carport carport, ConnectionPool connectionPool) throws DatabaseException{
+        return OrderMapper.updateMeasurementsForOrder(orderID, carport, connectionPool);
+    }
 }

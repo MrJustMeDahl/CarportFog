@@ -19,7 +19,7 @@
             <div class="card">
                 <div class="card-body">
                     <h1>Nye ordre:</h1>
-                    <table class="table table-hover align-center">
+                    <table class="table table-hover align-center table-responsive">
                         <form>
                             <thead>
                             <tr class="table-success">
@@ -63,9 +63,15 @@
                                                 <td>${user.name}</td>
                                                 <td>${user.email}</td>
                                                 <td>${user.phoneNumber}</td>
-                                                <td>${orders.carport.length}</td>
-                                                <td>${orders.carport.width}</td>
-                                                <td>${orders.carport.minHeight}</td>
+                                                <td colspan="1"><input type="number" class="table-responsive"
+                                                           value="${orders.carport.length}" name="length">
+                                                </td>
+                                                <td colspan="1"><input type="number" class="table-responsive"
+                                                           value="${orders.carport.width}" name="width">
+                                                </td>
+                                                <td colspan="1"><input type="number" class="table-responsive"
+                                                           value="${orders.carport.minHeight}" name="minHeight">
+                                                </td>
                                                 <td>${orders.price}</td>
                                                 <td><input type="number" class="table-responsive"
                                                            value="${orders.indicativePrice}" name="salesPrice">
@@ -75,25 +81,32 @@
                                                             value="${orders.orderID}" type="submit"
                                                             formaction="adminsendoffer" formmethod="post">Send tilbud
                                                     </button>
+                                                    <button class="btn btn-outline-primary mt-1" name="orderID"
+                                                            value="${orders.orderID}" type="submit"
+                                                            formaction="adminupdateorder" formmethod="post">Opdater
+                                                        ordre
+                                                    </button>
                                                     <button class="btn btn-outline-danger mt-1" name="orderID"
                                                             value="${orders.orderID}" type="submit"
                                                             formaction="admindeleteoffer" formmethod="post">Slet tilbud
                                                     </button>
                                                 </td>
                                                 <tr class="table-primary">
-                                                    <th colspan="3">Stykliste</th>
-                                                    <th colspan="2">Beskrivelse:</th>
+                                                    <th colspan="12">Stykliste</th>
+                                                </tr>
+                                                <tr class="table-primary">
+                                                    <th colspan="4">Beskrivelse:</th>
                                                     <th colspan="2">Længde:</th>
-                                                    <th colspan="1">Antal:</th>
-                                                    <th colspan="2">Note:</th>
+                                                    <th colspan="2">Antal:</th>
+                                                    <th colspan="4">Note:</th>
                                                 </tr>
                                                 <c:forEach items="${orders.itemList.materials}" var="itemListMaterial">
                                                     <tr>
-                                                        <td colspan="3"></td>
-                                                        <td colspan="2">${itemListMaterial.material.description}</td>
+                                                        <td colspan="4">${itemListMaterial.material.description}</td>
                                                         <td colspan="2">${itemListMaterial.material.length}</td>
-                                                        <td colspan="1">${itemListMaterial.amount}</td>
-                                                        <td colspan="2">${itemListMaterial.message} - ${itemListMaterial.partFor}</td>
+                                                        <td colspan="2">${itemListMaterial.amount}</td>
+                                                        <td colspan="4">${itemListMaterial.message}
+                                                            - ${itemListMaterial.partFor}</td>
                                                     </tr>
                                                 </c:forEach>
                                             </c:otherwise>

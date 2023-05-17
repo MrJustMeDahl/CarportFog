@@ -6,8 +6,8 @@ package dat.backend.model.entities;
  */
 public class Order {
 
-    private int orderID;
-    private int userID;
+    private final int orderID;
+    private final int userID;
     private Carport carport;
     private String orderStatus;
     private double price;
@@ -31,6 +31,18 @@ public class Order {
         this.orderStatus = orderStatus;
         this.price = price;
         this.indicativePrice = indicativePrice;
+        this.itemList = itemList;
+    }
+
+    public void setPrice() {
+        this.price = carport.calculatePrice();
+    }
+
+    public void setIndicativePrice() {
+        this.indicativePrice = carport.calculateIndicativePrice();
+    }
+
+    public void setItemList(ItemList itemList) {
         this.itemList = itemList;
     }
 

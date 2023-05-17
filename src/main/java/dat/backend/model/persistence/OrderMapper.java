@@ -14,6 +14,7 @@ import java.util.List;
 /**
  * This class contains all methods used to retrieve or alter order data in the database.
  * Every method in this class is static, and an instance of this class is never needed.
+ *
  * @MrJustMeDahl
  */
 public class OrderMapper {
@@ -229,6 +230,7 @@ public class OrderMapper {
 
     /**
      * This method returns a list of Order, where all orders have order status "ordered".
+     *
      * @param connectionPool required to establish connection to the database.
      * @return List of Order.
      * @throws DatabaseException Is thrown if there isn't a valid connection to the database or if the data in the database is invalid.
@@ -272,31 +274,32 @@ public class OrderMapper {
 
     /**
      * This method deletes an order from the database, it deletes everything to do with the order in orders table and itemList table.
-     * @param orderID ID number for the order you want to delete.
+     *
+     * @param orderID        ID number for the order you want to delete.
      * @param connectionPool required to establish connection to the database.
      * @return True if both statements succeeded in removing lines.
      * @throws DatabaseException Is thrown if there isn't a valid connection to the database.
      * @author MrJustMeDahl
      */
-    public static boolean deleteOrder(int orderID, ConnectionPool connectionPool) throws DatabaseException{
+    public static boolean deleteOrder(int orderID, ConnectionPool connectionPool) throws DatabaseException {
         String ordersSQL = "DELETE FROM orders WHERE orderId = ?";
         String itemListSQL = "DELETE FROM itemList WHERE orderId = ?";
         boolean itemList = false;
         boolean orders = false;
-        try(Connection connection = connectionPool.getConnection()){
-            try(PreparedStatement ps = connection.prepareStatement(itemListSQL)){
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(itemListSQL)) {
                 ps.setInt(1, orderID);
-                if(ps.executeUpdate() > 0){
+                if (ps.executeUpdate() > 0) {
                     itemList = true;
                 }
             }
-            try(PreparedStatement ps = connection.prepareStatement(ordersSQL)){
+            try (PreparedStatement ps = connection.prepareStatement(ordersSQL)) {
                 ps.setInt(1, orderID);
-                if(ps.executeUpdate() == 1){
+                if (ps.executeUpdate() == 1) {
                     orders = true;
                 }
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
             throw new DatabaseException("Failed to delete order with ordernumber: " + orderID + " from the database.");
         }
         return itemList && orders;
@@ -305,28 +308,81 @@ public class OrderMapper {
     /**
      * This method handles when an offer is sent to the customer.
      * It changes the price to match the price entered by the salesperson and changes order status to confirmed.
-     * @param orderID required to identify correct order.
-     * @param salesPrice Price entered by the salesperson.
+     *
+     * @param orderID        required to identify correct order.
+     * @param salesPrice     Price entered by the salesperson.
      * @param connectionPool required to establish connection to the database.
      * @return true if there is changes at 1 line in the database.
      * @throws DatabaseException Is thrown there is no connection to the database or if input data is invalid.
      * @author MrJustMeDahl
      */
     public static boolean sendOfferToCustomer(int orderID, double salesPrice, ConnectionPool connectionPool) throws DatabaseException {
-        String SQL = "UPDATE orders SET orders.indicativePrice = ?, orderStatus = ? WHERE orderId = ?";
-        try(Connection connection = connectionPool.getConnection()){
-            try(PreparedStatement ps = connection.prepareStatement(SQL)){
+        String SQL = "UPDATE orders SET indicativePrice = ?, orderStatus = ? WHERE orderId = ?";
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(SQL)) {
                 ps.setDouble(1, salesPrice);
                 ps.setString(2, "confirmed");
                 ps.setInt(3, orderID);
                 int linesAffected = ps.executeUpdate();
-                if(linesAffected == 1){
+                if (linesAffected == 1) {
                     return true;
                 }
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new DatabaseException("Failed to send offer to customer - order id number: " + orderID);
         }
         return false;
+    }
+
+    public static boolean updateItemListForOrder(int orderID, ItemList itemList, ConnectionPool connectionPool) throws DatabaseException {
+        String removeOldItemListSQL = "DELETE FROM itemList WHERE orderId = ?";
+        String insertNewItemListSQL = "INSERT INTO itemList (amount, orderId, materialVariantId, partFor, message) VALUES (?, ?, ?, ?, ?)";
+        boolean deleteSucces = false;
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps1 = connection.prepareStatement(removeOldItemListSQL)) {
+                ps1.setInt(1, orderID);
+                if (ps1.executeUpdate() > 0) {
+                    deleteSucces = true;
+                }
+            }
+            for (ItemListMaterial i : itemList.getMaterials()) {
+                try (PreparedStatement ps2 = connection.prepareStatement(insertNewItemListSQL)) {
+                    ps2.setInt(1, i.getAmount());
+                    ps2.setInt(2, orderID);
+                    ps2.setInt(3, i.getMaterial().getMaterialVariantID());
+                    ps2.setString(4, i.getPartFor());
+                    ps2.setString(5, i.getMessage());
+                    if (ps2.executeUpdate() != 1){
+                        throw new DatabaseException("Something went wrong inserting itemlist for order: " + orderID);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Failed to update itemlist for order: " + orderID);
+        }
+        return deleteSucces;
+    }
+
+    public static boolean updateMeasurementsForOrder(int orderID, Carport carport, ConnectionPool connectionPool) throws DatabaseException{
+        String SQL = "UPDATE orders SET carportLength = ?, carportWidth = ?, carportMinHeight = ?, price = ?, indicativePrice = ?, carportPrice = ?, carportIndicativePrice = ? WHERE orderId = ?";
+        boolean updateSucces = false;
+        try(Connection connection = connectionPool.getConnection()){
+            try(PreparedStatement ps = connection.prepareStatement(SQL)){
+                ps.setInt(1, carport.getLength());
+                ps.setInt(2, carport.getWidth());
+                ps.setInt(3, carport.getMinHeight());
+                ps.setDouble(4, carport.getPrice());
+                ps.setDouble(5, carport.getIndicativePrice());
+                ps.setDouble(6, carport.getPrice());
+                ps.setDouble(7, carport.getIndicativePrice());
+                ps.setInt(8, orderID);
+                if(ps.executeUpdate() == 1){
+                    updateSucces = true;
+                }
+            }
+        } catch (SQLException e){
+            throw new DatabaseException("Failed to update order with new measurements");
+        }
+        return updateSucces;
     }
 }
