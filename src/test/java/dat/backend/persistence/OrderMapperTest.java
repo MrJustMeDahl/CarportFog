@@ -165,10 +165,10 @@ public class OrderMapperTest {
         Purlin purlin1 = new Purlin(3, 3, "'45x195mm. spærtræ'", "træ", "spær", 38, 300);
         Rafter rafter1 = new Rafter(2, 2, "'45x195mm. spærtræ'", "træ", "rem", 40, 300);
 
-        ItemList itemList = new ItemList(500, 300, 210);
-        itemList.addMaterialToItemList(new ItemListMaterial(pole1, 1, "stolpe"));
-        itemList.addMaterialToItemList(new ItemListMaterial(purlin1, 1, "rem"));
-        itemList.addMaterialToItemList(new ItemListMaterial(rafter1, 1, "spær"));
+        ItemList itemList = new ItemList(500, 300, 210, false);
+        itemList.addMaterialToItemList(new ItemListMaterial(pole1, 1, "stolpe", "carport"));
+        itemList.addMaterialToItemList(new ItemListMaterial(purlin1, 1, "rem", "carport"));
+        itemList.addMaterialToItemList(new ItemListMaterial(rafter1, 1, "spær", "carport"));
 
         Carport carport = new Carport(itemList.getMaterialsForCarport(), 2000, 3000, 300, 500, 210);
 

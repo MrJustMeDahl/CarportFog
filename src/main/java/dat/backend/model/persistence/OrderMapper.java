@@ -10,19 +10,19 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Iterator;
 
 /**
  * This class contains all methods used to retrieve or alter order data in the database.
  * Every method in this class is static, and an instance of this class is never needed.
+ *
  * @MrJustMeDahl
  */
 public class OrderMapper {
 
     /**
      * This method retrieves a list of orders belonging to a specific user, from the database.
-     * @param userID user ID number - generated in the database.
+     *
+     * @param userID         user ID number - generated in the database.
      * @param connectionPool Required to establish connection to the database.
      * @return List of instances from the Order.java class - data for each instance is retrieved from the database.
      * @throws DatabaseException is thrown if there is no connection to the database, or if data retrieved from the database is invalid.
@@ -32,16 +32,25 @@ public class OrderMapper {
         List<Order> allOrders = new ArrayList<>();
         String sql = "SELECT * FROM orders WHERE userId = ?";
 
-        try(Connection conn = connectionPool.getConnection()){
-            try(PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = connectionPool.getConnection()) {
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setInt(1, userID);
                 ResultSet rs = ps.executeQuery();
-                while(rs.next()){
+                while (rs.next()) {
                     int orderID = rs.getInt("orderId");
                     int carportLength = rs.getInt("carportLength");
                     int carportWidth = rs.getInt("carportWidth");
                     int carportMinHeight = rs.getInt("carportMinHeight");
-                    ItemList itemList = new ItemList(carportLength, carportWidth, carportMinHeight);
+                    int shedLength = rs.getInt("shedLength");
+                    int shedWidth = rs.getInt("shedWidth");
+                    double shedPrice = rs.getDouble("shedPrice");
+                    double shedIndicativePrice = rs.getDouble("shedIndicativePrice");
+                    ItemList itemList;
+                    if (shedLength == 0) {
+                        itemList = new ItemList(carportLength, carportWidth, carportMinHeight, false);
+                    } else {
+                        itemList = new ItemList(carportLength, carportWidth, carportMinHeight, true);
+                    }
                     itemList = getItemListContentForOrder(orderID, itemList, connectionPool);
                     Carport carport = new Carport(itemList.getMaterialsForCarport(), rs.getInt("carportPrice"), rs.getInt("carportIndicativePrice"), carportWidth, carportLength, carportMinHeight);
                     String orderStatus = rs.getString("orderStatus");
@@ -50,75 +59,76 @@ public class OrderMapper {
                     allOrders.add(new Order(orderID, userID, carport, orderStatus, price, indicativePrice, itemList));
                 }
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
             throw new DatabaseException("Error retrieving orders from database.");
         }
         return allOrders;
     }
 
     /**
-     * This method generates an instance of Carport.java. The instance is made with data from the row, from the itemListView view in the database, that matches the given order ID.
-     * @param orderID ID number for the order you need the carport for.
+     * This method generates an instance of ItemList.java. Data for each ItemListMaterial element is retrieved from the itemListView view in the database, that matches the given order ID.
+     *
+     * @param orderID        ID number for the order you need the carport for.
+     * @param itemList       Empty ItemList that needs to filled with content for the given order.
      * @param connectionPool Required to establish connection to the database.
      * @return Carport including all the data it persists of.
      * @throws DatabaseException is thrown if there isn't a connection to the database or if the data in the database is invalid.
      * @author MrJustMeDahl
      */
-    public static ItemList getItemListContentForOrder(int orderID, ItemList itemList, ConnectionPool connectionPool) throws DatabaseException{
+    public static ItemList getItemListContentForOrder(int orderID, ItemList itemList, ConnectionPool connectionPool) throws DatabaseException {
         String SQL = "SELECT * FROM itemListView WHERE orderId = ?";
-        try(Connection conn = connectionPool.getConnection()){
-            try(PreparedStatement ps = conn.prepareStatement(SQL)){
+        try (Connection conn = connectionPool.getConnection()) {
+            try (PreparedStatement ps = conn.prepareStatement(SQL)) {
                 ps.setInt(1, orderID);
                 ResultSet rs = ps.executeQuery();
-                while(rs.next()){
-                    if(rs.getString("partFor").equals("carport")) {
-                        int materialID = rs.getInt("materialId");
-                        int materialVariantID = rs.getInt("materialVariantId");
-                        String description = rs.getString("materialDescription");
-                        String type = rs.getString("materialType");
-                        String function = rs.getString("buildFunction");
-                        double price = rs.getDouble("price");
-                        int length = rs.getInt("length");
-                        int amount = rs.getInt("amount");
-                        String message = rs.getString("message");
-                        Material newMaterial = null;
-                        switch (rs.getString("buildFunction")) {
-                            case "stolpe":
-                                newMaterial = new Post(materialID, materialVariantID, description, type, function, price, length);
-                                break;
-                            case "rem":
-                                newMaterial = new Purlin(materialID, materialVariantID, description, type, function, price, length);
-                                break;
-                            case "spær":
-                                newMaterial = new Rafter(materialID, materialVariantID, description, type, function, price, length);
-                                break;
-                            default:
-                                throw new DatabaseException("Function of: "+ description + " " + materialID + " is not recognised in database.");
-                        }
-                        itemList.addMaterialToItemList(new ItemListMaterial(newMaterial, amount, message));
+                while (rs.next()) {
+                    int materialID = rs.getInt("materialId");
+                    int materialVariantID = rs.getInt("materialVariantId");
+                    String description = rs.getString("materialDescription");
+                    String type = rs.getString("materialType");
+                    String function = rs.getString("buildFunction");
+                    double price = rs.getDouble("price");
+                    int length = rs.getInt("length");
+                    int amount = rs.getInt("amount");
+                    String message = rs.getString("message");
+                    Material newMaterial = null;
+                    switch (rs.getString("buildFunction")) {
+                        case "stolpe":
+                            newMaterial = new Post(materialID, materialVariantID, description, type, function, price, length);
+                            break;
+                        case "rem":
+                            newMaterial = new Purlin(materialID, materialVariantID, description, type, function, price, length);
+                            break;
+                        case "spær":
+                            newMaterial = new Rafter(materialID, materialVariantID, description, type, function, price, length);
+                            break;
+                        default:
+                            throw new DatabaseException("Function of: " + description + " " + materialID + " is not recognised in database.");
                     }
+                    String partFor = rs.getString("partFor");
+                    itemList.addMaterialToItemList(new ItemListMaterial(newMaterial, amount, message, partFor));
                 }
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             throw new DatabaseException("Error retrieving carport for order: " + orderID);
         }
         return itemList;
     }
 
     /**
-     * @param carport the Object, which will be generated with height, width and length from the user, later to be put into the order in the DB
-     * @param userId ID number for the user, which the order is made for.
-     * @param price Price is the final price for the order. (This will later be changeable for the admin)
+     * @param carport         the Object, which will be generated with height, width and length from the user, later to be put into the order in the DB
+     * @param userId          ID number for the user, which the order is made for.
+     * @param price           Price is the final price for the order. (This will later be changeable for the admin)
      * @param indicativePrice The price which is predetermined, before the admin has made a deal.
-     * @param connectionPool Is required for establishing connection to the DB.
+     * @param connectionPool  Is required for establishing connection to the DB.
      * @return Will return the order, which is being created by the method.
      * @throws DatabaseException is thrown if there isn't a connection to the database or if the data in the database is invalid.
      */
-    public static Order createOrder (Carport carport, int userId, double price, double indicativePrice,ItemList itemList, ConnectionPool connectionPool) throws DatabaseException {
+    public static Order createOrder(Carport carport, int userId, double price, double indicativePrice, ItemList itemList, ConnectionPool connectionPool) throws DatabaseException {
         int orderId = 0;
         String SQL = "INSERT INTO orders (price, indicativePrice, orderStatus, userId, carportLength, carportWidth, carportMinHeight, carportPrice, carportIndicativePrice) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try(Connection connection = connectionPool.getConnection()){
-            try (PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)){
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
 
                 ps.setDouble(1, price);
                 ps.setDouble(2, indicativePrice);
@@ -137,8 +147,7 @@ public class OrderMapper {
                     orderId = Integer.parseInt(rs.getString(1));
                 }
             }
-        }
-        catch (SQLException ex){
+        } catch (SQLException ex) {
             throw new DatabaseException(ex, "Error creating order in the Database");
         }
 
@@ -149,42 +158,44 @@ public class OrderMapper {
     /**
      * This method will update the orderstatus for an order in the DB. Its used for changing the order which is visible in the shoppingbasket.
      * for the user. After pressing "get offer", it will change the orderstatus from "pending" to "ordered".
-     * @param orderId Is the ID for the order itself.
+     *
+     * @param orderId        Is the ID for the order itself.
      * @param connectionPool Is required for establishing connection to the DB.
      * @throws DatabaseException is thrown if there isn't a connection to the database or if the data in the database is invalid.
      */
     public static void updateOrderOrdered(int orderId, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "UPDATE orders SET orders.orderStatus = ? WHERE orderId = ?";
 
-        try(Connection connection = connectionPool.getConnection()){
-            try(PreparedStatement ps = connection.prepareStatement(sql)){
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
 
                 ps.setString(1, "ordered");
                 ps.setInt(2, orderId);
                 ps.execute();
             }
-        } catch(SQLException e){
+        } catch (SQLException e) {
             throw new DatabaseException("Failed to update paid in database");
         }
     }
 
     /**
      * This method will update the orderstatus for an order in the DB to "payed"
-     * @param orderId Is the ID for the order itself.
+     *
+     * @param orderId        Is the ID for the order itself.
      * @param connectionPool Is required for establishing connection to the DB.
      * @throws DatabaseException is thrown if there isn't a connection to the database or if the data in the database is invalid.
      */
-    public static void updateOrderPayed (int orderId, ConnectionPool connectionPool) throws DatabaseException {
+    public static void updateOrderPayed(int orderId, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "UPDATE orders SET orders.orderStatus = ? WHERE orderId = ?";
 
-        try(Connection connection = connectionPool.getConnection()){
-            try(PreparedStatement ps = connection.prepareStatement(sql)){
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
 
                 ps.setString(1, "payed");
                 ps.setInt(2, orderId);
                 ps.execute();
             }
-        } catch(SQLException e){
+        } catch (SQLException e) {
             throw new DatabaseException("Failed to update paid in database");
         }
     }
@@ -192,39 +203,39 @@ public class OrderMapper {
     /**
      * This method will iterate through the hashmap which contains the materials needed for the carport. It will then be
      * put into the DB.
-     * @param itemList The Hashmap of the materials. The key is the object of the material, while the value is the amount
-     * @param orderId Is the ID for the order itself.
+     *
+     * @param itemList       The Hashmap of the materials. The key is the object of the material, while the value is the amount
+     * @param orderId        Is the ID for the order itself.
      * @param connectionPool Is required for establishing connection to the DB.
      * @throws DatabaseException is thrown if there isn't a connection to the database or if the data in the database is invalid.
      */
     public static void addItemlistToDB(ItemList itemList, int orderId, ConnectionPool connectionPool) throws DatabaseException {
 
         String SQL = "INSERT INTO itemList (amount, orderId, materialVariantId, partFor, message) VALUES (?, ?, ?, ?, ?)";
-        try(Connection connection = connectionPool.getConnection()){
-                for(ItemListMaterial i: itemList.getMaterials()){
-                    try (PreparedStatement ps = connection.prepareStatement(SQL)) {
-                        ps.setInt(1, i.getAmount());
-                        ps.setInt(2, orderId);
-                        ps.setInt(3, i.getMaterial().getMaterialVariantID());
-                        ps.setString(4, "carport");
-                        ps.setString(5, i.getMessage());
-                        ps.execute();
+        try (Connection connection = connectionPool.getConnection()) {
+            for (ItemListMaterial i : itemList.getMaterials()) {
+                try (PreparedStatement ps = connection.prepareStatement(SQL)) {
+                    ps.setInt(1, i.getAmount());
+                    ps.setInt(2, orderId);
+                    ps.setInt(3, i.getMaterial().getMaterialVariantID());
+                    ps.setString(4, i.getPartFor());
+                    ps.setString(5, i.getMessage());
+                    ps.execute();
 
                 }
             }
-        }
-        catch (SQLException ex){
+        } catch (SQLException ex) {
             throw new DatabaseException(ex, "Error creating order in the Database");
         }
     }
 
-    public static void deleteOrder(int orderId, ConnectionPool connectionPool) throws DatabaseException{
+    public static void deleteOrder(int orderId, ConnectionPool connectionPool) throws DatabaseException {
         String SQL = "DELETE FROM orders WHERE orderId = ?";
 
-        try(Connection connection = connectionPool.getConnection()){
-            try(PreparedStatement ps = connection.prepareStatement(SQL)){
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(SQL)) {
                 ps.setInt(1, orderId);
-             ps.executeUpdate();
+                ps.executeUpdate();
             }
 
         } catch (SQLException e) {

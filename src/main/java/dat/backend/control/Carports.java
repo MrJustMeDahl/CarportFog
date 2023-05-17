@@ -66,7 +66,7 @@ public class Carports extends HttpServlet
         int width = Integer.parseInt(request.getParameter("width"));
         int length = Integer.parseInt(request.getParameter("length"));
         int  height = Integer.parseInt(request.getParameter("height"));
-        ItemList itemList = new ItemList(length, width, height, (List<Post>) applicationScope.getAttribute("allPosts"), (List<Purlin>) applicationScope.getAttribute("allPurlins"), (List<Rafter>) applicationScope.getAttribute("allRafters"));
+        ItemList itemList = new ItemList(length, width, height, false, (List<Post>) applicationScope.getAttribute("allPosts"), (List<Purlin>) applicationScope.getAttribute("allPurlins"), (List<Rafter>) applicationScope.getAttribute("allRafters"));
 
         Carport carport = new Carport(itemList.getMaterialsForCarport(), width, length, height);
 
