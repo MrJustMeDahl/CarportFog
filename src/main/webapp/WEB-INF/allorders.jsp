@@ -32,6 +32,7 @@
 
                         <c:forEach var="allOrders" items="${sessionScope.allOrders}"
                                    varStatus="status">
+                            <c:if test="${allOrders.orderStatus.equals('ordered')}">
                             <tr>
                                 <td>${allOrders.orderID}</td>
                                 <td>
@@ -47,9 +48,83 @@
                                     </c:forEach>
 
                                 </td>
-                                <td>${allOrders.price}</td>
-                                <td>${allOrders.orderStatus}</td>
+                                <td>${allOrders.price} kr</td>
+
+                                <td>Mangler godkendelse</td>
+
+                                <td>
+                                    <button formaction="admingenerate3d" class="btn btn-outline-dark"
+                                            name="generate3d"> lav 3d model</button>
+
+
+                                </td>
+
                             </tr>
+                            </c:if>
+                        </c:forEach>
+
+                        <c:forEach var="allOrders" items="${sessionScope.allOrders}"
+                                   varStatus="status">
+                            <c:if test="${allOrders.orderStatus.equals('confirmed')}">
+                                <tr>
+                                    <td>${allOrders.orderID}</td>
+                                    <td>
+                                        <c:forEach var="allUsers" items="${sessionScope.allUsers}">
+                                            <c:if test="${allOrders.userID == allUsers.userID }">
+                                                <p>
+                                                        ${allUsers.name}<br/>
+                                                        ${allUsers.address}<br/>
+                                                        ${allUsers.email}<br/>
+                                                        ${allUsers.phoneNumber}
+                                                </p>
+                                            </c:if>
+                                        </c:forEach>
+
+                                    </td>
+                                    <td>${allOrders.price} kr</td>
+
+                                    <td>Godkendt</td>
+                                    <td>
+                                        <button formaction="admingenerate3d" class="btn btn-outline-dark"
+                                                name="generate3d"> lav 3d model</button>
+
+
+                                    </td>
+                                </tr>
+                            </c:if>
+                        </c:forEach>
+
+                        <c:forEach var="allOrders" items="${sessionScope.allOrders}"
+                                   varStatus="status">
+                            <c:if test="${allOrders.orderStatus.equals('paid')}">
+                                <tr>
+                                    <td>${allOrders.orderID}</td>
+                                    <td>
+                                        <c:forEach var="allUsers" items="${sessionScope.allUsers}">
+                                            <c:if test="${allOrders.userID == allUsers.userID }">
+                                                <p>
+                                                        ${allUsers.name}<br/>
+                                                        ${allUsers.address}<br/>
+                                                        ${allUsers.email}<br/>
+                                                        ${allUsers.phoneNumber}
+                                                </p>
+                                            </c:if>
+                                        </c:forEach>
+
+                                    </td>
+                                    <td>${allOrders.price} kr</td>
+
+                                    <td>Betalt</td>
+
+                                    <td>
+                                        <button formaction="admingenerate3d" class="btn btn-outline-dark"
+                                                name="generate3d"> lav 3d model</button>
+
+
+                                    </td>
+
+                                </tr>
+                            </c:if>
                         </c:forEach>
                     </table>
 

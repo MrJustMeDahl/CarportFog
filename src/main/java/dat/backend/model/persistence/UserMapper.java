@@ -147,6 +147,14 @@ class UserMapper {
         }
         return userSet;
     }
+
+    /**
+     * A method to retrieve all users from the DB to use on the all orders admin page.
+     * @param connectionPool
+     * @return a List of users
+     * @throws DatabaseException
+     * @author CarstenJuhl
+     */
     public static List<User> getAllUsers(ConnectionPool connectionPool)throws DatabaseException {
         List<User> allUsers = new ArrayList<>();
         String SQL = "SELECT * FROM user";

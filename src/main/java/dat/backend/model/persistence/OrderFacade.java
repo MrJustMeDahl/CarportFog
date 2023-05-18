@@ -118,6 +118,14 @@ public class OrderFacade {
     public static boolean updateMeasurementsForOrder(int orderID, Carport carport, ConnectionPool connectionPool) throws DatabaseException{
         return OrderMapper.updateMeasurementsForOrder(orderID, carport, connectionPool);
     }
+
+    /**
+     * This method handles the request to retrive all orders from the mapper, and forward it to the allOrders servlet
+     * @param connectionPool
+     * @return
+     * @throws DatabaseException
+     * @author CarstenJuhl
+     */
     public static List<Order> getAllOrders(ConnectionPool connectionPool)throws DatabaseException {
         return OrderMapper.getAllOrders(connectionPool);
     }

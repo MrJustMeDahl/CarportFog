@@ -385,6 +385,14 @@ public class OrderMapper {
         }
         return updateSucces;
     }
+
+    /**
+     * A method to retrieve all orders from DB, used on the admin allorder page.
+     * @param connectionPool
+     * @return a List of orders
+     * @throws DatabaseException
+     * @author CarstenJuhl
+     */
     public static List<Order> getAllOrders(ConnectionPool connectionPool) throws DatabaseException {
         List<Order> allOrders = new ArrayList<>();
         String SQL = "SELECT * FROM orders";
@@ -392,17 +400,32 @@ public class OrderMapper {
             try (PreparedStatement ps = connection.prepareStatement(SQL)) {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
-                    int orderId = rs.getInt("orderId");
-                    double price = rs.getDouble("price");
+                    int orderID = rs.getInt("orderId");
+                    int userID = rs.getInt("userId");
+                    int carportLength = rs.getInt("carportLength");
+                    int carportWidth = rs.getInt("carportWidth");
+                    int carportMinHeight = rs.getInt("carportMinHeight");
+                    int shedLength = rs.getInt("shedLength");
+                    int shedWidth = rs.getInt("shedWidth");
+                    double shedPrice = rs.getDouble("shedPrice");
+                    double shedIndicativePrice = rs.getDouble("shedIndicativePrice");
+                    ItemList itemList;
+                    if (shedLength == 0) {
+                        itemList = new ItemList(carportLength, carportWidth, carportMinHeight, false);
+                    } else {
+                        itemList = new ItemList(carportLength, carportWidth, carportMinHeight, true);
+                    }
+                    itemList = getItemListContentForOrder(orderID, itemList, connectionPool);
+                    Carport carport = new Carport(itemList.getMaterialsForCarport(), rs.getDouble("carportPrice"), rs.getDouble("carportIndicativePrice"), carportWidth, carportLength, carportMinHeight);
                     String orderStatus = rs.getString("orderStatus");
-                    int userId = rs.getInt("userId");
-
-                    allOrders.add(new Order(orderId,userId, orderStatus, price));
+                    double price = rs.getDouble("price");
+                    double indicativePrice = rs.getDouble("indicativePrice");
+                    allOrders.add(new Order(orderID, userID, carport, orderStatus, price, indicativePrice, itemList));
                 }
             }
         } catch (SQLException e) {
-            throw new DatabaseException("Failed to retrieve all Order data.");
+            throw new DatabaseException("Failed to retrieve new orders from the database.");
         }
-return allOrders;
+        return allOrders;
     }
 }
