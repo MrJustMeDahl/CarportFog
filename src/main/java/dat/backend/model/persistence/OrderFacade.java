@@ -109,10 +109,29 @@ public class OrderFacade {
         return OrderMapper.sendOfferToCustomer(orderID, salesPrice, connectionPool);
     }
 
+    /**
+     * This method inserts a new item list for an order.
+     * It deletes every itemlist row for that order and inserts a line for each ItemListMaterial in the ItemList
+     * @param orderID Needed to recognise which order to change.
+     * @param itemList An object that contains all the materials, messages, etc. for an order.
+     * @param connectionPool required to establish connection to the database.
+     * @return true if delete SQL query is successful.
+     * @throws DatabaseException is thrown if there isn't any rows inserted in itemList table.
+     * @author MrJustMeDahl
+     */
     public static boolean updateItemListForOrder(int orderID, ItemList itemList, ConnectionPool connectionPool) throws DatabaseException{
         return OrderMapper.updateItemListForOrder(orderID, itemList, connectionPool);
     }
 
+    /**
+     * This method updates every column in the order table for a specific order, except varying ids and the order status.
+     * @param orderID Needed to recognise which order to change.
+     * @param carport An object of the carport that belongs to the order - it contains all the data needed to update everything needed.
+     * @param connectionPool required to establish connection to the database.
+     * @return true if exactly 1 line is affected by the SQL query.
+     * @throws DatabaseException Is thrown there is no connection to the database or if input data is invalid.
+     * @author MrJustMeDahl
+     */
     public static boolean updateMeasurementsForOrder(int orderID, Carport carport, ConnectionPool connectionPool) throws DatabaseException{
         return OrderMapper.updateMeasurementsForOrder(orderID, carport, connectionPool);
     }
