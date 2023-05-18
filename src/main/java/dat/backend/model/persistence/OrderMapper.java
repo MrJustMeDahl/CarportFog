@@ -52,7 +52,8 @@ public class OrderMapper {
                         itemList = new ItemList(carportLength, carportWidth, carportMinHeight, true);
                     }
                     itemList = getItemListContentForOrder(orderID, itemList, connectionPool);
-                    Carport carport = new Carport(itemList.getMaterialsForCarport(), rs.getInt("carportPrice"), rs.getInt("carportIndicativePrice"), carportWidth, carportLength, carportMinHeight);
+                    Shed shed = new Shed(itemList.getMaterialsForShed(), shedWidth, shedLength, carportMinHeight);
+                    Carport carport = new Carport(itemList.getMaterialsForCarport(), rs.getInt("carportPrice"), rs.getInt("carportIndicativePrice"), carportWidth, carportLength, carportMinHeight, shed);
                     String orderStatus = rs.getString("orderStatus");
                     double price = rs.getDouble("price");
                     double indicativePrice = rs.getDouble("indicativePrice");
@@ -126,7 +127,7 @@ public class OrderMapper {
      */
     public static Order createOrder(Carport carport, int userId, double price, double indicativePrice, ItemList itemList, ConnectionPool connectionPool) throws DatabaseException {
         int orderId = 0;
-        String SQL = "INSERT INTO orders (price, indicativePrice, orderStatus, userId, carportLength, carportWidth, carportMinHeight, carportPrice, carportIndicativePrice) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String SQL = "INSERT INTO orders (price, indicativePrice, orderStatus, userId, carportLength, carportWidth, carportMinHeight, carportPrice, carportIndicativePrice, shedLength, shedWidth, shedPrice, shedIndicativePrice) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -139,6 +140,19 @@ public class OrderMapper {
                 ps.setInt(7, carport.getMinHeight());
                 ps.setFloat(8, (float) carport.getPrice());
                 ps.setFloat(9, (float) carport.getIndicativePrice());
+                if(carport.getShed() != null){
+                    ps.setInt(10, carport.getShed().getLength());
+                    ps.setInt(11, carport.getShed().getWidth());
+                    ps.setFloat(12, (float) carport.getShed().getPrice());
+                    ps.setFloat(13, (float) carport.getShed().getIndicativePrice());
+                }
+                else {
+                    ps.setInt(10, 0);
+                    ps.setInt(11, 0);
+                    ps.setFloat(12, 0);
+                    ps.setFloat(13, 0);
+                }
+
                 ps.execute();
                 ResultSet rs = ps.getGeneratedKeys();
                 while (rs.next()) {
@@ -398,4 +412,5 @@ public class OrderMapper {
         }
         return updateSucces;
     }
+
 }

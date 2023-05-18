@@ -15,6 +15,7 @@ public class Carport {
     private int length;
     private int minHeight;
     Shed shed;
+    Boolean checkShed = false;
 
     /**
      * This constructor is used when creating a new order - meaning you don't know the price yet, it will calculate the price of all materials for you and give you a suggested indicative price.
@@ -48,6 +49,8 @@ public class Carport {
      * @param indicativePrice Sales price.
      * @author MrJustMeDahl
      */
+
+
     public Carport(Map<Material, Integer> materials, double price, double indicativePrice, int width, int length, int minHeight){
         this.materials = materials;
         this.price = price;
@@ -55,6 +58,16 @@ public class Carport {
         this.width = width;
         this.length = length;
         this.minHeight = minHeight;
+
+    }
+    public Carport(Map<Material, Integer> materials, double price, double indicativePrice, int width, int length, int minHeight, Shed shed){
+        this.materials = materials;
+        this.price = price;
+        this.indicativePrice = indicativePrice;
+        this.width = width;
+        this.length = length;
+        this.minHeight = minHeight;
+        this.shed = shed;
     }
 
 
@@ -129,5 +142,21 @@ public class Carport {
 
     public void setMaterials(Map<Material, Integer> materials) {
         this.materials = materials;
+    }
+
+    public Shed getShed() {
+        return shed;
+    }
+
+    public void setShed(Shed shed) {
+        this.shed = shed;
+    }
+
+    public Boolean getCheckShed() {
+        return checkShed;
+    }
+
+    public void setCheckShed(Boolean checkShed) {
+        this.checkShed = checkShed;
     }
 }

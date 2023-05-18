@@ -27,6 +27,8 @@
             <th>Carport Højde:</th>
             <th>Carport Bredde:</th>
             <th>Carport Længde:</th>
+            <th>Skur Længde: </th>
+            <th>Skur Bredde: </th>
             <th></th>
             </thead>
             <form>
@@ -58,6 +60,12 @@
 
                             <td>
                                     ${order.carport.length}
+                            </td>
+                            <td>
+                                    ${order.carport.shed.length}
+                            </td>
+                            <td>
+                                    ${order.carport.shed.width}
                             </td>
 
 

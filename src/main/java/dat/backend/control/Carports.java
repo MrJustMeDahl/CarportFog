@@ -76,11 +76,22 @@ public class Carports extends HttpServlet
         int width = Integer.parseInt(request.getParameter("width"));
         int length = Integer.parseInt(request.getParameter("length"));
         int  height = Integer.parseInt(request.getParameter("height"));
-        
-        //int shedLength = Integer.parseInt(request.getParameter("shedLength"));
-        //int shedWidth = Integer.parseInt(request.getParameter("shedWidth"));
 
-        //Shed shed = new Shed(1000, 2000, shedWidth, shedLength, height);
+
+        Boolean check = Boolean.valueOf(request.getParameter("shedCheck"));
+        int shedLength = 0;
+        int shedWidth = 0;
+
+
+        if(check == true){
+
+            shedLength = Integer.parseInt(request.getParameter("shedLength"));
+            shedWidth = Integer.parseInt(request.getParameter("shedWidth"));
+
+        }
+
+
+
         
         ItemList itemList = null;
         try {
@@ -89,12 +100,24 @@ public class Carports extends HttpServlet
             request.setAttribute("errormessage", e);
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }
-        Carport carport = new Carport(itemList.getMaterialsForCarport(), width, length, height);
+            Carport carport = new Carport(itemList.getMaterialsForCarport(), width, length, height);
 
+        if (check == true){
+            Shed shed = new Shed(itemList.getMaterialsForShed(), shedWidth, shedLength, height);
+            carport.setShed(shed);
+            System.out.println("SKURSET ER LIG MED" + shed);
+            System.out.println("SKURSET FOR CARPORT ER LIG MED " + carport.getShed());
+            carport.setCheckShed(true);
+            request.setAttribute("shed", 1);
+        }
+        else {
+            request.setAttribute("shed", 0);
+        }
 
         try{
             Order order = OrderFacade.createOrder(carport, user.getUserID(), carport.getPrice(), carport.getIndicativePrice(), itemList, connectionPool);
             OrderFacade.addItemlistToDB(order.getItemList(), order.getOrderID(), connectionPool);
+            System.out.println("SKURSET FOR ORDER OG CARPORT ER LIG MED " + order.getCarport().getShed());
             request.getRequestDispatcher("shoppingbasket").forward(request, response);
         }
         catch (DatabaseException e){

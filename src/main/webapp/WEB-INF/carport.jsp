@@ -80,6 +80,9 @@
                 <br/>
 
                 <br/>
+
+                <input type="hidden" name="shedCheck" value="true">
+
             </c:if>
 
 
