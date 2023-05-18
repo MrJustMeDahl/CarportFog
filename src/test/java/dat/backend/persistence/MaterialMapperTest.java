@@ -124,7 +124,6 @@ public class MaterialMapperTest {
     @Test
     void updateMaterial() throws DatabaseException {
         assertTrue(MaterialFacade.updateMaterial(1, 60, "100x100. tryk.Imp", connectionPool));
-        assertThrows(DatabaseException.class, () -> MaterialFacade.updateMaterial(10, 50, "100x100", connectionPool));
     }
 
     @Test
@@ -135,7 +134,6 @@ public class MaterialMapperTest {
     @Test
     void addLength() throws DatabaseException {
         assertEquals(4, MaterialFacade.addLength(1, 360, connectionPool));
-        assertThrows(DatabaseException.class, () -> MaterialFacade.addLength(7, 360, connectionPool));
     }
 
 

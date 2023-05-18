@@ -112,4 +112,5 @@ class UserMapperTest {
         Set<User> users = UserFacade.getUsersForOrders(orders, connectionPool);
         assertEquals(2, users.size());
     }
+
 }

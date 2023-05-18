@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -205,6 +206,13 @@ public class OrderMapperTest {
         assertTrue(OrderFacade.sendOfferToCustomer(3, 500, connectionPool));
         assertFalse(OrderFacade.sendOfferToCustomer(4, 2000, connectionPool));
     }
+
+    @Test
+    void getAllOrders() throws DatabaseException{
+        List allOrders = OrderMapper.getAllOrders( connectionPool);
+        assertEquals(3, allOrders.size());
+    }
+
 
     @Test
     void updateItemListForOrder() throws DatabaseException{

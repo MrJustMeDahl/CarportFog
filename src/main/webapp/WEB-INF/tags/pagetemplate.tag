@@ -44,9 +44,6 @@
                     <c:if test="${sessionScope.user == null }">
                         <a class="nav-item nav-link" href="${pageContext.request.contextPath}/login.jsp">Login</a>
                     </c:if>
-                    <c:if test="${sessionScope.user != null }">
-                        <a class="nav-item nav-link" href="${pageContext.request.contextPath}/logout">Log out</a>
-                    </c:if>
                     <c:if test="${sessionScope.user.role == 'admin'}">
                         <div class="dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
@@ -58,8 +55,13 @@
                                        href="${pageContext.request.contextPath}/editchosenmaterialfunction">Materiale side</a></li>
                                 <li><a class="nav-item nav-link"
                                 href="${pageContext.request.contextPath}/adminneworders">Nye ordre</a></li>
+                                <li><a class="nav-item nav-link"
+                                href="${pageContext.request.contextPath}/allorders">Ordre oversigt</a></li>
                             </ul>
                         </div>
+                    </c:if>
+                    <c:if test="${sessionScope.user != null }">
+                        <a class="nav-item nav-link" href="${pageContext.request.contextPath}/logout">Log out</a>
                     </c:if>
                 </div>
             </div>

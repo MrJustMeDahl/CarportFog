@@ -3,8 +3,10 @@ package dat.backend.model.persistence;
 import dat.backend.model.entities.Carport;
 import dat.backend.model.entities.ItemList;
 import dat.backend.model.entities.Order;
+import dat.backend.model.entities.User;
 import dat.backend.model.exceptions.DatabaseException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -135,4 +137,16 @@ public class OrderFacade {
     public static boolean updateMeasurementsForOrder(int orderID, Carport carport, ConnectionPool connectionPool) throws DatabaseException{
         return OrderMapper.updateMeasurementsForOrder(orderID, carport, connectionPool);
     }
+
+    /**
+     * This method handles the request to retrive all orders from the mapper, and forward it to the allOrders servlet
+     * @param connectionPool
+     * @return
+     * @throws DatabaseException
+     * @author CarstenJuhl
+     */
+    public static List<Order> getAllOrders(ConnectionPool connectionPool)throws DatabaseException {
+        return OrderMapper.getAllOrders(connectionPool);
+    }
+
 }
