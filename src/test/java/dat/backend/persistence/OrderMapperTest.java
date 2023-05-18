@@ -5,17 +5,14 @@ import dat.backend.model.exceptions.DatabaseException;
 import dat.backend.model.persistence.ConnectionPool;
 import dat.backend.model.persistence.OrderFacade;
 import dat.backend.model.persistence.OrderMapper;
-import dat.backend.model.persistence.UserFacade;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -77,7 +74,7 @@ public class OrderMapperTest {
                         "(55, '97x97mm. trykimp.', 1, 1), (35, '45x195mm. spærtræ', 1, 2), (35, '45x195mm. spærtræ', 1, 3);");
                 stmt.execute("INSERT into fog_test.materialVariant (length, materialId) VALUES (330, 1), (420, 2), (360, 3);");
                 stmt.execute("INSERT INTO fog_test.orders (price, indicativePrice, orderStatus, userId, carportLength, carportWidth, carportMinHeight, carportPrice, carportIndicativePrice) VALUES " +
-                        "(1000, 1500, 'pending', 1, 500, 300, 210, 1000, 1500), (800, 1350, 'paid', 2, 400, 250, 180, 800, 1500), (0, 200, 'closed', 1, 800, 250, 210, 0, 200);");
+                        "(1000, 1500, 'pending', 1, 500, 300, 210, 1000, 1500), (800, 1350, 'paid', 2, 400, 250, 180, 800, 1500), (0, 200, 'ordered', 1, 800, 250, 210, 0, 200);");
                 stmt.execute("INSERT INTO fog_test.itemList (amount, orderId, materialVariantId, partFor) VALUES (4, 1, 1, 'carport'), (10, 1, 2, 'carport'), (8, 1, 3, 'carport'), " +
                         "(4, 2, 1, 'carport'), (2, 2, 2, 'carport'), (30, 2, 3, 'carport'), (8, 3, 1, 'carport')");
             }
@@ -102,6 +99,7 @@ public class OrderMapperTest {
         User admin = new User(2, "admin@adminsen.dk", "1234", "Admin Adminsen", 87654321, "Danmarksgade 2", "admin", connectionPool);
         assertEquals(1, user.getOrders().get(0).getUserID());
         assertEquals(2, admin.getOrders().get(0).getUserID());
+        assertEquals(1, user.getOrders().get(1).getUserID());
 
         assertEquals(1500, user.getOrders().get(0).getIndicativePrice());
         assertEquals(800, admin.getOrders().get(0).getPrice());
@@ -109,17 +107,16 @@ public class OrderMapperTest {
         materials.put(new Post(-1, -1, "97x97mm. trykimp.", "træ", "stolpe", 55, 330), 4);
         Carport carport = new Carport(materials, 1000, 1500, 300, 500, 210);
         assertEquals(carport.getLength(), user.getOrders().get(0).getCarport().getLength());
+        assertEquals(330, user.getOrders().get(1).getItemList().getMaterials().get(0).getMaterial().getLength());
     }
 
     @Test
-    void getMaterialsForCarport() throws DatabaseException{
-        Map<Material, Integer> materialsOrderId1 = OrderMapper.getMaterialsForCarport(1, connectionPool);
-        Map<Material, Integer> materialsOrderId3 = OrderMapper.getMaterialsForCarport(3, connectionPool);
-        assertEquals(3, materialsOrderId1.size());
-        for(Map.Entry<Material, Integer> m: materialsOrderId3.entrySet()){
-            assertEquals("97x97mm. trykimp.", m.getKey().getDescription());
-            assertEquals(8, m.getValue());
-        }
+    void getItemListContentForOrder() throws DatabaseException{
+        ItemList itemList = new ItemList(400, 350, 210, false);
+        OrderMapper.getItemListContentForOrder(1, itemList, connectionPool);
+        assertEquals(3, itemList.getMaterials().size());
+        assertEquals(10, itemList.getMaterials().get(1).getAmount());
+        assertEquals(3, itemList.getMaterials().get(2).getMaterial().getMaterialVariantID());
     }
 
     @Test
@@ -132,7 +129,7 @@ public class OrderMapperTest {
         try (Connection testConnection = connectionPool.getConnection()) {
             try  {
 
-                OrderFacade.createOrder(carport,user.getUserID(), 2000, 3000, connectionPool);
+                OrderFacade.createOrder(carport,user.getUserID(), 2000, 3000,null, connectionPool);
                 List testlist = OrderFacade.getOrdersByUserID(user.getUserID(), connectionPool);
                 Order testorder = (Order) testlist.get(0);
 
@@ -166,6 +163,20 @@ public class OrderMapperTest {
         assertEquals(testorder.getOrderStatus(), "ordered");
 
     }
+
+    @Test
+    void getNewOrders() throws DatabaseException{
+        List<Order> newOrders = OrderMapper.getNewOrders(connectionPool);
+        assertEquals(1, newOrders.size());
+        assertEquals(1, newOrders.get(0).getCarport().getMaterials().size());
+        assertEquals(1, newOrders.get(0).getUserID());
+    }
+
+    @Test
+    void deleteOrder() throws DatabaseException {
+        assertTrue(OrderFacade.deleteOrder(1, connectionPool));
+        assertFalse(OrderFacade.deleteOrder(1, connectionPool));
+    }
     @Test
     void addItemlistToDB() throws DatabaseException{
 
@@ -174,19 +185,24 @@ public class OrderMapperTest {
         Purlin purlin1 = new Purlin(3, 3, "'45x195mm. spærtræ'", "træ", "spær", 38, 300);
         Rafter rafter1 = new Rafter(2, 2, "'45x195mm. spærtræ'", "træ", "rem", 40, 300);
 
-        Map<Material, Integer> materials = new HashMap<Material, Integer>();
+        ItemList itemList = new ItemList(500, 300, 210, false);
+        itemList.addMaterialToItemList(new ItemListMaterial(pole1, 1, "stolpe", "carport"));
+        itemList.addMaterialToItemList(new ItemListMaterial(purlin1, 1, "rem", "carport"));
+        itemList.addMaterialToItemList(new ItemListMaterial(rafter1, 1, "spær", "carport"));
 
-        materials.put(pole1, 1);
-        materials.put(purlin1, 1);
-        materials.put(rafter1, 1);
+        Carport carport = new Carport(itemList.getMaterialsForCarport(), 2000, 3000, 300, 500, 210);
 
-        Carport carport = new Carport(materials, 2000, 3000, 300, 500, 210);
-
-        OrderFacade.addItemlistToDB(materials, orderId, connectionPool);
+        OrderFacade.addItemlistToDB(itemList, orderId, connectionPool);
         List testlist = OrderFacade.getOrdersByUserID(1, connectionPool);
         Order testorder = (Order) testlist.get(0);
 
         assertEquals(carport.getMaterials().size() + 3, testorder.getCarport().getMaterials().size());
 
+    }
+
+    @Test
+    void sendOfferToCustomer() throws DatabaseException{
+        assertTrue(OrderFacade.sendOfferToCustomer(3, 500, connectionPool));
+        assertFalse(OrderFacade.sendOfferToCustomer(4, 2000, connectionPool));
     }
 }

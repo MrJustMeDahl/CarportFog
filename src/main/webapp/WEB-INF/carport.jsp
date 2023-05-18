@@ -37,8 +37,6 @@
             </select>
             <br/>
             bredde: <select name="width">
-                <option value="250">250 cm</option>
-                <option value="280">280 cm</option>
                 <option value="310">310 cm</option>
                 <option value="340">340 cm</option>
                 <option value="370">370 cm</option>

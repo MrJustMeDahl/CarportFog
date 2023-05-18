@@ -6,12 +6,13 @@ package dat.backend.model.entities;
  */
 public class Order {
 
-    private int orderID;
-    private int userID;
+    private final int orderID;
+    private final int userID;
     private Carport carport;
     private String orderStatus;
     private double price;
     private double indicativePrice;
+    private ItemList itemList;
 
     /**
      * Constructor is used for creating a new order and generating an existing order from the database.
@@ -23,13 +24,38 @@ public class Order {
      * @param indicativePrice Suggested sales price of the entire order.
      * @author MrJustMeDahl
      */
-    public Order(int orderID, int userID, Carport carport, String orderStatus, double price, double indicativePrice){
+    public Order(int orderID, int userID, Carport carport, String orderStatus, double price, double indicativePrice, ItemList itemList){
         this.orderID = orderID;
         this.userID = userID;
         this.carport = carport;
         this.orderStatus = orderStatus;
         this.price = price;
         this.indicativePrice = indicativePrice;
+        this.itemList = itemList;
+    }
+
+    public void setPrice() {
+        this.price = carport.calculatePrice();
+    }
+
+    public void setIndicativePrice() {
+        this.indicativePrice = carport.calculateIndicativePrice();
+    }
+
+    public void setItemList(ItemList itemList) {
+        this.itemList = itemList;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public void setIndicativePrice(double indicativePrice) {
+        this.indicativePrice = indicativePrice;
+    }
+
+    public ItemList getItemList() {
+        return itemList;
     }
 
     public int getOrderID() {

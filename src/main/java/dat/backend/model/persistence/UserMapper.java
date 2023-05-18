@@ -1,10 +1,14 @@
 package dat.backend.model.persistence;
 
 import dat.backend.model.config.ApplicationStart;
+import dat.backend.model.entities.Order;
 import dat.backend.model.entities.User;
 import dat.backend.model.exceptions.DatabaseException;
 
 import java.sql.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -102,4 +106,43 @@ class UserMapper {
     }
 
 
+    /**
+     * This methods retrieves a Set of user objects from the database, who are owners of one or more orders from the given list.
+     * @param orders List of Order objects
+     * @param connectionPool required to establish connection to the database.
+     * @return Set of User objects
+     * @throws DatabaseException Is thrown if there is no connection to the database or if data is invalid.
+     * @author MrJustMeDahl
+     */
+    static Set<User> getUsersForOrders(List<Order> orders, ConnectionPool connectionPool) throws DatabaseException {
+        Set<User> userSet = new HashSet<>();
+        String SQL = "SELECT * FROM user WHERE userId = ?";
+        try(Connection connection = connectionPool.getConnection()){
+            try(PreparedStatement ps = connection.prepareStatement(SQL)){
+                for(Order o: orders){
+                    ps.setInt(1, o.getUserID());
+                    User user = null;
+                    ResultSet rs = ps.executeQuery();
+                    while(rs.next()){
+                        int userID = rs.getInt("userId");
+                        String email = rs.getString("email");
+                        String password = rs.getString("password");
+                        String name = rs.getString("FullName");
+                        int phoneNumber = rs.getInt("phoneNumber");
+                        String address = rs.getString("address");
+                        String role = rs.getString("role");
+                        if(ApplicationStart.getConnectionPool() == null) {
+                            user = new User(userID, email, password, name, phoneNumber, address, role, connectionPool);
+                        } else {
+                            user = new User(userID, email, password, name, phoneNumber, address, role);
+                        }
+                        userSet.add(user);
+                    }
+                }
+            }
+        } catch (SQLException e){
+            throw new DatabaseException("Failed to retrieve users with new orders.");
+        }
+        return userSet;
+    }
 }

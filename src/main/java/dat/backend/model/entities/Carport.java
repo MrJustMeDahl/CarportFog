@@ -68,7 +68,8 @@ public class Carport {
         for(Map.Entry<Material, Integer> m: materials.entrySet()){
             price += m.getKey().calculateActualPrice()*m.getValue();
         }
-        return price;
+        this.price = Math.ceil(price);
+        return this.price;
     }
 
     /**
@@ -78,7 +79,8 @@ public class Carport {
      */
     public double calculateIndicativePrice(){
         double indicativePrice = ((100*price)/61)*1.25;
-        return indicativePrice;
+        this.indicativePrice = Math.ceil(indicativePrice);
+        return this.indicativePrice;
     }
 
     public double getPrice() {
@@ -123,5 +125,9 @@ public class Carport {
 
     public void setMinHeight(int minHeight) {
         this.minHeight = minHeight;
+    }
+
+    public void setMaterials(Map<Material, Integer> materials) {
+        this.materials = materials;
     }
 }
