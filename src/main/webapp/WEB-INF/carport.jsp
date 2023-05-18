@@ -65,19 +65,19 @@
             <c:if test="${requestScope.shed == 1}">
                 <h5>Skur</h5>
                 Længde for skur: <select name="shedLength">
-                <option value="100">180 cm</option>
-                <option value="120">210 cm</option>
-                <option value="140">240 cm</option>
-                <option value="160">270 cm</option>
-                <option value="180">300 cm</option>
+                <option value="100">100 cm</option>
+                <option value="120">120 cm</option>
+                <option value="140">140 cm</option>
+                <option value="160">160 cm</option>
+                <option value="180">180 cm</option>
             </select>
                 <br/>
                 Bredde for skur: <select name="shedWidth">
-                <option value="100">180 cm</option>
-                <option value="120">210 cm</option>
-                <option value="140">240 cm</option>
-                <option value="160">270 cm</option>
-                <option value="180">300 cm</option>
+                <option value="100">100 cm</option>
+                <option value="120">120 cm</option>
+                <option value="140">140 cm</option>
+                <option value="160">160 cm</option>
+                <option value="180">180 cm</option>
             </select>
                 <br/>
 
