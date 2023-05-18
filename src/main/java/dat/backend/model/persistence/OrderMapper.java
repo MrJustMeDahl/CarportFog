@@ -334,6 +334,16 @@ public class OrderMapper {
         return false;
     }
 
+    /**
+     * This method inserts a new item list for an order.
+     * It deletes every itemlist row for that order and inserts a line for each ItemListMaterial in the ItemList
+     * @param orderID Needed to recognise which order to change.
+     * @param itemList An object that contains all the materials, messages, etc. for an order.
+     * @param connectionPool required to establish connection to the database.
+     * @return true if delete SQL query is successful.
+     * @throws DatabaseException is thrown if there isn't any rows inserted in itemList table.
+     * @author MrJustMeDahl
+     */
     public static boolean updateItemListForOrder(int orderID, ItemList itemList, ConnectionPool connectionPool) throws DatabaseException {
         String removeOldItemListSQL = "DELETE FROM itemList WHERE orderId = ?";
         String insertNewItemListSQL = "INSERT INTO itemList (amount, orderId, materialVariantId, partFor, message) VALUES (?, ?, ?, ?, ?)";
@@ -352,7 +362,7 @@ public class OrderMapper {
                     ps2.setInt(3, i.getMaterial().getMaterialVariantID());
                     ps2.setString(4, i.getPartFor());
                     ps2.setString(5, i.getMessage());
-                    if (ps2.executeUpdate() != 1){
+                    if (ps2.executeUpdate() != 0){
                         throw new DatabaseException("Something went wrong inserting itemlist for order: " + orderID);
                     }
                 }
@@ -363,6 +373,15 @@ public class OrderMapper {
         return deleteSucces;
     }
 
+    /**
+     * This method updates every column in the order table for a specific order, except varying ids and the order status.
+     * @param orderID Needed to recognise which order to change.
+     * @param carport An object of the carport that belongs to the order - it contains all the data needed to update everything needed.
+     * @param connectionPool required to establish connection to the database.
+     * @return true if exactly 1 line is affected by the SQL query.
+     * @throws DatabaseException Is thrown there is no connection to the database or if input data is invalid.
+     * @author MrJustMeDahl
+     */
     public static boolean updateMeasurementsForOrder(int orderID, Carport carport, ConnectionPool connectionPool) throws DatabaseException{
         String SQL = "UPDATE orders SET carportLength = ?, carportWidth = ?, carportMinHeight = ?, price = ?, indicativePrice = ?, carportPrice = ?, carportIndicativePrice = ? WHERE orderId = ?";
         boolean updateSucces = false;
