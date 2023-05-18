@@ -3,10 +3,12 @@ package dat.backend.control;
 import dat.backend.model.config.ApplicationStart;
 import dat.backend.model.entities.*;
 import dat.backend.model.exceptions.DatabaseException;
+import dat.backend.model.exceptions.NoMaterialFoundException;
 import dat.backend.model.persistence.ConnectionPool;
 import dat.backend.model.persistence.OrderFacade;
 import dat.backend.model.persistence.OrderMapper;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @WebServlet(name = "carport", urlPatterns = {"/carport"} )
@@ -59,21 +61,25 @@ public class Carports extends HttpServlet
     {
         response.setContentType("text/html");
         HttpSession session = request.getSession();
-
-        Map<Material, Integer> materials = new HashMap<Material, Integer>();
-
+        ServletContext applicationScope = getServletContext();
         User user = (User) session.getAttribute("user");
 
         int width = Integer.parseInt(request.getParameter("width"));
         int length = Integer.parseInt(request.getParameter("length"));
         int  height = Integer.parseInt(request.getParameter("height"));
-
-        Carport carport = new Carport(materials, 5000, 6000, width, length, height);
+        ItemList itemList = null;
+        try {
+            itemList = new ItemList(length, width, height, false, (List<Post>) applicationScope.getAttribute("allPosts"), (List<Purlin>) applicationScope.getAttribute("allPurlins"), (List<Rafter>) applicationScope.getAttribute("allRafters"));
+        } catch (NoMaterialFoundException e){
+            request.setAttribute("errormessage", e);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+        }
+        Carport carport = new Carport(itemList.getMaterialsForCarport(), width, length, height);
 
 
         try{
-            Order order = OrderFacade.createOrder(carport, user.getUserID(), carport.getPrice(), carport.getIndicativePrice(), connectionPool);
-            OrderFacade.addItemlistToDB(materials, order.getOrderID(), connectionPool);
+            Order order = OrderFacade.createOrder(carport, user.getUserID(), carport.getPrice(), carport.getIndicativePrice(), itemList, connectionPool);
+            OrderFacade.addItemlistToDB(order.getItemList(), order.getOrderID(), connectionPool);
             request.getRequestDispatcher("shoppingbasket").forward(request, response);
         }
         catch (DatabaseException e){

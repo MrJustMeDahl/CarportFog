@@ -57,6 +57,8 @@
                                 <li><a class="nav-item nav-link"
                                        href="${pageContext.request.contextPath}/editchosenmaterialfunction">Materiale side</a></li>
                                 <li><a class="nav-item nav-link"
+                                href="${pageContext.request.contextPath}/adminneworders">Nye ordre</a></li>
+                                <li><a class="nav-item nav-link"
                                 href="${pageContext.request.contextPath}/allorders">Ordre oversigt</a></li>
                             </ul>
                         </div>

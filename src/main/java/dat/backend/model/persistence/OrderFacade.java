@@ -1,14 +1,13 @@
 package dat.backend.model.persistence;
 
 import dat.backend.model.entities.Carport;
-import dat.backend.model.entities.Material;
+import dat.backend.model.entities.ItemList;
 import dat.backend.model.entities.Order;
 import dat.backend.model.entities.User;
 import dat.backend.model.exceptions.DatabaseException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This class is a facade for OrderMapper.java. For the sake of simplicity and making the class easier to read.
@@ -38,8 +37,8 @@ public class OrderFacade {
      * @return Will return the order, which is being created by the method.
      * @throws DatabaseException is thrown if there isn't a connection to the database or if the data in the database is invalid.
      */
-    public static Order createOrder (Carport carport, int userId, double price, double indicativePrice, ConnectionPool connectionPool) throws DatabaseException {
-        return OrderMapper.createOrder(carport, userId, price, indicativePrice, connectionPool);
+    public static Order createOrder (Carport carport, int userId, double price, double indicativePrice, ItemList itemList, ConnectionPool connectionPool) throws DatabaseException {
+        return OrderMapper.createOrder(carport, userId, price, indicativePrice, itemList, connectionPool);
     }
 
     /**
@@ -54,6 +53,17 @@ public class OrderFacade {
     }
 
     /**
+     * This method returns a list of Order, where all orders have order status "ordered".
+     * @param connectionPool required to establish connection to the database.
+     * @return List of Order.
+     * @throws DatabaseException Is thrown if there isn't a valid connection to the database or if the data in the database is invalid.
+     * @author MrJustMeDahl
+     */
+    public static List<Order> getNewOrders(ConnectionPool connectionPool) throws DatabaseException {
+        return OrderMapper.getNewOrders(connectionPool);
+    }
+
+    /**
      * This method will update the orderstatus for an order in the DB to "payed"
      * @param orderId Is the ID for the order itself.
      * @param connectionPool Is required for establishing connection to the DB.
@@ -65,6 +75,17 @@ public class OrderFacade {
     }
 
     /**
+     * This method deletes an order from the database, it deletes everything to do with the order in orders table and itemList table.
+     * @param orderID ID number for the order you want to delete.
+     * @param connectionPool required to establish connection to the database.
+     * @return True if both statements succeeded in removing lines.
+     * @throws DatabaseException Is thrown if there isn't a valid connection to the database.
+     * @author MrJustMeDahl
+     */
+    public static boolean deleteOrder(int orderID, ConnectionPool connectionPool) throws DatabaseException{
+        return OrderMapper.deleteOrder(orderID, connectionPool);
+    }
+    /**
      * This method will iterate through the hashmap which contains the materials needed for the carport. It will then be
      * put into the DB.
      * @param itemList The Hashmap of the materials. The key is the object of the material, while the value is the amount
@@ -72,14 +93,31 @@ public class OrderFacade {
      * @param connectionPool Is required for establishing connection to the DB.
      * @throws DatabaseException is thrown if there isn't a connection to the database or if the data in the database is invalid.
      */
-    public static void addItemlistToDB(Map<Material, Integer> itemList, int orderId, ConnectionPool connectionPool) throws DatabaseException {
+    public static void addItemlistToDB(ItemList itemList, int orderId, ConnectionPool connectionPool) throws DatabaseException {
         OrderMapper.addItemlistToDB(itemList, orderId, connectionPool);
     }
 
-    public static void deleteOrder(int orderId, ConnectionPool connectionPool) throws DatabaseException{
-        OrderMapper.deleteOrder(orderId, connectionPool);
+    /**
+     * This method handles when an offer is sent to the customer.
+     * It changes the price to match the price entered by the salesperson and changes order status to confirmed.
+     * @param orderID required to identify correct order.
+     * @param salesPrice Price entered by the salesperson.
+     * @param connectionPool required to establish connection to the database.
+     * @return true if there is changes at 1 line in the database.
+     * @throws DatabaseException Is thrown there is no connection to the database or if input data is invalid.
+     * @author MrJustMeDahl
+     */
+    public static boolean sendOfferToCustomer(int orderID, double salesPrice, ConnectionPool connectionPool) throws DatabaseException {
+        return OrderMapper.sendOfferToCustomer(orderID, salesPrice, connectionPool);
     }
 
+    public static boolean updateItemListForOrder(int orderID, ItemList itemList, ConnectionPool connectionPool) throws DatabaseException{
+        return OrderMapper.updateItemListForOrder(orderID, itemList, connectionPool);
+    }
+
+    public static boolean updateMeasurementsForOrder(int orderID, Carport carport, ConnectionPool connectionPool) throws DatabaseException{
+        return OrderMapper.updateMeasurementsForOrder(orderID, carport, connectionPool);
+    }
     public static List<Order> getAllOrders(ConnectionPool connectionPool)throws DatabaseException {
         return OrderMapper.getAllOrders(connectionPool);
     }
