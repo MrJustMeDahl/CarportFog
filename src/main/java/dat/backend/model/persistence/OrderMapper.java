@@ -348,6 +348,9 @@ public class OrderMapper {
         String removeOldItemListSQL = "DELETE FROM itemList WHERE orderId = ?";
         String insertNewItemListSQL = "INSERT INTO itemList (amount, orderId, materialVariantId, partFor, message) VALUES (?, ?, ?, ?, ?)";
         boolean deleteSucces = false;
+        if(itemList.getMaterials().size() == 0){
+            throw new DatabaseException("There is no items in the itemlist, therefore it can not be updated.");
+        }
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps1 = connection.prepareStatement(removeOldItemListSQL)) {
                 ps1.setInt(1, orderID);
@@ -362,7 +365,7 @@ public class OrderMapper {
                     ps2.setInt(3, i.getMaterial().getMaterialVariantID());
                     ps2.setString(4, i.getPartFor());
                     ps2.setString(5, i.getMessage());
-                    if (ps2.executeUpdate() != 0){
+                    if (ps2.executeUpdate() != 1){
                         throw new DatabaseException("Something went wrong inserting itemlist for order: " + orderID);
                     }
                 }

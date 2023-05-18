@@ -205,4 +205,19 @@ public class OrderMapperTest {
         assertTrue(OrderFacade.sendOfferToCustomer(3, 500, connectionPool));
         assertFalse(OrderFacade.sendOfferToCustomer(4, 2000, connectionPool));
     }
+
+    @Test
+    void updateItemListForOrder() throws DatabaseException{
+        assertThrows(DatabaseException.class, () -> OrderFacade.updateItemListForOrder(1, new ItemList(500, 450, 300, true), connectionPool));
+        ItemList itemList = new ItemList(500, 450, 300, true);
+        itemList.addMaterialToItemList(new ItemListMaterial(new Post(1, 1,"97x97mm. trykimp.", "træ", "stolpe", 55, 330), 6, "Stolper graves 90cm. ned i jorden", "carport"));
+        assertTrue(OrderFacade.updateItemListForOrder(1, itemList, connectionPool));
+    }
+
+    @Test
+    void updateMeasurementsForOrder() throws DatabaseException{
+        Carport carport = new Carport(new HashMap<>(), 780, 600, 210);
+        assertFalse(OrderFacade.updateMeasurementsForOrder(4, carport, connectionPool));
+        assertTrue(OrderFacade.updateMeasurementsForOrder(1, carport, connectionPool));
+    }
 }
