@@ -1,8 +1,6 @@
 package dat.backend.model.persistence;
 
-import dat.backend.model.entities.Post;
-import dat.backend.model.entities.Purlin;
-import dat.backend.model.entities.Rafter;
+import dat.backend.model.entities.*;
 import dat.backend.model.exceptions.DatabaseException;
 
 import java.util.List;
@@ -46,5 +44,13 @@ public class MaterialFacade {
 
     public static int addLength(int materialId, int length, ConnectionPool connectionPool) throws DatabaseException {
         return MaterialMapper.addLength(materialId, length, connectionPool);
+    }
+
+    public static List<Roof> getAllRoofs(ConnectionPool connectionPool) throws DatabaseException{
+        return MaterialMapper.getAllRoofs(connectionPool);
+    }
+
+    public static List<Sheathing> getAllSheathing(ConnectionPool connectionPool) throws DatabaseException{
+        return MaterialMapper.getAllSheathing(connectionPool);
     }
 }

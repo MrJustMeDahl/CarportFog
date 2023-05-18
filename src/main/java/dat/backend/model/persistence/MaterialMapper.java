@@ -1,9 +1,6 @@
 package dat.backend.model.persistence;
 
-import dat.backend.model.entities.Material;
-import dat.backend.model.entities.Post;
-import dat.backend.model.entities.Purlin;
-import dat.backend.model.entities.Rafter;
+import dat.backend.model.entities.*;
 import dat.backend.model.exceptions.DatabaseException;
 
 import java.sql.Connection;
@@ -266,5 +263,73 @@ public class MaterialMapper {
             throw new DatabaseException("Failed to create a new material");
         }
         return newMaterialVariantId;
+    }
+
+    /**
+     * This method retrieves all the sheathings from the database.
+     * The list is sorted by description and length in the end.
+     *
+     * @param connectionPool required to establish connection to the database.
+     * @return List of Sheathing objects
+     * @throws DatabaseException is thrown if connection to database fails.
+     * @author MrJustMeDahl
+     */
+    public static List<Sheathing> getAllSheathing(ConnectionPool connectionPool) throws DatabaseException{
+        String SQL = "SELECT * FROM allMaterialsView WHERE buildFunction = 'bræddebeklædning'";
+        List<Sheathing> allSheathings = new ArrayList<>();
+        try(Connection connection = connectionPool.getConnection()){
+            try(PreparedStatement ps = connection.prepareStatement(SQL)){
+                ResultSet rs = ps.executeQuery();
+                while(rs.next()){
+                    int materialID = rs.getInt("materialId");
+                    int materialVariantID = rs.getInt("materialVariantId");
+                    int length = rs.getInt("length");
+                    double price = rs.getDouble("price");
+                    String description = rs.getString("description");
+                    String type = rs.getString("type");
+                    String buildFunction = rs.getString("buildFunction");
+                    allSheathings.add(new Sheathing(materialID, materialVariantID, description, type, buildFunction, price, length));
+                }
+            }
+        } catch (SQLException e){
+            throw new DatabaseException("Failed to retrieve sheathings from database");
+        }
+        Comparator<Material> materialComparator = Comparator.comparing(Material::getDescription).thenComparing(Material::getLength);
+        Collections.sort(allSheathings, materialComparator);
+        return allSheathings;
+    }
+
+    /**
+     * This method retrieves all the roofs from the database.
+     * The list is sorted by description and length in the end.
+     *
+     * @param connectionPool required to establish connection to the database.
+     * @return List of Roof objects
+     * @throws DatabaseException is thrown if connection to database fails.
+     * @author MrJustMeDahl
+     */
+    public static List<Roof> getAllRoofs(ConnectionPool connectionPool) throws DatabaseException{
+        String SQL = "SELECT * FROM allMaterialsView WHERE buildFunction = 'tag'";
+        List<Roof> allRoofs = new ArrayList<>();
+        try(Connection connection = connectionPool.getConnection()){
+            try(PreparedStatement ps = connection.prepareStatement(SQL)){
+                ResultSet rs = ps.executeQuery();
+                while(rs.next()){
+                    int materialID = rs.getInt("materialId");
+                    int materialVariantID = rs.getInt("materialVariantId");
+                    int length = rs.getInt("length");
+                    double price = rs.getDouble("price");
+                    String description = rs.getString("description");
+                    String type = rs.getString("type");
+                    String buildFunction = rs.getString("buildFunction");
+                    allRoofs.add(new Roof(materialID, materialVariantID, description, type, buildFunction, price, length));
+                }
+            }
+        } catch (SQLException e){
+            throw new DatabaseException("Failed to retrieve roofs from database");
+        }
+        Comparator<Material> materialComparator = Comparator.comparing(Material::getDescription).thenComparing(Material::getLength);
+        Collections.sort(allRoofs, materialComparator);
+        return allRoofs;
     }
 }

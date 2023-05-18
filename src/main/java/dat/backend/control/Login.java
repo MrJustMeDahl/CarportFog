@@ -1,10 +1,7 @@
 package dat.backend.control;
 
 import dat.backend.model.config.ApplicationStart;
-import dat.backend.model.entities.Post;
-import dat.backend.model.entities.Purlin;
-import dat.backend.model.entities.Rafter;
-import dat.backend.model.entities.User;
+import dat.backend.model.entities.*;
 import dat.backend.model.exceptions.DatabaseException;
 import dat.backend.model.persistence.MaterialFacade;
 import dat.backend.model.persistence.UserFacade;
@@ -63,6 +60,8 @@ public class Login extends HttpServlet
             List<Post> allPosts = (List<Post>) applicationScope.getAttribute("allPosts");
             List<Rafter> allRafters = (List<Rafter>) applicationScope.getAttribute("allRafters");
             List<Purlin> allPurlins = (List<Purlin>) applicationScope.getAttribute("allPurlins");
+            List<Roof> allRoofs = (List<Roof>) applicationScope.getAttribute("allRoofs");
+            List<Sheathing> allSheathing = (List<Sheathing>) applicationScope.getAttribute("allSheathing");
             List<String> allMaterialTypes = (List<String>) applicationScope.getAttribute("allMaterialTypes");
             List<String> allMaterialFunctions = (List<String>) applicationScope.getAttribute("allMaterialFunctions");
             if(allPosts == null){
@@ -76,6 +75,14 @@ public class Login extends HttpServlet
             if(allPurlins == null){
                 allPurlins = MaterialFacade.getAllPurlins(connectionPool);
                 applicationScope.setAttribute("allPurlins", allPurlins);
+            }
+            if(allRoofs == null){
+                allRoofs = MaterialFacade.getAllRoofs(connectionPool);
+                applicationScope.setAttribute("allRoofs", allRoofs);
+            }
+            if(allSheathing == null){
+                allSheathing = MaterialFacade.getAllSheathing(connectionPool);
+                applicationScope.setAttribute("allSheathings", allSheathing);
             }
             if(allMaterialTypes == null){
                 allMaterialTypes = MaterialFacade.getAllMaterialTypes(connectionPool);

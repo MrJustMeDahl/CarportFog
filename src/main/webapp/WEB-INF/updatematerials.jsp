@@ -47,6 +47,10 @@
                                         </option>
                                         <option value="3"> ${applicationScope.allMaterialFunctions.get(2)}
                                         </option>
+                                        <option value="4"> ${applicationScope.allMaterialFunctions.get(3)}
+                                        </option>
+                                        <option value="5"> ${applicationScope.allMaterialFunctions.get(4)}
+                                        </option>
                                     </select>
                                 </td>
                                 <td>
