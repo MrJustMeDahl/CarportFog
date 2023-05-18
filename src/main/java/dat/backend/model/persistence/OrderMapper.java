@@ -224,4 +224,24 @@ public class OrderMapper {
     }
 
 
+    public static List<Order> getAllOrders(ConnectionPool connectionPool) throws DatabaseException {
+        List<Order> allOrders = new ArrayList<>();
+        String SQL = "SELECT * FROM orders";
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(SQL)) {
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    int orderId = rs.getInt("orderId");
+                    double price = rs.getDouble("price");
+                    String orderStatus = rs.getString("orderStatus");
+                    int userId = rs.getInt("userId");
+
+                    allOrders.add(new Order(orderId,userId, orderStatus, price));
+                }
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Failed to retrieve all Order data.");
+        }
+return allOrders;
+    }
 }

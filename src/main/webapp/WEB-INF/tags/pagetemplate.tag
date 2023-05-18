@@ -56,6 +56,8 @@
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <li><a class="nav-item nav-link"
                                        href="${pageContext.request.contextPath}/editchosenmaterialfunction">Materiale side</a></li>
+                                <li><a class="nav-item nav-link"
+                                href="${pageContext.request.contextPath}/allorders">Ordre oversigt</a></li>
                             </ul>
                         </div>
                     </c:if>

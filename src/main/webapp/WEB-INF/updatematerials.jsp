@@ -14,7 +14,7 @@
 
     <jsp:body>
         <div class="card">
-            <h2 class="text-center pt-5"> Materiale opatering </h2>
+            <h2 class="text-center pt-5"> Materiale opdatering </h2>
 
             <div class="card-body">
 

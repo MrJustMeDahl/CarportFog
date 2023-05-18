@@ -3,8 +3,10 @@ package dat.backend.model.persistence;
 import dat.backend.model.entities.Carport;
 import dat.backend.model.entities.Material;
 import dat.backend.model.entities.Order;
+import dat.backend.model.entities.User;
 import dat.backend.model.exceptions.DatabaseException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -76,6 +78,10 @@ public class OrderFacade {
 
     public static void deleteOrder(int orderId, ConnectionPool connectionPool) throws DatabaseException{
         OrderMapper.deleteOrder(orderId, connectionPool);
+    }
+
+    public static List<Order> getAllOrders(ConnectionPool connectionPool)throws DatabaseException {
+        return OrderMapper.getAllOrders(connectionPool);
     }
 
 }

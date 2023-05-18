@@ -4,6 +4,7 @@ import dat.backend.model.entities.Material;
 import dat.backend.model.entities.User;
 import dat.backend.model.exceptions.DatabaseException;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,4 +34,7 @@ public class UserFacade
         return UserMapper.createUser(email, password, phoneNumber, address, fullName, role, connectionPool);
     }
 
+    public static List<User> getAllUsers(ConnectionPool connectionPool) throws DatabaseException {
+        return UserMapper.getAllUsers(connectionPool);
+    }
 }

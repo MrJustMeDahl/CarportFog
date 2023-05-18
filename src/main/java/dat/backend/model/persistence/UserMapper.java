@@ -1,10 +1,13 @@
 package dat.backend.model.persistence;
 
 import dat.backend.model.config.ApplicationStart;
+import dat.backend.model.entities.Order;
 import dat.backend.model.entities.User;
 import dat.backend.model.exceptions.DatabaseException;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -102,4 +105,27 @@ class UserMapper {
     }
 
 
+    public static List<User> getAllUsers(ConnectionPool connectionPool)throws DatabaseException {
+        List<User> allUsers = new ArrayList<>();
+        String SQL = "SELECT * FROM user";
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(SQL)) {
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    int userId = rs.getInt("userId");
+                    String email = rs.getString("email");
+                    String password = rs.getString("password");
+                    String name = rs.getString("FullName");
+                    int phoneNumber = rs.getInt("phoneNumber");
+                    String address = rs.getString("address");
+                    String role = rs.getString("role");
+
+                    allUsers.add(new User(userId, email, password, name, phoneNumber, address, role));
+                }
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Failed to retrieve all Order data.");
+        }
+        return allUsers;
+    }
 }
