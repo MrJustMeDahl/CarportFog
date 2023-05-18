@@ -114,6 +114,15 @@ public class AddNewItem extends HttpServlet {
 
                 break;
 
+            case 4:
+                materials = (List<Material>) application.getAttribute("allRoofs");
+
+                break;
+
+            case 5:
+                materials = (List<Material>) application.getAttribute("allSheathings");
+
+                break;
             default:
                 throw new IllegalArgumentException();
         }
@@ -177,6 +186,16 @@ public class AddNewItem extends HttpServlet {
 
                     case 3:
                         newMaterial = new Rafter(materialId, newMaterialVariantId, description, type, "spær", price, length);
+
+                        break;
+
+                    case 4:
+                        newMaterial = new Roof(materialId, newMaterialVariantId, description, type, "tag", price, length);
+
+                        break;
+
+                    case 5:
+                        newMaterial = new Sheathing(materialId, newMaterialVariantId, description, type, "bræddebeklædning", price, length);
 
                         break;
 

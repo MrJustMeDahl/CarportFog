@@ -102,6 +102,12 @@ public class OrderMapper {
                         case "spær":
                             newMaterial = new Rafter(materialID, materialVariantID, description, type, function, price, length);
                             break;
+                        case "tag":
+                            newMaterial = new Roof(materialID, materialVariantID, description, type, function, price, length);
+                            break;
+                        case "bræddebeklædning":
+                            newMaterial = new Sheathing(materialID, materialVariantID, description, type, function, price, length);
+                            break;
                         default:
                             throw new DatabaseException("Function of: " + description + " " + materialID + " is not recognised in database.");
                     }
