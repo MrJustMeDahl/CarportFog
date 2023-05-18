@@ -76,6 +76,10 @@ public class OrderFacade {
 
     public static void deleteOrder(int orderId, ConnectionPool connectionPool) throws DatabaseException{
         OrderMapper.deleteOrder(orderId, connectionPool);
+        deleteMaterialsFromOrder(orderId, connectionPool);
+    }
+    public static void deleteMaterialsFromOrder(int orderId, ConnectionPool connectionPool) throws DatabaseException{
+        OrderMapper.deleteMaterialsFromOrder(orderId, connectionPool);
     }
 
 }

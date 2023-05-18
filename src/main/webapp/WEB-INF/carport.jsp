@@ -17,6 +17,7 @@
         <h1>Design din egen carport!</h1>
 
 
+        <h5>Carport</h5>
         <form action="carport" method="post">
             længde: <select name="length" >
                 <option value="400">400 cm</option>
@@ -60,8 +61,35 @@
 
             </select>
             <br/>
+            <br/>
+            <c:if test="${requestScope.shed == 1}">
+                <h5>Skur</h5>
+                Længde for skur: <select name="shedLength">
+                <option value="100">180 cm</option>
+                <option value="120">210 cm</option>
+                <option value="140">240 cm</option>
+                <option value="160">270 cm</option>
+                <option value="180">300 cm</option>
+            </select>
+                <br/>
+                Bredde for skur: <select name="shedWidth">
+                <option value="100">180 cm</option>
+                <option value="120">210 cm</option>
+                <option value="140">240 cm</option>
+                <option value="160">270 cm</option>
+                <option value="180">300 cm</option>
+            </select>
+                <br/>
+
+                <br/>
+            </c:if>
+
+
             <input type="submit" value="Tilføj til kurv">
+
+
         </form>
+
 
 
 

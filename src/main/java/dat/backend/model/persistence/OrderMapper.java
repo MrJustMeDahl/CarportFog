@@ -222,6 +222,19 @@ public class OrderMapper {
             e.printStackTrace();
         }
     }
+    public static void deleteMaterialsFromOrder(int orderId, ConnectionPool connectionPool) throws DatabaseException{
+        String SQL = "DELETE FROM itemList WHERE orderId = ?";
+
+        try(Connection connection = connectionPool.getConnection()){
+            try(PreparedStatement ps = connection.prepareStatement(SQL)){
+                ps.setInt(1, orderId);
+                ps.executeUpdate();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 
-}
+    }

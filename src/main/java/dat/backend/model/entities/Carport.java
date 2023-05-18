@@ -14,6 +14,7 @@ public class Carport {
     private int width;
     private int length;
     private int minHeight;
+    Shed shed;
 
     /**
      * This constructor is used when creating a new order - meaning you don't know the price yet, it will calculate the price of all materials for you and give you a suggested indicative price.
@@ -27,6 +28,16 @@ public class Carport {
         this.width = width;
         this.length = length;
         this.minHeight = minHeight;
+    }
+    // Used for Shed
+    public Carport(Map<Material, Integer> materials, int width, int length, int minHeight, Shed shed){
+        this.materials = materials;
+        this.price = calculatePrice();
+        this.indicativePrice = calculateIndicativePrice();
+        this.width = width;
+        this.length = length;
+        this.minHeight = minHeight;
+        this.shed = shed;
     }
 
 

@@ -41,6 +41,15 @@ public class Carports extends HttpServlet
     {
 
         //response.sendRedirect("WEB-INF/carport.jsp");
+        int skur = Integer.parseInt(request.getParameter("shed"));
+        if (skur == 1){
+            request.setAttribute("shed", 1);
+        }
+        else if(skur == 0){
+            request.setAttribute("shed", 0);
+
+        }
+
         request.getRequestDispatcher("WEB-INF/carport.jsp").forward(request, response);
 
     }
@@ -66,10 +75,13 @@ public class Carports extends HttpServlet
 
         int width = Integer.parseInt(request.getParameter("width"));
         int length = Integer.parseInt(request.getParameter("length"));
-        int  height = Integer.parseInt(request.getParameter("height"));
+        int height = Integer.parseInt(request.getParameter("height"));
+        int shedLength = Integer.parseInt(request.getParameter("shedLength"));
+        int shedWidth = Integer.parseInt(request.getParameter("shedWidth"));
 
-        Carport carport = new Carport(materials, 5000, 6000, width, length, height);
+        Shed shed = new Shed(1000, 2000, shedWidth, shedLength, height);
 
+        Carport carport = new Carport(materials, width, length, height, shed);
 
         try{
             Order order = OrderFacade.createOrder(carport, user.getUserID(), carport.getPrice(), carport.getIndicativePrice(), connectionPool);
