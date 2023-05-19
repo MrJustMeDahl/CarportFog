@@ -228,13 +228,13 @@ public class OrderMapper {
         try (Connection connection = connectionPool.getConnection()) {
             for (ItemListMaterial i : itemList.getMaterials()) {
                 try (PreparedStatement ps = connection.prepareStatement(SQL)) {
+
                     ps.setInt(1, i.getAmount());
                     ps.setInt(2, orderId);
                     ps.setInt(3, i.getMaterial().getMaterialVariantID());
                     ps.setString(4, i.getPartFor());
                     ps.setString(5, i.getMessage());
                     ps.execute();
-
                 }
             }
         } catch (SQLException ex) {
