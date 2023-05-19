@@ -30,9 +30,9 @@ public class MaterialCalculatorTest {
 
     @Test
     void calculatePosts() throws NoMaterialFoundException{
-        MaterialCalculator mc1 = new MaterialCalculator(780, 600, 500, true);
+        MaterialCalculator mc1 = new MaterialCalculator(780, 600, 500, true, 210, 600);
         assertThrows(NoMaterialFoundException.class, () -> mc1.calculatePosts(posts));
-        MaterialCalculator mc2 = new MaterialCalculator(780, 600, 210, true);
+        MaterialCalculator mc2 = new MaterialCalculator(780, 600, 210, true, 210, 600);
         Set<ItemListMaterial> materialSet= mc2.calculatePosts(posts);
         assertEquals(2, materialSet.size());
         int totalNumberOfPosts = 0;
@@ -44,21 +44,21 @@ public class MaterialCalculatorTest {
 
     @Test
     void calculatePurlins() throws NoMaterialFoundException{
-        MaterialCalculator mc1 = new MaterialCalculator(1210, 600, 210, true);
+        MaterialCalculator mc1 = new MaterialCalculator(1210, 600, 210, true, 210, 600);
         assertThrows(NoMaterialFoundException.class, () -> mc1.calculatePurlins(purlins));
-        MaterialCalculator mc2 = new MaterialCalculator(780, 600, 210, true);
+        MaterialCalculator mc2 = new MaterialCalculator(780, 600, 210, true, 210, 600);
         Set<ItemListMaterial> materialSet = mc2.calculatePurlins(purlins);
         assertEquals(2, materialSet.size());
-        MaterialCalculator mc3 = new MaterialCalculator(580, 600, 210, true);
+        MaterialCalculator mc3 = new MaterialCalculator(580, 600, 210, true, 210 ,600);
         Set<ItemListMaterial> materials = mc3.calculatePurlins(purlins);
         assertEquals(1, materials.size());
     }
 
     @Test
     void calculateRafters() throws NoMaterialFoundException{
-        MaterialCalculator mc1 = new MaterialCalculator(780, 610, 210, true);
+        MaterialCalculator mc1 = new MaterialCalculator(780, 610, 210, true, 210, 600);
         assertThrows(NoMaterialFoundException.class, () -> mc1.calculateRafters(rafters));
-        MaterialCalculator mc2 = new MaterialCalculator(780, 600, 210, true);
+        MaterialCalculator mc2 = new MaterialCalculator(780, 600, 210, true, 210, 600);
         ItemListMaterial rafter = mc2.calculateRafters(rafters);
         assertEquals(15, rafter.getAmount());
      }

@@ -35,17 +35,11 @@ public class Order {
     }
 
     public void setPrice() {
-        if(carport.shed == null){
-            this.price = carport.calculatePrice();
-        }
-        else {
-            this.price = carport.calculatePrice() + carport.shed.calculatePrice();
-        }
-
+            this.price = carport.calculatePrice() + carport.getShed().calculatePrice();
     }
 
     public void setIndicativePrice() {
-        this.indicativePrice = carport.calculateIndicativePrice();
+        this.indicativePrice = carport.calculateIndicativePrice() + carport.getShed().calculateIndicativePrice();
     }
 
     public void setItemList(ItemList itemList) {

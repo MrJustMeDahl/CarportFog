@@ -52,7 +52,7 @@ public class OrderMapper {
                         itemList = new ItemList(carportLength, carportWidth, carportMinHeight, true, shedLength, shedWidth);
                     }
                     itemList = getItemListContentForOrder(orderID, itemList, connectionPool);
-                    Shed shed = new Shed(itemList.getMaterialsForShed(), shedWidth, shedLength, carportMinHeight);
+                    Shed shed = new Shed(itemList.getMaterialsForShed(), shedWidth, shedLength, carportMinHeight, shedPrice, shedIndicativePrice);
                     Carport carport = new Carport(itemList.getMaterialsForCarport(), rs.getInt("carportPrice"), rs.getInt("carportIndicativePrice"), carportWidth, carportLength, carportMinHeight, shed);
                     String orderStatus = rs.getString("orderStatus");
                     double price = rs.getDouble("price");
@@ -110,14 +110,15 @@ public class OrderMapper {
                             newMaterial = new Sheathing(materialID, materialVariantID, description, type, function, price, length);
                             break;
                         default:
-                            throw new DatabaseException("Function of: " + description + " " + materialID + " is not recognised in database.");
+                            newMaterial = new UnspecifiedMaterial(materialID, materialVariantID, description, type, function, price, length, price);
                     }
                     String partFor = rs.getString("partFor");
-                    itemList.addMaterialToItemList(new ItemListMaterial(newMaterial, amount, message, partFor));
+                    int actualLength = rs.getInt("actualLength");
+                    itemList.addMaterialToItemList(new ItemListMaterial(newMaterial, amount, message, partFor, actualLength));
                 }
             }
         } catch (SQLException e) {
-            throw new DatabaseException("Error retrieving carport for order: " + orderID);
+            throw new DatabaseException("Error retrieving itemlist for order: " + orderID);
         }
         return itemList;
     }
@@ -229,7 +230,7 @@ public class OrderMapper {
      */
     public static void addItemlistToDB(ItemList itemList, int orderId, ConnectionPool connectionPool) throws DatabaseException {
 
-        String SQL = "INSERT INTO itemList (amount, orderId, materialVariantId, partFor, message) VALUES (?, ?, ?, ?, ?)";
+        String SQL = "INSERT INTO itemList (amount, orderId, materialVariantId, partFor, message, actualLength) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection connection = connectionPool.getConnection()) {
             for (ItemListMaterial i : itemList.getMaterials()) {
                 try (PreparedStatement ps = connection.prepareStatement(SQL)) {
@@ -238,6 +239,7 @@ public class OrderMapper {
                     ps.setInt(3, i.getMaterial().getMaterialVariantID());
                     ps.setString(4, i.getPartFor());
                     ps.setString(5, i.getMessage());
+                    ps.setInt(6, i.getActualLength());
                     ps.execute();
 
                 }
@@ -279,7 +281,7 @@ public class OrderMapper {
                         itemList = new ItemList(carportLength, carportWidth, carportMinHeight, true, shedLength, shedWidth);
                     }
                     itemList = getItemListContentForOrder(orderID, itemList, connectionPool);
-                    Carport carport = new Carport(itemList.getMaterialsForCarport(), rs.getDouble("carportPrice"), rs.getDouble("carportIndicativePrice"), carportWidth, carportLength, carportMinHeight);
+                    Carport carport = new Carport(itemList.getMaterialsForCarport(), rs.getDouble("carportPrice"), rs.getDouble("carportIndicativePrice"), carportWidth, carportLength, carportMinHeight, new Shed(itemList.getMaterialsForShed(), shedWidth, shedLength, carportMinHeight, shedPrice, shedIndicativePrice));
                     String orderStatus = rs.getString("orderStatus");
                     double price = rs.getDouble("price");
                     double indicativePrice = rs.getDouble("indicativePrice");
@@ -458,7 +460,7 @@ public class OrderMapper {
                         itemList = new ItemList(carportLength, carportWidth, carportMinHeight, true, shedLength, shedWidth);
                     }
                     itemList = getItemListContentForOrder(orderID, itemList, connectionPool);
-                    Carport carport = new Carport(itemList.getMaterialsForCarport(), rs.getDouble("carportPrice"), rs.getDouble("carportIndicativePrice"), carportWidth, carportLength, carportMinHeight);
+                    Carport carport = new Carport(itemList.getMaterialsForCarport(), rs.getDouble("carportPrice"), rs.getDouble("carportIndicativePrice"), carportWidth, carportLength, carportMinHeight, new Shed(itemList.getMaterialsForShed(), shedWidth, shedLength, carportMinHeight, shedPrice, shedIndicativePrice));
                     String orderStatus = rs.getString("orderStatus");
                     double price = rs.getDouble("price");
                     double indicativePrice = rs.getDouble("indicativePrice");

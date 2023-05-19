@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,7 +105,7 @@ public class OrderMapperTest {
         assertEquals(800, admin.getOrders().get(0).getPrice());
         Map<Material, Integer> materials = new HashMap<>();
         materials.put(new Post(-1, -1, "97x97mm. trykimp.", "træ", "stolpe", 55, 330), 4);
-        Carport carport = new Carport(materials, 1000, 1500, 300, 500, 210);
+        Carport carport = new Carport(materials, 1000, 1500, 300, 500, 210, null);
         assertEquals(carport.getLength(), user.getOrders().get(0).getCarport().getLength());
         assertEquals(330, user.getOrders().get(1).getItemList().getMaterials().get(0).getMaterial().getLength());
     }
@@ -124,7 +123,7 @@ public class OrderMapperTest {
     void createOrder() {
         Map<Material, Integer> materials = new HashMap<>();
         materials.put(new Post(1, 1,"97x97mm. trykimp.", "træ", "stolpe", 55, 330), 4);
-        Carport carport = new Carport(materials, 2000, 3000, 300, 500, 210);
+        Carport carport = new Carport(materials, 2000, 3000, 300, 500, 210, null);
         User user = new User(4, "user@usersen.dk", "1234", "User Usersen", 12345678, "Danmarksgade 1", "user", connectionPool);
 
         try (Connection testConnection = connectionPool.getConnection()) {
@@ -187,11 +186,11 @@ public class OrderMapperTest {
         Rafter rafter1 = new Rafter(2, 2, "'45x195mm. spærtræ'", "træ", "rem", 40, 300);
 
         ItemList itemList = new ItemList(500, 300, 210, false, 0, 0);
-        itemList.addMaterialToItemList(new ItemListMaterial(pole1, 1, "stolpe", "carport"));
-        itemList.addMaterialToItemList(new ItemListMaterial(purlin1, 1, "rem", "carport"));
-        itemList.addMaterialToItemList(new ItemListMaterial(rafter1, 1, "spær", "carport"));
+        itemList.addMaterialToItemList(new ItemListMaterial(pole1, 1, "stolpe", "carport", 210));
+        itemList.addMaterialToItemList(new ItemListMaterial(purlin1, 1, "rem", "carport", 300));
+        itemList.addMaterialToItemList(new ItemListMaterial(rafter1, 1, "spær", "carport", 300));
 
-        Carport carport = new Carport(itemList.getMaterialsForCarport(), 2000, 3000, 300, 500, 210);
+        Carport carport = new Carport(itemList.getMaterialsForCarport(), 2000, 3000, 300, 500, 210, null);
 
         OrderFacade.addItemlistToDB(itemList, orderId, connectionPool);
         List testlist = OrderFacade.getOrdersByUserID(1, connectionPool);
@@ -218,13 +217,13 @@ public class OrderMapperTest {
     void updateItemListForOrder() throws DatabaseException{
         assertThrows(DatabaseException.class, () -> OrderFacade.updateItemListForOrder(1, new ItemList(500, 450, 300, true, 0, 0), connectionPool));
         ItemList itemList = new ItemList(500, 450, 300, true, 200, 450);
-        itemList.addMaterialToItemList(new ItemListMaterial(new Post(1, 1,"97x97mm. trykimp.", "træ", "stolpe", 55, 330), 6, "Stolper graves 90cm. ned i jorden", "carport"));
+        itemList.addMaterialToItemList(new ItemListMaterial(new Post(1, 1,"97x97mm. trykimp.", "træ", "stolpe", 55, 330), 6, "Stolper graves 90cm. ned i jorden", "carport", 210));
         assertTrue(OrderFacade.updateItemListForOrder(1, itemList, connectionPool));
     }
 
     @Test
     void updateMeasurementsForOrder() throws DatabaseException{
-        Carport carport = new Carport(new HashMap<>(), 780, 600, 210);
+        Carport carport = new Carport(new HashMap<>(), 780, 600, 210, null);
         assertFalse(OrderFacade.updateMeasurementsForOrder(4, carport, connectionPool));
         assertTrue(OrderFacade.updateMeasurementsForOrder(1, carport, connectionPool));
     }

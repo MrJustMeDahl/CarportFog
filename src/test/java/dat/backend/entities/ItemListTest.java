@@ -55,11 +55,11 @@ public class ItemListTest {
 
     @Test
     void getMaterialsForCarport(){
-        itemList.addMaterialToItemList(new ItemListMaterial(posts.get(0), 8, "Stolpe graves 90 cm ned i jorden", "carport"));
-        itemList.addMaterialToItemList(new ItemListMaterial(posts.get(0), 3, "Stolpe graves 90 cm ned i jorden", "shed"));
-        itemList.addMaterialToItemList(new ItemListMaterial(purlins.get(1), 2, "Remme i sider, sadles ned i stolper", "carport"));
-        itemList.addMaterialToItemList(new ItemListMaterial(purlins.get(0), 2, "Remme i sider, sadles ned i stolper", "carport"));
-        itemList.addMaterialToItemList(new ItemListMaterial(rafters.get(0), 8, "Spær monteres på rem", "carport"));
+        itemList.addMaterialToItemList(new ItemListMaterial(posts.get(0), 8, "Stolpe graves 90 cm ned i jorden", "carport", 210));
+        itemList.addMaterialToItemList(new ItemListMaterial(posts.get(0), 3, "Stolpe graves 90 cm ned i jorden", "shed", 230));
+        itemList.addMaterialToItemList(new ItemListMaterial(purlins.get(1), 2, "Remme i sider, sadles ned i stolper", "carport", 280));
+        itemList.addMaterialToItemList(new ItemListMaterial(purlins.get(0), 2, "Remme i sider, sadles ned i stolper", "carport", 300));
+        itemList.addMaterialToItemList(new ItemListMaterial(rafters.get(0), 8, "Spær monteres på rem", "carport", 300));
         Map<Material, Integer> carportMaterials = itemList.getMaterialsForCarport();
         assertEquals(4, carportMaterials.size());
         int totalAmount = 0;
@@ -71,11 +71,11 @@ public class ItemListTest {
 
     @Test
     void getMaterialsForShed(){
-        itemList.addMaterialToItemList(new ItemListMaterial(posts.get(0), 8, "Stolpe graves 90 cm ned i jorden", "carport"));
-        itemList.addMaterialToItemList(new ItemListMaterial(posts.get(0), 3, "Stolpe graves 90 cm ned i jorden", "shed"));
-        itemList.addMaterialToItemList(new ItemListMaterial(purlins.get(1), 2, "Remme i sider, sadles ned i stolper", "carport"));
-        itemList.addMaterialToItemList(new ItemListMaterial(purlins.get(0), 2, "Remme i sider, sadles ned i stolper", "carport"));
-        itemList.addMaterialToItemList(new ItemListMaterial(rafters.get(0), 8, "Spær monteres på rem", "carport"));
+        itemList.addMaterialToItemList(new ItemListMaterial(posts.get(0), 8, "Stolpe graves 90 cm ned i jorden", "carport", 320));
+        itemList.addMaterialToItemList(new ItemListMaterial(posts.get(0), 3, "Stolpe graves 90 cm ned i jorden", "shed", 210));
+        itemList.addMaterialToItemList(new ItemListMaterial(purlins.get(1), 2, "Remme i sider, sadles ned i stolper", "carport", 300));
+        itemList.addMaterialToItemList(new ItemListMaterial(purlins.get(0), 2, "Remme i sider, sadles ned i stolper", "carport", 410));
+        itemList.addMaterialToItemList(new ItemListMaterial(rafters.get(0), 8, "Spær monteres på rem", "carport", 450));
         Map<Material, Integer> shedMaterials = itemList.getMaterialsForShed();
         assertEquals(1, shedMaterials.size());
         int totalAmount = 0;

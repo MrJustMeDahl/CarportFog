@@ -21,7 +21,7 @@ public class Roof extends Material{
 
     @Override
     public double calculateActualPrice() {
-        actualPrice = price * ((double) length / 100);
+        actualPrice = price;
         return actualPrice;
     }
 

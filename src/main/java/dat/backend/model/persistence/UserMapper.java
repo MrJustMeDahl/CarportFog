@@ -87,12 +87,9 @@ class UserMapper {
                 ps.setString(4, address);
                 ps.setString(5, fullName);
                 ps.setString(6, "user");
-                System.out.println("L78");
                 int rowsAffected = ps.executeUpdate();
-                System.out.println("L80");
                 if (rowsAffected == 1)
                 {
-                    System.out.println("L81");
                     user = new User(email, password, fullName, phoneNumber, address);
                 } else
                 {

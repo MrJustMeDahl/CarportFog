@@ -64,13 +64,14 @@
                                                 <td>${user.email}</td>
                                                 <td>${user.phoneNumber}</td>
                                                 <td colspan="1"><input type="number" class="table-responsive"
-                                                           value="${orders.carport.length}" name="length">
+                                                                       value="${orders.carport.length}" name="length">
                                                 </td>
                                                 <td colspan="1"><input type="number" class="table-responsive"
-                                                           value="${orders.carport.width}" name="width">
+                                                                       value="${orders.carport.width}" name="width">
                                                 </td>
                                                 <td colspan="1"><input type="number" class="table-responsive"
-                                                           value="${orders.carport.minHeight}" name="minHeight">
+                                                                       value="${orders.carport.minHeight}"
+                                                                       name="minHeight">
                                                 </td>
                                                 <td>${orders.price}</td>
                                                 <td><input type="number" class="table-responsive"
@@ -102,11 +103,20 @@
                                                 </tr>
                                                 <c:forEach items="${orders.itemList.materials}" var="itemListMaterial">
                                                     <tr>
-                                                        <td colspan="4">${itemListMaterial.material.description}</td>
-                                                        <td colspan="2">${itemListMaterial.material.length}</td>
-                                                        <td colspan="2">${itemListMaterial.amount}</td>
-                                                        <td colspan="4">${itemListMaterial.message}
-                                                            - ${itemListMaterial.partFor}</td>
+                                                    <c:choose>
+                                                        <c:when test="${itemListMaterial.material.materialID != 17}">
+                                                                <td colspan="4">${itemListMaterial.material.description}</td>
+                                                                <td colspan="2">${itemListMaterial.material.length}</td>
+                                                                <td colspan="2">${itemListMaterial.amount}</td>
+                                                                <td colspan="4">${itemListMaterial.message}</td>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                                <td colspan="4">${itemListMaterial.message}</td>
+                                                                <td colspan="2">${itemListMaterial.actualLength}</td>
+                                                                <td colspan="2">${itemListMaterial.amount}</td>
+                                                                <td colspan="4">${itemListMaterial.message}</td>
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                     </tr>
                                                 </c:forEach>
                                             </c:otherwise>
