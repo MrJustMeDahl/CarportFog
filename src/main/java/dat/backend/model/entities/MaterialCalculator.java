@@ -95,16 +95,24 @@ public class MaterialCalculator {
                     break;
                 }
             }
+        }else if (length <= 600){
+            for (int i = 0; i < allPurlins.size(); i++) {
+                if (allPurlins.get(i).length >= length) {
+                    chosenPurlin1 = allPurlins.get(i);
+                    purlin1Size = length;
+                    break;
+                }
+            }
         } else if (length <= 750) {
             for (int i = 0; i < allPurlins.size(); i++) {
-                if (allPurlins.get(i).length > ((length - 130) / 2) + 100) {
+                if (allPurlins.get(i).length >= ((length - 130) / 2) + 100) {
                     chosenPurlin1 = allPurlins.get(i);
                     purlin1Size = ((length - 130) / 2) + 100;
                     break;
                 }
             }
             for (int i = 0; i < allPurlins.size(); i++) {
-                if (allPurlins.get(i).length > ((length - 130) / 2) + 30) {
+                if (allPurlins.get(i).length >= ((length - 130) / 2) + 30) {
                     chosenPurlin2 = allPurlins.get(i);
                     purlin2Size = ((length - 130) / 2) + 30;
                     break;
@@ -115,13 +123,13 @@ public class MaterialCalculator {
             purlin1Size = (length - 130 - (midPartLength * 2)) + midPartLength + 30;
             purlin2Size = midPartLength + 100;
             for (int i = 0; i < allPurlins.size(); i++) {
-                if (allPurlins.get(i).length > purlin2Size) {
+                if (allPurlins.get(i).length >= purlin2Size) {
                     chosenPurlin2 = allPurlins.get(i);
                     break;
                 }
             }
             for (int i = 0; i < allPurlins.size(); i++) {
-                if (allPurlins.get(i).length > purlin1Size) {
+                if (allPurlins.get(i).length >= purlin1Size) {
                     chosenPurlin1 = allPurlins.get(i);
                     break;
                 }

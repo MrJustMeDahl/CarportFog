@@ -49,7 +49,7 @@ public class ItemListTest {
         purlins = this.purlins;
         rafters = this.rafters;
         itemList.generateItemListContent(posts, purlins, rafters, roofs, sheathings);
-        assertEquals(5, itemList.getMaterials().size());
+        assertEquals(10, itemList.getMaterials().size());
         assertEquals(11, itemList.getMaterials().get(0).getAmount() + itemList.getMaterials().get(1).getAmount());
     }
 
