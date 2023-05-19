@@ -18,17 +18,23 @@
 
         <br/>
         <br/>
+        <h5> ${requestScope.message}</h5>
+        <br/>
         <c:if test="${requestScope.order.carport.checkShed == true}">
             <h4>Carport med fladt tag inkl. skur</h4>
         </c:if>
         <c:if test="${requestScope.order.carport.checkShed == false}">
             <h4>Carport med fladt tag</h4>
         </c:if>
-        <br/>
+
+
+
+
+
+
         <table class="table">
 
             <thead>
-            <th>Pris: ${requestScope.order.price} kr</th>
             <th>Vejl. Pris: ${requestScope.order.indicativePrice} kr</th>
             <th>Ordre Status: "${requestScope.order.orderStatus}"</th>
             <th>Længde: ${requestScope.order.carport.length} cm</th>

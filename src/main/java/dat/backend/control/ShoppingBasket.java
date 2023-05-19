@@ -43,6 +43,8 @@ public class ShoppingBasket extends HttpServlet
         response.setContentType("text/html");
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
+        String message = (String) request.getAttribute("message");
+        request.setAttribute("message", message);
         try {
             List<Order> orderList = OrderMapper.getOrdersByUserID(user.getUserID() , connectionPool);
             request.setAttribute("orderlist", orderList);
