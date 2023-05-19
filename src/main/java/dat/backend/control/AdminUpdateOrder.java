@@ -62,6 +62,9 @@ public class AdminUpdateOrder extends HttpServlet {
             updateOrder.getCarport().setLength(length);
             updateOrder.getCarport().setWidth(width);
             updateOrder.getCarport().setMinHeight(minHeight);
+            updateOrder.getCarport().getShed().setMaterials(updateOrder.getItemList().getMaterialsForShed());
+            updateOrder.getCarport().getShed().setLength(shedLength);
+            updateOrder.getCarport().getShed().setWidth(shedWidth);
             updateOrder.setPrice();
             updateOrder.setIndicativePrice();
         } catch (NoMaterialFoundException e){

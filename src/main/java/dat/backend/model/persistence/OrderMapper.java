@@ -408,7 +408,7 @@ public class OrderMapper {
      * @author MrJustMeDahl
      */
     public static boolean updateMeasurementsForOrder(int orderID, Carport carport, ConnectionPool connectionPool) throws DatabaseException{
-        String SQL = "UPDATE orders SET carportLength = ?, carportWidth = ?, carportMinHeight = ?, price = ?, indicativePrice = ?, carportPrice = ?, carportIndicativePrice = ? WHERE orderId = ?";
+        String SQL = "UPDATE orders SET carportLength = ?, carportWidth = ?, carportMinHeight = ?, price = ?, indicativePrice = ?, carportPrice = ?, carportIndicativePrice = ?, shedLength = ?, shedWidth = ?, shedPrice = ?, shedIndicativePrice = ? WHERE orderId = ?";
         boolean updateSucces = false;
         try(Connection connection = connectionPool.getConnection()){
             try(PreparedStatement ps = connection.prepareStatement(SQL)){
@@ -419,7 +419,11 @@ public class OrderMapper {
                 ps.setDouble(5, carport.getIndicativePrice());
                 ps.setDouble(6, carport.getPrice());
                 ps.setDouble(7, carport.getIndicativePrice());
-                ps.setInt(8, orderID);
+                ps.setInt(8, carport.getShed().getLength());
+                ps.setInt(9, carport.getShed().getWidth());
+                ps.setDouble(10, carport.getShed().getPrice());
+                ps.setDouble(11, carport.getShed().getIndicativePrice());
+                ps.setInt(12, orderID);
                 if(ps.executeUpdate() == 1){
                     updateSucces = true;
                 }

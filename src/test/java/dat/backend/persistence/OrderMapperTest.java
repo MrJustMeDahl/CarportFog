@@ -223,7 +223,7 @@ public class OrderMapperTest {
 
     @Test
     void updateMeasurementsForOrder() throws DatabaseException{
-        Carport carport = new Carport(new HashMap<>(), 780, 600, 210, null);
+        Carport carport = new Carport(new HashMap<>(), 780, 600, 210, new Shed(new HashMap<>(), 0, 0, 0));
         assertFalse(OrderFacade.updateMeasurementsForOrder(4, carport, connectionPool));
         assertTrue(OrderFacade.updateMeasurementsForOrder(1, carport, connectionPool));
     }
