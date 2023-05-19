@@ -35,6 +35,8 @@ public class AdminUpdateOrder extends HttpServlet {
         int length = Integer.parseInt(request.getParameter("length"));
         int width = Integer.parseInt(request.getParameter("width"));
         int minHeight = Integer.parseInt(request.getParameter("minHeight"));
+        int shedLength = Integer.parseInt(request.getParameter("shedLength"));
+        int shedWidth = Integer.parseInt(request.getParameter("shedWidth"));
         HttpSession sessionScope = request.getSession();
         ServletContext applicationScope = getServletContext();
         List<Order> newOrders = (List<Order>) sessionScope.getAttribute("newOrders");
@@ -51,11 +53,18 @@ public class AdminUpdateOrder extends HttpServlet {
             }
         }
         try {
-            updateOrder.setItemList(new ItemList(length, width, minHeight, hasShed, (List<Post>) applicationScope.getAttribute("allPosts"), (List<Purlin>) applicationScope.getAttribute("allPurlins"), (List<Rafter>) applicationScope.getAttribute("allRafters")));
+            if(!hasShed) {
+                updateOrder.setItemList(new ItemList(length, width, minHeight, hasShed, 0, 0, (List<Post>) applicationScope.getAttribute("allPosts"), (List<Purlin>) applicationScope.getAttribute("allPurlins"), (List<Rafter>) applicationScope.getAttribute("allRafters"), (List<Roof>) applicationScope.getAttribute("allRoofs"), (List<Sheathing>) applicationScope.getAttribute("allSheathings")));
+            } else {
+                updateOrder.setItemList(new ItemList(length, width, minHeight, hasShed, shedLength, shedWidth, (List<Post>) applicationScope.getAttribute("allPosts"), (List<Purlin>) applicationScope.getAttribute("allPurlins"), (List<Rafter>) applicationScope.getAttribute("allRafters"), (List<Roof>) applicationScope.getAttribute("allRoofs"), (List<Sheathing>) applicationScope.getAttribute("allSheathings")));
+            }
             updateOrder.getCarport().setMaterials(updateOrder.getItemList().getMaterialsForCarport());
             updateOrder.getCarport().setLength(length);
             updateOrder.getCarport().setWidth(width);
             updateOrder.getCarport().setMinHeight(minHeight);
+            updateOrder.getCarport().getShed().setMaterials(updateOrder.getItemList().getMaterialsForShed());
+            updateOrder.getCarport().getShed().setLength(shedLength);
+            updateOrder.getCarport().getShed().setWidth(shedWidth);
             updateOrder.setPrice();
             updateOrder.setIndicativePrice();
         } catch (NoMaterialFoundException e){

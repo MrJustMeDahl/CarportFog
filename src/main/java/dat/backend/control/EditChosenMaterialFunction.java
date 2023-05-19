@@ -61,6 +61,8 @@ public class EditChosenMaterialFunction extends HttpServlet {
         List<Material> postList = (List<Material>) request.getServletContext().getAttribute("allPosts");
         List<Material> rafterList = (List<Material>) request.getServletContext().getAttribute("allRafters");
         List<Material> purlinList = (List<Material>) request.getServletContext().getAttribute("allPurlins");
+        List<Material> roofList = (List<Material>) request.getServletContext().getAttribute("allRoofs");
+        List<Material> sheathingList = (List<Material>) request.getServletContext().getAttribute("allSheathings");
         Material chosenMaterial = null;
 
         try {
@@ -96,6 +98,30 @@ public class EditChosenMaterialFunction extends HttpServlet {
             } else if (materialfunction == 3) {
                 session.setAttribute("editmateriallist", rafterList);
                 if (chosenmaterials == rafterList) {
+                    chosenmaterialId = Integer.parseInt(request.getParameter("materialdescription"));
+                    for (Material m : chosenmaterials) {
+                        if (m.getMaterialVariantID() == chosenmaterialId) {
+                            chosenMaterial = m;
+                        }
+                    }
+                } else {
+                    chosenmaterialId = -1;
+                }
+            } else if (materialfunction == 4) {
+                session.setAttribute("editmateriallist", roofList);
+                if (chosenmaterials == roofList) {
+                    chosenmaterialId = Integer.parseInt(request.getParameter("materialdescription"));
+                    for (Material m : chosenmaterials) {
+                        if (m.getMaterialVariantID() == chosenmaterialId) {
+                            chosenMaterial = m;
+                        }
+                    }
+                } else {
+                    chosenmaterialId = -1;
+                }
+            } else if (materialfunction == 5) {
+                session.setAttribute("editmateriallist", sheathingList);
+                if (chosenmaterials == sheathingList) {
                     chosenmaterialId = Integer.parseInt(request.getParameter("materialdescription"));
                     for (Material m : chosenmaterials) {
                         if (m.getMaterialVariantID() == chosenmaterialId) {

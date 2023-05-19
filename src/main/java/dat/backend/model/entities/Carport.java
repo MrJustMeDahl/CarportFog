@@ -14,7 +14,7 @@ public class Carport {
     private int width;
     private int length;
     private int minHeight;
-    Shed shed;
+    private Shed shed;
     Boolean checkShed = false;
 
     /**
@@ -22,15 +22,7 @@ public class Carport {
      * @param materials Key is the material and value is number of that material used for this specific Carport
      * @author MrJustMeDahl
      */
-    public Carport(Map<Material, Integer> materials, int width, int length, int minHeight){
-        this.materials = materials;
-        this.price = calculatePrice();
-        this.indicativePrice = calculateIndicativePrice();
-        this.width = width;
-        this.length = length;
-        this.minHeight = minHeight;
-    }
-    // Used for Shed
+
     public Carport(Map<Material, Integer> materials, int width, int length, int minHeight, Shed shed){
         this.materials = materials;
         this.price = calculatePrice();
@@ -50,16 +42,6 @@ public class Carport {
      * @author MrJustMeDahl
      */
 
-
-    public Carport(Map<Material, Integer> materials, double price, double indicativePrice, int width, int length, int minHeight){
-        this.materials = materials;
-        this.price = price;
-        this.indicativePrice = indicativePrice;
-        this.width = width;
-        this.length = length;
-        this.minHeight = minHeight;
-
-    }
     public Carport(Map<Material, Integer> materials, double price, double indicativePrice, int width, int length, int minHeight, Shed shed){
         this.materials = materials;
         this.price = price;

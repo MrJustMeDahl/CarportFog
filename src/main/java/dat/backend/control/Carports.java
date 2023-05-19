@@ -33,7 +33,6 @@ public class Carports extends HttpServlet
 
     /**
      * doGet is used to redirect to the carport.jsp, where the user is able to customize the dimensions of a carport.
-     * The method will check if the user selected a shed for the carport.
      * @param request Used for loading in the data on the request scope.
      * @param response Is used to set the contentType.
      * @throws IOException Is cast if the input/output is invalid.
@@ -92,16 +91,14 @@ public class Carports extends HttpServlet
 
         ItemList itemList = null;
         try {
-            itemList = new ItemList(length, width, height, false, (List<Post>) applicationScope.getAttribute("allPosts"), (List<Purlin>) applicationScope.getAttribute("allPurlins"), (List<Rafter>) applicationScope.getAttribute("allRafters"));
+            itemList = new ItemList(length, width, height, check, shedLength, shedWidth, (List<Post>) applicationScope.getAttribute("allPosts"), (List<Purlin>) applicationScope.getAttribute("allPurlins"), (List<Rafter>) applicationScope.getAttribute("allRafters"), (List<Roof>) applicationScope.getAttribute("allRoofs"), (List<Sheathing>) applicationScope.getAttribute("allSheathings"));
         } catch (NoMaterialFoundException e){
             request.setAttribute("errormessage", e);
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }
-        Carport carport = new Carport(itemList.getMaterialsForCarport(), width, length, height);
+            Carport carport = new Carport(itemList.getMaterialsForCarport(), width, length, height, new Shed(itemList.getMaterialsForShed(), shedWidth, shedLength, height));
 
         if (check == true){
-            Shed shed = new Shed(itemList.getMaterialsForShed(), shedWidth, shedLength, height);
-            carport.setShed(shed);
             carport.setCheckShed(true);
             request.setAttribute("shed", 1);
         }
@@ -110,7 +107,7 @@ public class Carports extends HttpServlet
         }
 
         try{
-            Order order = OrderFacade.createOrder(carport, user.getUserID(), carport.getPrice(), carport.getIndicativePrice(), itemList, connectionPool);
+            Order order = OrderFacade.createOrder(carport, user.getUserID(), carport.getPrice()+carport.getShed().getPrice(), carport.getIndicativePrice()+carport.getShed().getIndicativePrice(), itemList, connectionPool);
             OrderFacade.addItemlistToDB(order.getItemList(), order.getOrderID(), connectionPool);
             request.getRequestDispatcher("shoppingbasket").forward(request, response);
         }

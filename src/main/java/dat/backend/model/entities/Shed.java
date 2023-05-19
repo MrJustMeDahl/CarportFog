@@ -19,6 +19,15 @@ public class Shed {
         this.minHeight = minHeight;
     }
 
+    public Shed(Map<Material, Integer> materials, int width, int length, int minHeight, double price, double indicativePrice){
+        this.materials = materials;
+        this.price = price;
+        this.indicativePrice = indicativePrice;
+        this.width = width;
+        this.length = length;
+        this.minHeight = minHeight;
+    }
+
 
     public double calculatePrice(){
         double price = 0;

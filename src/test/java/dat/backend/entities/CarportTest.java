@@ -20,7 +20,7 @@ public class CarportTest {
         materials.put(new Post(1, 1,"97x97mm. trykimp.", "træ", "stolpe", 55, 210), 8);
         materials.put(new Rafter(2, 2, "45x195mm. spærtræ", "træ", "spær", 35, 360), 15);
         materials.put(new Purlin(3, 3, "45x195mm. spærtræ", "træ", "rem", 35, 450), 6);
-        carport = new Carport(materials, 400, 700, 300);
+        carport = new Carport(materials, 400, 700, 300, null);
     }
 
     @Test
