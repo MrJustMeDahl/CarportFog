@@ -30,19 +30,21 @@ public class OrderAndPayment extends HttpServlet
         this.connectionPool = ApplicationStart.getConnectionPool();
     }
 
-
+    /**
+     * doGet is used to update the orderStatus of the order from "confirmed" to "payed", and then redirect back to the
+     * same page.
+     * @param request Used for loading in the data on the request scope.
+     * @param response Is used to set the contentType.
+     * @throws IOException Is cast if the input/output is invalid.
+     * @throws ServletException is cast when theres an error using Servlets in general.
+     */
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
 
 
         try {
-            System.out.println("SERVLET TEST L 39");
-
-            System.out.println("SERVLET TEST L 41");
             OrderFacade.updateOrderPayed(Integer.parseInt(request.getParameter("currentID")), connectionPool);
-            System.out.println("SERVLET TEST L43");
-
             request.getRequestDispatcher("orders").forward(request, response);
         } catch (DatabaseException e) {
             request.setAttribute("errormessage", e);
