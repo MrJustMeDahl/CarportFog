@@ -362,10 +362,23 @@ public class OrderMapper {
         return false;
     }
 
+    /**
+     * This method inserts a new item list for an order.
+     * It deletes every itemlist row for that order and inserts a line for each ItemListMaterial in the ItemList
+     * @param orderID Needed to recognise which order to change.
+     * @param itemList An object that contains all the materials, messages, etc. for an order.
+     * @param connectionPool required to establish connection to the database.
+     * @return true if delete SQL query is successful.
+     * @throws DatabaseException is thrown if there isn't any rows inserted in itemList table.
+     * @author MrJustMeDahl
+     */
     public static boolean updateItemListForOrder(int orderID, ItemList itemList, ConnectionPool connectionPool) throws DatabaseException {
         String removeOldItemListSQL = "DELETE FROM itemList WHERE orderId = ?";
         String insertNewItemListSQL = "INSERT INTO itemList (amount, orderId, materialVariantId, partFor, message) VALUES (?, ?, ?, ?, ?)";
         boolean deleteSucces = false;
+        if(itemList.getMaterials().size() == 0){
+            throw new DatabaseException("There is no items in the itemlist, therefore it can not be updated.");
+        }
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps1 = connection.prepareStatement(removeOldItemListSQL)) {
                 ps1.setInt(1, orderID);
@@ -391,6 +404,15 @@ public class OrderMapper {
         return deleteSucces;
     }
 
+    /**
+     * This method updates every column in the order table for a specific order, except varying ids and the order status.
+     * @param orderID Needed to recognise which order to change.
+     * @param carport An object of the carport that belongs to the order - it contains all the data needed to update everything needed.
+     * @param connectionPool required to establish connection to the database.
+     * @return true if exactly 1 line is affected by the SQL query.
+     * @throws DatabaseException Is thrown there is no connection to the database or if input data is invalid.
+     * @author MrJustMeDahl
+     */
     public static boolean updateMeasurementsForOrder(int orderID, Carport carport, ConnectionPool connectionPool) throws DatabaseException{
         String SQL = "UPDATE orders SET carportLength = ?, carportWidth = ?, carportMinHeight = ?, price = ?, indicativePrice = ?, carportPrice = ?, carportIndicativePrice = ? WHERE orderId = ?";
         boolean updateSucces = false;
@@ -414,4 +436,46 @@ public class OrderMapper {
         return updateSucces;
     }
 
+    /**
+     * A method to retrieve all orders from DB, used on the admin allorder page.
+     * @param connectionPool
+     * @return a List of orders
+     * @throws DatabaseException
+     * @author CarstenJuhl
+     */
+    public static List<Order> getAllOrders(ConnectionPool connectionPool) throws DatabaseException {
+        List<Order> allOrders = new ArrayList<>();
+        String SQL = "SELECT * FROM orders";
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(SQL)) {
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    int orderID = rs.getInt("orderId");
+                    int userID = rs.getInt("userId");
+                    int carportLength = rs.getInt("carportLength");
+                    int carportWidth = rs.getInt("carportWidth");
+                    int carportMinHeight = rs.getInt("carportMinHeight");
+                    int shedLength = rs.getInt("shedLength");
+                    int shedWidth = rs.getInt("shedWidth");
+                    double shedPrice = rs.getDouble("shedPrice");
+                    double shedIndicativePrice = rs.getDouble("shedIndicativePrice");
+                    ItemList itemList;
+                    if (shedLength == 0) {
+                        itemList = new ItemList(carportLength, carportWidth, carportMinHeight, false);
+                    } else {
+                        itemList = new ItemList(carportLength, carportWidth, carportMinHeight, true);
+                    }
+                    itemList = getItemListContentForOrder(orderID, itemList, connectionPool);
+                    Carport carport = new Carport(itemList.getMaterialsForCarport(), rs.getDouble("carportPrice"), rs.getDouble("carportIndicativePrice"), carportWidth, carportLength, carportMinHeight);
+                    String orderStatus = rs.getString("orderStatus");
+                    double price = rs.getDouble("price");
+                    double indicativePrice = rs.getDouble("indicativePrice");
+                    allOrders.add(new Order(orderID, userID, carport, orderStatus, price, indicativePrice, itemList));
+                }
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Failed to retrieve new orders from the database.");
+        }
+        return allOrders;
+    }
 }

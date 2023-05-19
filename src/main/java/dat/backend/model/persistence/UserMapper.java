@@ -9,6 +9,8 @@ import java.sql.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -144,5 +146,36 @@ class UserMapper {
             throw new DatabaseException("Failed to retrieve users with new orders.");
         }
         return userSet;
+    }
+
+    /**
+     * A method to retrieve all users from the DB to use on the all orders admin page.
+     * @param connectionPool
+     * @return a List of users
+     * @throws DatabaseException
+     * @author CarstenJuhl
+     */
+    public static List<User> getAllUsers(ConnectionPool connectionPool)throws DatabaseException {
+        List<User> allUsers = new ArrayList<>();
+        String SQL = "SELECT * FROM user";
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(SQL)) {
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    int userId = rs.getInt("userId");
+                    String email = rs.getString("email");
+                    String password = rs.getString("password");
+                    String name = rs.getString("FullName");
+                    int phoneNumber = rs.getInt("phoneNumber");
+                    String address = rs.getString("address");
+                    String role = rs.getString("role");
+
+                    allUsers.add(new User(userId, email, password, name, phoneNumber, address, role));
+                }
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Failed to retrieve all Order data.");
+        }
+        return allUsers;
     }
 }

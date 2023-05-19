@@ -1,6 +1,6 @@
 @startuml
 
-Class User {
+class User {
 - int userID
 - String email
 - String password
@@ -13,18 +13,19 @@ Class User {
 + User(int userID, String email, String password, String name,int phoneNumber, String address, String role)
 }
 
-Class Order{
+class Order{
 - int orderID
 - int userID
 - boolean orderStatus
 - Carport carport
 - double price
 - double indicativePrice
+- ItemList itemList
 
 + Order (int orderID, int userID, String orderStatus, Carport carport, double price, double indicativePrice)
 }
 
-Class Carport{
+class Carport{
 - double price
 - double indicativePrice
 - Map<Material, Integer> materials
@@ -35,7 +36,7 @@ Class Carport{
 - double calculateIndicativePrice()
 }
 
-Abstract Class Material{
+abstract class Material{
 # int materialID
 # String Description
 # String type
@@ -48,27 +49,56 @@ Abstract Class Material{
 + abstract double calculateActualPrice()
 }
 
-Class Rafter{
+class Rafter{
 - double actualPrice
-Rafter(int materialID, String description, String type, String function, double price, int length)
++ Rafter(int materialID, String description, String type, String function, double price, int length)
 + double getPrice()
 + double calculateActualPrice()
 }
 
-Class Post{
+class Post{
 - double actualPrice
-Post(int materialID, String description, String type, String function, double price, int length)
++ Post(int materialID, String description, String type, String function, double price, int length)
 + double getPrice()
 + double calculateActualPrice()
 }
 
-Class Purlin{
+class Purlin{
 - double actualPrice
-Purlin(int materialID, String description, String type, String function, double price, int length)
++ Purlin(int materialID, String description, String type, String function, double price, int length)
 + double getPrice()
 + double calculateActualPrice()
 }
 
+class ItemList{
+- List<ItemListMaterial> materials
+- final MaterialCalculator materialCalculator
++ ItemList(int length, int width, int minHeight, boolean hasShed, List<Post> allPosts, List<Purlin> allPurlins, List<Rafter> allRafters)
++ ItemList(int length, int width, int minHeight, boolean hasShed)
++ void generateItemListContent(List<Post> allPosts, List<Purlin> allPurlins, List<Rafter> allRafters) throws NoMaterialFoundException
++ Map<Material, Integer> getMaterialsForCarport()
++ Map<Material, Integer> getMaterialsForShed()
+}
+
+class MaterialCalculator{
+- int length
+- int width
+- int minHeight
+- boolean hasShed
+- DecimalFormat df
++ MaterialCalculator(int length, int width, int minHeight, boolean hasShed)
++ Set<ItemListMaterial> calculatePosts(List<Post> allPosts)
++ Set<ItemListMaterial> calculatePurlins(List<Purlin> allPurlins)
++ ItemListMaterial calculateRafters(List<Rafter> allRafters)
+}
+
+class ItemListMaterial{
+- Material material
+- int amount
+- String message
+- String partFor
++ ItemListMaterial(Material material, int amount, String message, String partFor)
+}
 
 class UserMapper{
 <<static>>
@@ -83,9 +113,11 @@ class OrderMapper{
 + List<Order> getOrdersByUserID(Int userID, ConnectionPool connectionPool) throws DatabaseException
 + void updateOrderOrdered(int orderID, ConnectionPool connectionPool) throws DatabaseException
 + void updateOrderPayed (int orderID, ConnectionPool connectionPool) throws DatabaseException
-+ Map<Material, Integer> getMaterialsForCarport(int orderID, ConnectionPool connectionPool) throws DatabaseException
++ ItemList getItemListContentForOrder(int orderID, ItemList itemList, ConnectionPool connectionPool) throws DatabaseException
 + List<Order> getNewOrders(ConnectionPool connectionPool) throws DatabaseException
 + boolean deleteOrder(int orderID, ConnectionPool connectionPool) throws DatabaseException
++ boolean updateMeasurementsForOrder(int orderID, Carport carport, ConnectionPool connectionPool) throws DatabaseException
++ boolean updateItemListForOrder(int orderID, ItemList itemList, ConnectionPool connectionPool) throws DatabaseException
 }
 
 class MaterialMapper{
@@ -111,7 +143,10 @@ class ConnectionPool{
 
 User *-- Order
 Order *-- Carport
+Order *-- ItemList
 Carport *-- Material
+ItemList *-- ItemListMaterial
+ItemListMaterial *-- Material
 Material <|-- Rafter
 Material <|-- Post
 Material <|-- Purlin

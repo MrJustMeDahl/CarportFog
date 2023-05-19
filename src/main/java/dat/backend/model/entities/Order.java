@@ -64,6 +64,13 @@ public class Order {
         return itemList;
     }
 
+    public Order(int orderID, int userID, String orderStatus, double price) {
+        this.orderID = orderID;
+        this.userID = userID;
+        this.orderStatus = orderStatus;
+        this.price = price;
+    }
+
     public int getOrderID() {
         return orderID;
     }

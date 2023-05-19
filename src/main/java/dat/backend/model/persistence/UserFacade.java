@@ -6,6 +6,8 @@ import dat.backend.model.exceptions.DatabaseException;
 
 import java.util.List;
 import java.util.Set;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This class is a facade for UserMapper.java. For the sake of simplicity and making the class easier to read.
@@ -44,5 +46,8 @@ public class UserFacade
      */
     public static Set<User> getUsersForOrders(List<Order> newOrders, ConnectionPool connectionPool) throws DatabaseException {
         return UserMapper.getUsersForOrders(newOrders, connectionPool);
+    }
+    public static List<User> getAllUsers(ConnectionPool connectionPool) throws DatabaseException {
+        return UserMapper.getAllUsers(connectionPool);
     }
 }
