@@ -19,6 +19,8 @@ public class MaterialCalculator {
     private int width;
     private int minHeight;
     private boolean hasShed;
+    private int shedLength;
+    private int shedWidth;
     private final DecimalFormat df = new DecimalFormat("0.0");
 
     /**
@@ -26,11 +28,13 @@ public class MaterialCalculator {
      * @param width     width of carport in centimeter
      * @param minHeight minimum height of carport in centimeter
      */
-    public MaterialCalculator(int length, int width, int minHeight, boolean hasShed) {
+    public MaterialCalculator(int length, int width, int minHeight, boolean hasShed, int shedLength, int shedWidth) {
         this.length = length;
         this.width = width;
         this.minHeight = minHeight;
         this.hasShed = hasShed;
+        this.shedLength = shedLength;
+        this.shedWidth = shedWidth;
     }
 
     /**
@@ -143,5 +147,9 @@ public class MaterialCalculator {
             throw new NoMaterialFoundException("Could not find a rafter that matches the measurements of the selected carport");
         }
         return new ItemListMaterial(chosenRafter, numberOfRafters, "Spær monteres på rem - afstand mellem hvert spær: " + df.format(length / numberOfRafters) + "cm.", "carport");
+    }
+
+    public boolean getHasShed() {
+        return hasShed;
     }
 }

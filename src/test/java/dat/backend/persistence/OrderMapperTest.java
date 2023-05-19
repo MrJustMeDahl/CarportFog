@@ -113,7 +113,7 @@ public class OrderMapperTest {
 
     @Test
     void getItemListContentForOrder() throws DatabaseException{
-        ItemList itemList = new ItemList(400, 350, 210, false);
+        ItemList itemList = new ItemList(400, 350, 210, false, 0, 0);
         OrderMapper.getItemListContentForOrder(1, itemList, connectionPool);
         assertEquals(3, itemList.getMaterials().size());
         assertEquals(10, itemList.getMaterials().get(1).getAmount());
@@ -186,7 +186,7 @@ public class OrderMapperTest {
         Purlin purlin1 = new Purlin(3, 3, "'45x195mm. spærtræ'", "træ", "spær", 38, 300);
         Rafter rafter1 = new Rafter(2, 2, "'45x195mm. spærtræ'", "træ", "rem", 40, 300);
 
-        ItemList itemList = new ItemList(500, 300, 210, false);
+        ItemList itemList = new ItemList(500, 300, 210, false, 0, 0);
         itemList.addMaterialToItemList(new ItemListMaterial(pole1, 1, "stolpe", "carport"));
         itemList.addMaterialToItemList(new ItemListMaterial(purlin1, 1, "rem", "carport"));
         itemList.addMaterialToItemList(new ItemListMaterial(rafter1, 1, "spær", "carport"));
@@ -216,8 +216,8 @@ public class OrderMapperTest {
 
     @Test
     void updateItemListForOrder() throws DatabaseException{
-        assertThrows(DatabaseException.class, () -> OrderFacade.updateItemListForOrder(1, new ItemList(500, 450, 300, true), connectionPool));
-        ItemList itemList = new ItemList(500, 450, 300, true);
+        assertThrows(DatabaseException.class, () -> OrderFacade.updateItemListForOrder(1, new ItemList(500, 450, 300, true, 0, 0), connectionPool));
+        ItemList itemList = new ItemList(500, 450, 300, true, 200, 450);
         itemList.addMaterialToItemList(new ItemListMaterial(new Post(1, 1,"97x97mm. trykimp.", "træ", "stolpe", 55, 330), 6, "Stolper graves 90cm. ned i jorden", "carport"));
         assertTrue(OrderFacade.updateItemListForOrder(1, itemList, connectionPool));
     }

@@ -19,7 +19,7 @@ public class ItemList {
     private final MaterialCalculator materialCalculator;
 
     /**
-     * This constructor is used when creating a new order or editing an existing order.
+     * This constructor is used when creating a new order or editing an existing order, if the order doesn't have a shed.
      * When this constructor is used it will use the MaterialCalculator to create content for the itemlist.
      * @param length length of the carport in centimeter
      * @param width width of the carport in centimeter
@@ -29,10 +29,11 @@ public class ItemList {
      * @param allRafters list of all Rafters that can be used for calculations
      * @author MrJustMeDahl
      */
-    public ItemList(int length, int width, int minHeight, boolean hasShed, List<Post> allPosts, List<Purlin> allPurlins, List<Rafter> allRafters) throws NoMaterialFoundException{
-        this.materialCalculator = new MaterialCalculator(length, width, minHeight, hasShed);
+    public ItemList(int length, int width, int minHeight, boolean hasShed, int shedLength, int shedWidth, List<Post> allPosts, List<Purlin> allPurlins, List<Rafter> allRafters, List<Roof> allRoofs, List<Sheathing> allSheathings) throws NoMaterialFoundException{
+
+        this.materialCalculator = new MaterialCalculator(length, width, minHeight, hasShed, shedLength, shedWidth);
         materials = new ArrayList<>();
-        generateItemListContent(allPosts, allPurlins, allRafters);
+        generateItemListContent(allPosts, allPurlins, allRafters, allRoofs, allSheathings);
     }
 
     /**
@@ -43,8 +44,8 @@ public class ItemList {
      * @param minHeight minimum height of the carport in centimeter
      * @author MrJustMeDahl
      */
-    public ItemList(int length, int width, int minHeight, boolean hasShed){
-        this.materialCalculator = new MaterialCalculator(length, width, minHeight, hasShed);
+    public ItemList(int length, int width, int minHeight, boolean hasShed, int shedLength, int shedWidth){
+        this.materialCalculator = new MaterialCalculator(length, width, minHeight, hasShed, shedLength, shedWidth);
         materials = new ArrayList<>();
     }
 
@@ -60,7 +61,7 @@ public class ItemList {
      * @param allRafters List of Rafters
      * @author MrJustMeDahl
      */
-    public void generateItemListContent(List<Post> allPosts, List<Purlin> allPurlins, List<Rafter> allRafters) throws NoMaterialFoundException {
+    public void generateItemListContent(List<Post> allPosts, List<Purlin> allPurlins, List<Rafter> allRafters, List<Roof> allRoofs, List<Sheathing> allSheathings) throws NoMaterialFoundException {
         materials = new ArrayList<>();
         for(ItemListMaterial i: materialCalculator.calculatePosts(allPosts)) {
             materials.add(i);
@@ -69,6 +70,12 @@ public class ItemList {
             materials.add(i);
         }
         materials.add(materialCalculator.calculateRafters(allRafters));
+        for(ItemListMaterial i: materialCalculator.calculateRoofs(allRoofs)){
+            materials.add(i);
+        }
+        if(materialCalculator.getHasShed()){
+            materials.add(materialCalculator.calculateSheathings(allSheathings));
+        }
     }
 
     public void addMaterialToItemList(ItemListMaterial material){

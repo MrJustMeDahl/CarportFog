@@ -47,9 +47,9 @@ public class OrderMapper {
                     double shedIndicativePrice = rs.getDouble("shedIndicativePrice");
                     ItemList itemList;
                     if (shedLength == 0) {
-                        itemList = new ItemList(carportLength, carportWidth, carportMinHeight, false);
+                        itemList = new ItemList(carportLength, carportWidth, carportMinHeight, false, 0, 0);
                     } else {
-                        itemList = new ItemList(carportLength, carportWidth, carportMinHeight, true);
+                        itemList = new ItemList(carportLength, carportWidth, carportMinHeight, true, shedLength, shedWidth);
                     }
                     itemList = getItemListContentForOrder(orderID, itemList, connectionPool);
                     Carport carport = new Carport(itemList.getMaterialsForCarport(), rs.getInt("carportPrice"), rs.getInt("carportIndicativePrice"), carportWidth, carportLength, carportMinHeight);
@@ -260,9 +260,9 @@ public class OrderMapper {
                     double shedIndicativePrice = rs.getDouble("shedIndicativePrice");
                     ItemList itemList;
                     if (shedLength == 0) {
-                        itemList = new ItemList(carportLength, carportWidth, carportMinHeight, false);
+                        itemList = new ItemList(carportLength, carportWidth, carportMinHeight, false, 0, 0);
                     } else {
-                        itemList = new ItemList(carportLength, carportWidth, carportMinHeight, true);
+                        itemList = new ItemList(carportLength, carportWidth, carportMinHeight, true, shedLength, shedWidth);
                     }
                     itemList = getItemListContentForOrder(orderID, itemList, connectionPool);
                     Carport carport = new Carport(itemList.getMaterialsForCarport(), rs.getDouble("carportPrice"), rs.getDouble("carportIndicativePrice"), carportWidth, carportLength, carportMinHeight);
@@ -439,9 +439,9 @@ public class OrderMapper {
                     double shedIndicativePrice = rs.getDouble("shedIndicativePrice");
                     ItemList itemList;
                     if (shedLength == 0) {
-                        itemList = new ItemList(carportLength, carportWidth, carportMinHeight, false);
+                        itemList = new ItemList(carportLength, carportWidth, carportMinHeight, false, 0, 0);
                     } else {
-                        itemList = new ItemList(carportLength, carportWidth, carportMinHeight, true);
+                        itemList = new ItemList(carportLength, carportWidth, carportMinHeight, true, shedLength, shedWidth);
                     }
                     itemList = getItemListContentForOrder(orderID, itemList, connectionPool);
                     Carport carport = new Carport(itemList.getMaterialsForCarport(), rs.getDouble("carportPrice"), rs.getDouble("carportIndicativePrice"), carportWidth, carportLength, carportMinHeight);
