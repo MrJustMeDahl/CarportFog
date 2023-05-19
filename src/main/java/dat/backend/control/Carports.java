@@ -90,9 +90,6 @@ public class Carports extends HttpServlet
 
         }
 
-
-
-        
         ItemList itemList = null;
         try {
             itemList = new ItemList(length, width, height, false, (List<Post>) applicationScope.getAttribute("allPosts"), (List<Purlin>) applicationScope.getAttribute("allPurlins"), (List<Rafter>) applicationScope.getAttribute("allRafters"));
@@ -100,7 +97,7 @@ public class Carports extends HttpServlet
             request.setAttribute("errormessage", e);
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }
-            Carport carport = new Carport(itemList.getMaterialsForCarport(), width, length, height);
+        Carport carport = new Carport(itemList.getMaterialsForCarport(), width, length, height);
 
         if (check == true){
             Shed shed = new Shed(itemList.getMaterialsForShed(), shedWidth, shedLength, height);

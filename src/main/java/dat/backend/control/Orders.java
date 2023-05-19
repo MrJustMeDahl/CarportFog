@@ -55,8 +55,13 @@ public class Orders extends HttpServlet
     {
         response.setContentType("text/html");
         try{
+            boolean shoppingDeleteCheck = Boolean.parseBoolean(request.getParameter("shoppingDelete"));
 
             OrderFacade.deleteOrder(Integer.parseInt(request.getParameter("currentID")), connectionPool);
+            if(shoppingDeleteCheck == true){
+                request.getRequestDispatcher("shoppingbasket").forward(request, response);
+
+            }
             doGet(request, response);
 
         }catch (DatabaseException e){

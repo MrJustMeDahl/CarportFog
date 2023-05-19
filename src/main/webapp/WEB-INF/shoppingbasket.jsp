@@ -50,6 +50,11 @@
         <form action="orderandpayment" method="post">
             <button class="btn btn-outline-primary" type="submit" value="${requestScope.order.orderID}" name="OrderId">Få Tilbud</button>
         </form>
+        <form action="orders" method="post">
+            <button class="btn btn-outline-primary" type="submit" value="${requestScope.order.orderID}" name="currentID">Annuller</button>
+            <input type="hidden" name="shoppingDelete" value="true">
+        </form>
+
 
 
     </jsp:body>

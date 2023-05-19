@@ -163,6 +163,7 @@ public class OrderMapper {
             throw new DatabaseException(ex, "Error creating order in the Database");
         }
 
+
         return new Order(orderId, userId, carport, "pending", price, indicativePrice, itemList);
     }
 
