@@ -93,6 +93,28 @@ public class EditMaterial extends HttpServlet {
                     }
                 }
                 break;
+            case 4:
+                for (Material m : (List<Roof>) applicationScope.getAttribute("allRoofs")) {
+                    if (m.getMaterialID() == materialId) {
+                        m.setPrice(newPrice);
+                        m.setDescription(newDescription);
+                        if (chosenMaterialId == m.getMaterialVariantID()) {
+                            chosenMaterial = m;
+                        }
+                    }
+                }
+                break;
+            case 5:
+                for (Material m : (List<Sheathing>) applicationScope.getAttribute("allSheathings")) {
+                    if (m.getMaterialID() == materialId) {
+                        m.setPrice(newPrice);
+                        m.setDescription(newDescription);
+                        if (chosenMaterialId == m.getMaterialVariantID()) {
+                            chosenMaterial = m;
+                        }
+                    }
+                }
+                break;
         }
 
         request.setAttribute("chosenMaterial", chosenMaterial);
