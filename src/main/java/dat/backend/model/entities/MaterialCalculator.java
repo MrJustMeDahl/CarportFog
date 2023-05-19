@@ -163,7 +163,12 @@ public class MaterialCalculator {
         return hasShed;
     }
 
-
+    /**
+     * Calculates which roofs fulfill the requirements for the carport.
+     * @param allRoofs List of sheathings to choose from.
+     * @return ItemListMaterial which contains the chosen roof and how many are needed for the size.
+     * @author MrJustMeDahl
+     */
     public Set<ItemListMaterial> calculateRoofs(List<Roof> allRoofs) {
         Set<ItemListMaterial> roofs = new HashSet<>();
         Roof chosenRoof = null;
@@ -178,7 +183,7 @@ public class MaterialCalculator {
             for(int i = 0; i < width; i += 100){
                 numberOfRoofsNeeded++;
                 if(i + 80 >= width){
-                    wasteWidth = (double) ((i + 80 - width)/100) * (double) (r.getLength()/100);
+                    wasteWidth = ((i + 80 - width)/100) * (r.getLength()/100);
                 }
                 if(i != 0) {
                     i -= 20;
@@ -190,11 +195,11 @@ public class MaterialCalculator {
                 numberOfRoofsNeeded += numberOfRoofsPerRow;
                 numberOfRowsNeeded++;
                 if(i + r.getLength() - 20 >= length){
-                    wasteLength = (double) (i + r.getLength() - 20 - length)/100;
+                    wasteLength = ((i + r.getLength() - 20 - length)/100) * numberOfRoofsPerRow;
                 }
                 i -= 20;
             }
-            waste = wasteWidth + wasteLength;
+            waste = (wasteWidth * (numberOfRoofsNeeded/numberOfRoofsPerRow)) + wasteLength;
             if(waste < lowestWaste || lowestWaste == 0){
                 lowestWaste = waste;
                 chosenRoof = r;
@@ -206,6 +211,12 @@ public class MaterialCalculator {
         return roofs;
     }
 
+    /**
+     * Calculates which rafter fulfill the requirements for the carport.
+     * @param allSheathings List of sheathings to choose from.
+     * @return ItemListMaterial which contains the chosen sheathing and how many are needed for the size.
+     * @author MrJustMeDahl
+     */
     public Set<ItemListMaterial> calculateSheathings(List<Sheathing> allSheathings) {
         Set<ItemListMaterial> sheathings = new HashSet<>();
         Sheathing chosenSheathing = null;
