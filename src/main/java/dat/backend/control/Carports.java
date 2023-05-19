@@ -105,8 +105,6 @@ public class Carports extends HttpServlet
         if (check == true){
             Shed shed = new Shed(itemList.getMaterialsForShed(), shedWidth, shedLength, height);
             carport.setShed(shed);
-            System.out.println("SKURSET ER LIG MED" + shed);
-            System.out.println("SKURSET FOR CARPORT ER LIG MED " + carport.getShed());
             carport.setCheckShed(true);
             request.setAttribute("shed", 1);
         }
@@ -117,7 +115,6 @@ public class Carports extends HttpServlet
         try{
             Order order = OrderFacade.createOrder(carport, user.getUserID(), carport.getPrice(), carport.getIndicativePrice(), itemList, connectionPool);
             OrderFacade.addItemlistToDB(order.getItemList(), order.getOrderID(), connectionPool);
-            System.out.println("SKURSET FOR ORDER OG CARPORT ER LIG MED " + order.getCarport().getShed());
             request.getRequestDispatcher("shoppingbasket").forward(request, response);
         }
         catch (DatabaseException e){
