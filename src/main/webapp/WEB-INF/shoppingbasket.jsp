@@ -18,7 +18,15 @@
 
         <br/>
         <br/>
+        <c:if test="${requestScope.order.carport.checkShed == true}">
+            <h4>Carport med fladt tag inkl. skur</h4>
+        </c:if>
+        <c:if test="${requestScope.order.carport.checkShed == false}">
+            <h4>Carport med fladt tag</h4>
+        </c:if>
+        <br/>
         <table class="table">
+
             <thead>
             <th>Pris: ${requestScope.order.price} kr</th>
             <th>Vejl. Pris: ${requestScope.order.indicativePrice} kr</th>
@@ -26,7 +34,10 @@
             <th>Længde: ${requestScope.order.carport.length} cm</th>
             <th>Bredde: ${requestScope.order.carport.width} cm</th>
             <th>Højde: ${requestScope.order.carport.minHeight} cm</th>
+            <th>Skur Længde: ${requestScope.shed.length} cm</th>
+            <th>Skur Bredde: ${requestScope.shed.width} cm</th>
             </thead>
+
         <tr></tr>
 
         </table>

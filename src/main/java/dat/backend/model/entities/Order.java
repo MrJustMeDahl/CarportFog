@@ -35,7 +35,13 @@ public class Order {
     }
 
     public void setPrice() {
-        this.price = carport.calculatePrice();
+        if(carport.shed == null){
+            this.price = carport.calculatePrice();
+        }
+        else {
+            this.price = carport.calculatePrice() + carport.shed.calculatePrice();
+        }
+
     }
 
     public void setIndicativePrice() {

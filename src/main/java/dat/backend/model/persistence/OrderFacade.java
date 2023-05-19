@@ -97,6 +97,9 @@ public class OrderFacade {
         OrderMapper.addItemlistToDB(itemList, orderId, connectionPool);
     }
 
+    public static void deleteMaterialsFromOrder(int orderId, ConnectionPool connectionPool) throws DatabaseException {
+        OrderMapper.deleteMaterialsFromOrder(orderId, connectionPool);
+    }
     /**
      * This method handles when an offer is sent to the customer.
      * It changes the price to match the price entered by the salesperson and changes order status to confirmed.

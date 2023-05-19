@@ -43,6 +43,15 @@ public class Carports extends HttpServlet
     {
 
         //response.sendRedirect("WEB-INF/carport.jsp");
+        int skur = Integer.parseInt(request.getParameter("shed"));
+        if (skur == 1){
+            request.setAttribute("shed", 1);
+        }
+        else if(skur == 0){
+            request.setAttribute("shed", 0);
+
+        }
+
         request.getRequestDispatcher("WEB-INF/carport.jsp").forward(request, response);
 
     }
@@ -67,6 +76,23 @@ public class Carports extends HttpServlet
         int width = Integer.parseInt(request.getParameter("width"));
         int length = Integer.parseInt(request.getParameter("length"));
         int  height = Integer.parseInt(request.getParameter("height"));
+
+
+        Boolean check = Boolean.valueOf(request.getParameter("shedCheck"));
+        int shedLength = 0;
+        int shedWidth = 0;
+
+
+        if(check == true){
+
+            shedLength = Integer.parseInt(request.getParameter("shedLength"));
+            shedWidth = Integer.parseInt(request.getParameter("shedWidth"));
+
+        }
+
+
+
+        
         ItemList itemList = null;
         try {
             itemList = new ItemList(length, width, height, false, (List<Post>) applicationScope.getAttribute("allPosts"), (List<Purlin>) applicationScope.getAttribute("allPurlins"), (List<Rafter>) applicationScope.getAttribute("allRafters"));
@@ -74,8 +100,17 @@ public class Carports extends HttpServlet
             request.setAttribute("errormessage", e);
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }
-        Carport carport = new Carport(itemList.getMaterialsForCarport(), width, length, height);
+            Carport carport = new Carport(itemList.getMaterialsForCarport(), width, length, height);
 
+        if (check == true){
+            Shed shed = new Shed(itemList.getMaterialsForShed(), shedWidth, shedLength, height);
+            carport.setShed(shed);
+            carport.setCheckShed(true);
+            request.setAttribute("shed", 1);
+        }
+        else {
+            request.setAttribute("shed", 0);
+        }
 
         try{
             Order order = OrderFacade.createOrder(carport, user.getUserID(), carport.getPrice(), carport.getIndicativePrice(), itemList, connectionPool);

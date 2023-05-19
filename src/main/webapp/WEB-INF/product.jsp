@@ -19,11 +19,19 @@
         <br/>
 
         <h2>Carport med Fladt tag</h2>
-        <a>
-            <img src="${pageContext.request.contextPath}/images/carportFladt.jpg" width="400px;" class="img-fluid"/>
-        </a>
-        <form action="carport" method="get">
-            <input type="submit" value="Vælg">
+        <form action="carport" method="get" id="noShedForm">
+
+            <input type="image" src="${pageContext.request.contextPath}/images/carportFladt.jpg" width="400px;" class="img-fluid" alt="Submit">
+            <input type="hidden" name="shed" value=0>
+        </form>
+
+
+        <h2>Carport med Fladt tag inkl. skur</h2>
+
+        <form action="carport" method="get" id="shedForm">
+
+            <input type="image" src="${pageContext.request.contextPath}/images/carportmedskur.jpg" width="400px;" class="img-fluid" alt="Submit">
+            <input type="hidden" name="shed" value="1">
         </form>
 
         <br/>

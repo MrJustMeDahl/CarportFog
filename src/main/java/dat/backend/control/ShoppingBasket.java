@@ -51,6 +51,8 @@ public class ShoppingBasket extends HttpServlet
                 if(Objects.equals(o.getOrderStatus(), "pending")){
 
                     request.setAttribute("order", o);
+                    request.setAttribute("shed", o.getCarport().getShed());
+                    System.out.println("carprt er lig med : " + o.getCarport() + " Og shed er lig med : " + o.getCarport().getShed());
                     session.setAttribute("order",o);
 
 
@@ -60,6 +62,7 @@ public class ShoppingBasket extends HttpServlet
             request.setAttribute("errormessage", e);
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }
+
         request.getRequestDispatcher("WEB-INF/shoppingbasket.jsp").forward(request, response);
     }
 
