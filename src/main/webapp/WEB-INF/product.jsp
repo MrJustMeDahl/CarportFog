@@ -14,7 +14,7 @@
     </jsp:attribute>
 
     <jsp:body>
-        <h1>Her kan du se vores produkter!</h1>
+        <h1><u>Her kan du se vores produkter!</u></h1>
 
         <br/>
 

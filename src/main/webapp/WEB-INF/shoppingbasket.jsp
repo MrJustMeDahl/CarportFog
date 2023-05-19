@@ -14,9 +14,11 @@
     </jsp:attribute>
 
     <jsp:body>
-        <h1>Indkøbskurv</h1>
+        <h1><u>Indkøbskurv</u></h1>
 
         <br/>
+        <br/>
+        <h5> ${requestScope.message}</h5>
         <br/>
         <c:if test="${requestScope.order.carport.checkShed == true}">
             <h4>Carport med fladt tag inkl. skur</h4>
@@ -24,11 +26,18 @@
         <c:if test="${requestScope.order.carport.checkShed == false}">
             <h4>Carport med fladt tag</h4>
         </c:if>
-        <br/>
+
+
+
+
+
+        <c:if test="${requestScope.order.orderID == null}">
+            <h5>Din indkøbskurv er tom!</h5>
+        </c:if>
+        <c:if test="${requestScope.order.orderID != null}">
         <table class="table">
 
             <thead>
-            <th>Pris: ${requestScope.order.price} kr</th>
             <th>Vejl. Pris: ${requestScope.order.indicativePrice} kr</th>
             <th>Ordre Status: "${requestScope.order.orderStatus}"</th>
             <th>Længde: ${requestScope.order.carport.length} cm</th>
@@ -41,9 +50,16 @@
         <tr></tr>
 
         </table>
+
         <form action="orderandpayment" method="post">
             <button class="btn btn-outline-primary" type="submit" value="${requestScope.order.orderID}" name="OrderId">Få Tilbud</button>
         </form>
+        <form action="orders" method="post">
+            <button class="btn btn-outline-primary" type="submit" value="${requestScope.order.orderID}" name="currentID">Annuller</button>
+            <input type="hidden" name="shoppingDelete" value="true">
+        </form>
+        </c:if>
+
 
 
     </jsp:body>

@@ -30,6 +30,13 @@ public class Orders extends HttpServlet
     }
 
 
+    /**
+     * doGet is used for loading in the orders for the user from the DB to be shown on the orders.jsp page.
+     * @param request Used for loading in the data on the request scope.
+     * @param response Is used to set the contentType.
+     * @throws IOException Is cast if the input/output is invalid.
+     * @throws ServletException is cast when theres an error using Servlets in general.
+     */
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
@@ -50,13 +57,25 @@ public class Orders extends HttpServlet
         }
     }
 
-
+    /**
+     * doPost is used to delete orders from both the shoppingbasket and the orderpage. The boolean "shoppingDeleteCheck" will check if the
+     * user deleted the order from the shoppingbasket page, and therefore redirect the user back to the page.
+     * @param request Used for loading in the data on the request scope.
+     * @param response Is used to set the contentType.
+     * @throws IOException Is cast if the input/output is invalid.
+     * @throws ServletException is cast when theres an error using Servlets in general.
+     */
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
         response.setContentType("text/html");
         try{
+            boolean shoppingDeleteCheck = Boolean.parseBoolean(request.getParameter("shoppingDelete"));
 
             OrderFacade.deleteOrder(Integer.parseInt(request.getParameter("currentID")), connectionPool);
+            if(shoppingDeleteCheck == true){
+                request.getRequestDispatcher("shoppingbasket").forward(request, response);
+
+            }
             doGet(request, response);
 
         }catch (DatabaseException e){

@@ -48,7 +48,7 @@
                                     </c:forEach>
 
                                 </td>
-                                <td>${allOrders.price} kr</td>
+                                <td>${allOrders.indicativePrice} kr</td>
 
                                 <td>Mangler godkendelse</td>
 
@@ -81,7 +81,7 @@
                                         </c:forEach>
 
                                     </td>
-                                    <td>${allOrders.price} kr</td>
+                                    <td>${allOrders.indicativePrice} kr</td>
 
                                     <td>Godkendt</td>
                                     <td>
@@ -112,7 +112,7 @@
                                         </c:forEach>
 
                                     </td>
-                                    <td>${allOrders.price} kr</td>
+                                    <td>${allOrders.indicativePrice} kr</td>
 
                                     <td>Betalt</td>
 

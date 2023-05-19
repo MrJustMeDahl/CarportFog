@@ -33,6 +33,7 @@ public class Carports extends HttpServlet
 
     /**
      * doGet is used to redirect to the carport.jsp, where the user is able to customize the dimensions of a carport.
+     * The method will check if the user selected a shed for the carport.
      * @param request Used for loading in the data on the request scope.
      * @param response Is used to set the contentType.
      * @throws IOException Is cast if the input/output is invalid.
@@ -58,9 +59,8 @@ public class Carports extends HttpServlet
 
 
     /**
-     * doPost is designed to take the users input and make use of the createOrder() method. The order is saved in the DB and on
-     * the request and session scope for later use, fx in the shoppingbasket.
-     * HER SKAL LOADES MATERIALER IND!!!!!! MANGLER STADIG.
+     * doPost is designed to take the users input and make use of the createOrder() method. The itemlist will also be
+     * generated for both the carport and the shed (if applicable). Both the order and itemlist are then saved to the DB.
      * @param request Used for loading in the data on the request scope.
      * @param response Is used to set the contentType.
      * @throws IOException Is cast if the input/output is invalid.
@@ -90,9 +90,6 @@ public class Carports extends HttpServlet
 
         }
 
-
-
-        
         ItemList itemList = null;
         try {
             itemList = new ItemList(length, width, height, check, shedLength, shedWidth, (List<Post>) applicationScope.getAttribute("allPosts"), (List<Purlin>) applicationScope.getAttribute("allPurlins"), (List<Rafter>) applicationScope.getAttribute("allRafters"), (List<Roof>) applicationScope.getAttribute("allRoofs"), (List<Sheathing>) applicationScope.getAttribute("allSheathings"));

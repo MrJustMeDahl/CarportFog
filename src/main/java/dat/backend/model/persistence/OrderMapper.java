@@ -170,6 +170,7 @@ public class OrderMapper {
             throw new DatabaseException(ex, "Error creating order in the Database");
         }
 
+
         return new Order(orderId, userId, carport, "pending", price, indicativePrice, itemList);
     }
 
@@ -234,6 +235,7 @@ public class OrderMapper {
         try (Connection connection = connectionPool.getConnection()) {
             for (ItemListMaterial i : itemList.getMaterials()) {
                 try (PreparedStatement ps = connection.prepareStatement(SQL)) {
+
                     ps.setInt(1, i.getAmount());
                     ps.setInt(2, orderId);
                     ps.setInt(3, i.getMaterial().getMaterialVariantID());
@@ -241,7 +243,6 @@ public class OrderMapper {
                     ps.setString(5, i.getMessage());
                     ps.setInt(6, i.getActualLength());
                     ps.execute();
-
                 }
             }
         } catch (SQLException ex) {
