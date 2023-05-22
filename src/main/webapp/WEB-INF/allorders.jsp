@@ -54,7 +54,8 @@
 
                                 <td>
                                     <button formaction="admingenerate3d" class="btn btn-outline-dark"
-                                            name="generate3d"> lav 3d model</button>
+                                            name="generate3d" value="${allOrders.orderID}"
+                                            formmethod="post"> lav 3d model</button>
 
 
                                 </td>
@@ -86,7 +87,8 @@
                                     <td>Godkendt</td>
                                     <td>
                                         <button formaction="admingenerate3d" class="btn btn-outline-dark"
-                                                name="generate3d"> lav 3d model</button>
+                                                name="generate3d" value="${allOrders.orderID}"
+                                                formmethod="post"> lav 3d model</button>
 
 
                                     </td>
@@ -118,7 +120,8 @@
 
                                     <td>
                                         <button formaction="admingenerate3d" class="btn btn-outline-dark"
-                                                name="generate3d"> lav 3d model</button>
+                                                name="generate3d" value="${allOrders.orderID}"
+                                                formmethod="post"> lav 3d model</button>
 
 
                                     </td>
