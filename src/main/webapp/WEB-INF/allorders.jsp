@@ -96,7 +96,7 @@
 
                         <c:forEach var="allOrders" items="${sessionScope.allOrders}"
                                    varStatus="status">
-                            <c:if test="${allOrders.orderStatus.equals('paid')}">
+                            <c:if test="${allOrders.orderStatus.equals('payed')}">
                                 <tr>
                                     <td>${allOrders.orderID}</td>
                                     <td>
