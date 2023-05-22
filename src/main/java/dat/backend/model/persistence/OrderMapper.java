@@ -205,7 +205,7 @@ public class OrderMapper {
      * @param connectionPool Is required for establishing connection to the DB.
      * @throws DatabaseException is thrown if there isn't a connection to the database or if the data in the database is invalid.
      */
-    public static void updateOrderPayed(int orderId, ConnectionPool connectionPool) throws DatabaseException {
+    public static int updateOrderPayed(int orderId, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "UPDATE orders SET orders.orderStatus = ? WHERE orderId = ?";
 
         try (Connection connection = connectionPool.getConnection()) {
@@ -218,6 +218,7 @@ public class OrderMapper {
         } catch (SQLException e) {
             throw new DatabaseException("Failed to update paid in database");
         }
+        return orderId;
     }
 
     /**

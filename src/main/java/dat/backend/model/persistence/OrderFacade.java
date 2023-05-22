@@ -70,8 +70,9 @@ public class OrderFacade {
      * @throws DatabaseException is thrown if there isn't a connection to the database or if the data in the database is invalid.
      */
 
-    public static void updateOrderPayed(int orderId, ConnectionPool connectionPool) throws DatabaseException{
+    public static int updateOrderPayed(int orderId, ConnectionPool connectionPool) throws DatabaseException{
         OrderMapper.updateOrderPayed(orderId, connectionPool);
+        return orderId;
     }
 
     /**

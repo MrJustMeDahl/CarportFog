@@ -8,11 +8,11 @@ public abstract class Material {
 
     protected int materialID;
     protected int materialVariantID;
-    protected String description;
+     String description;
     protected String type;
     protected String function;
     protected double price;
-    protected int length;
+    int length;
 
     /**
      * This constructor represents the minimum amount of data needed to create any material

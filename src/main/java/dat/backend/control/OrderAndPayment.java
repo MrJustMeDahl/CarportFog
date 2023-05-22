@@ -44,8 +44,22 @@ public class OrderAndPayment extends HttpServlet
 
 
         try {
-            OrderFacade.updateOrderPayed(Integer.parseInt(request.getParameter("currentID")), connectionPool);
-            request.getRequestDispatcher("orders").forward(request, response);
+            response.setContentType("text/html");
+            HttpSession session = request.getSession();
+            User user = (User) session.getAttribute("user");
+            Order order;
+
+            int idCheck;
+            idCheck = OrderFacade.updateOrderPayed(Integer.parseInt(request.getParameter("currentID")), connectionPool);
+
+            List<Order> list  = OrderFacade.getOrdersByUserID(user.getUserID(), connectionPool);
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).getOrderID()==idCheck){
+                    order = list.get(i);
+                    request.setAttribute("order",order);
+                }
+            }
+            request.getRequestDispatcher("orderreciept").forward(request, response);
         } catch (DatabaseException e) {
             request.setAttribute("errormessage", e);
             request.getRequestDispatcher("error.jsp").forward(request, response);
