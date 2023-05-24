@@ -10,32 +10,44 @@
     </jsp:attribute>
 
     <jsp:attribute name="footer">
-
+        Produkt katalog
     </jsp:attribute>
 
     <jsp:body>
-        <h1><u>Her kan du se vores produkter!</u></h1>
-
-        <br/>
-
-        <h2>Carport med Fladt tag</h2>
-        <form action="carport" method="get" id="noShedForm">
-
-            <input type="image" src="${pageContext.request.contextPath}/images/carportFladt.jpg" width="400px;" class="img-fluid" alt="Submit">
-            <input type="hidden" name="shed" value=0>
-        </form>
-
-
-        <h2>Carport med Fladt tag inkl. skur</h2>
-
-        <form action="carport" method="get" id="shedForm">
-
-            <input type="image" src="${pageContext.request.contextPath}/images/carportmedskur.jpg" width="400px;" class="img-fluid" alt="Submit">
-            <input type="hidden" name="shed" value="1">
-        </form>
-
-        <br/>
-
-
+        <h1><u>Produkt katalog</u></h1>
+        <div class="row">
+            <div class="col-md-6  d-block">
+                <form id="formNoShed" action="carport" method="get">
+                    <div class="card" onclick="submitFormNoShed()">
+                        <img class="card-img-top" src="${pageContext.request.contextPath}/images/carportFladt.jpg">
+                        <div class="card-body">
+                            <h3 class="card-title">Carport med fladt tag</h3>
+                            <input type="hidden" name="shed" value="0">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-6  d-block">
+                <form id="formShed" action="carport" method="get">
+                    <div class="card" onclick="submitFormShed()">
+                        <img class="card-img-top" src="${pageContext.request.contextPath}/images/carportmedskur.jpg">
+                        <div class="card-body">
+                            <h3 class="card-title">Carport med fladt tag inkl. skur</h3>
+                            <input type="hidden" name="shed" value="1">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </jsp:body>
 </t:pagetemplate>
+
+<script>
+    function submitFormNoShed() {
+        document.getElementById("formNoShed").submit();
+    }
+
+    function submitFormShed() {
+        document.getElementById("formShed").submit();
+    }
+</script>
