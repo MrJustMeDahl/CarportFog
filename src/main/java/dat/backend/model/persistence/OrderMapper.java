@@ -131,6 +131,7 @@ public class OrderMapper {
      * @param connectionPool  Is required for establishing connection to the DB.
      * @return Will return the order, which is being created by the method.
      * @throws DatabaseException is thrown if there isn't a connection to the database or if the data in the database is invalid.
+     * @author pelle112112
      */
     public static Order createOrder(Carport carport, int userId, double price, double indicativePrice, ItemList itemList, ConnectionPool connectionPool) throws DatabaseException {
         int orderId = 0;
@@ -182,6 +183,7 @@ public class OrderMapper {
      * @param orderId        Is the ID for the order itself.
      * @param connectionPool Is required for establishing connection to the DB.
      * @throws DatabaseException is thrown if there isn't a connection to the database or if the data in the database is invalid.
+     * @author pelle112112
      */
     public static void updateOrderOrdered(int orderId, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "UPDATE orders SET orders.orderStatus = ? WHERE orderId = ?";
@@ -204,6 +206,7 @@ public class OrderMapper {
      * @param orderId        Is the ID for the order itself.
      * @param connectionPool Is required for establishing connection to the DB.
      * @throws DatabaseException is thrown if there isn't a connection to the database or if the data in the database is invalid.
+     * @author pelle112112
      */
     public static int updateOrderPayed(int orderId, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "UPDATE orders SET orders.orderStatus = ? WHERE orderId = ?";
@@ -229,6 +232,7 @@ public class OrderMapper {
      * @param orderId        Is the ID for the order itself.
      * @param connectionPool Is required for establishing connection to the DB.
      * @throws DatabaseException is thrown if there isn't a connection to the database or if the data in the database is invalid.
+     * @author pelle112112
      */
     public static void addItemlistToDB(ItemList itemList, int orderId, ConnectionPool connectionPool) throws DatabaseException {
 

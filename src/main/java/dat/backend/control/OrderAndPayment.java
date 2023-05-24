@@ -37,6 +37,7 @@ public class OrderAndPayment extends HttpServlet
      * @param response Is used to set the contentType.
      * @throws IOException Is cast if the input/output is invalid.
      * @throws ServletException is cast when theres an error using Servlets in general.
+     * @author pelle112112
      */
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
@@ -75,6 +76,7 @@ public class OrderAndPayment extends HttpServlet
      * @param response Is used to set the contentType.
      * @throws IOException Is cast if the input/output is invalid.
      * @throws ServletException is cast when theres an error using Servlets in general.
+     * @author pelle112112
      */
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException

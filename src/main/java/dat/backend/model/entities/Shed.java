@@ -2,6 +2,11 @@ package dat.backend.model.entities;
 
 import java.util.Map;
 
+/**
+ * This class contains the variables used for the Shed.
+ * @author pelle112112
+ */
+
 public class Shed {
     private double price;
     private double indicativePrice;
