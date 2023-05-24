@@ -1,54 +1,12 @@
 package dat.backend.control;
 
-import org.abstractica.javacsg.*;
+import org.abstractica.javacsg.Geometry3D;
+import org.abstractica.javacsg.JavaCSG;
+import org.abstractica.javacsg.JavaCSGFactory;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+public class Generator3d {
 
-@WebServlet(name = "AdminGenerate3d", value = "/admingenerate3d")
-public class AdminGenerate3d extends HttpServlet {
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost(request, response);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-
-        Generator3d.generateModel();
-        request.getRequestDispatcher("WEB-INF/allorders.jsp").forward(request, response);
-        /*
-        String filePath = "";
-        File file = new File(filePath);
-
-        if (file.exists()) {
-            response.setContentType("application/octet-stream");
-            response.setContentLength((int) file.length());
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"");
-
-            FileInputStream fileInputStream = new FileInputStream(file);
-            byte[] buffer = new byte[(int) file.length()];
-            int bytesRead;
-
-            while ((bytesRead = fileInputStream.read(buffer)) != -1) {
-                response.getOutputStream().write(buffer, 0, bytesRead);
-            }
-
-            fileInputStream.close();
-        } else {
-            request.setAttribute("errormessage", "File does not exist");
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-        }
-
-         */
-    }
-
-    public static void main(String[] args)
+    public static void generateModel()
     {
         JavaCSG csg = JavaCSGFactory.createDefault();
 
