@@ -77,16 +77,6 @@ public class User {
         }
     }
 
-    public User(String email, String password, String name, int phoneNumber, String address) {
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.phoneNumber = phoneNumber;
-        this.address = address;
-        this.role = "user";
-    }
-
-
     public String getEmail() {
         return email;
     }
@@ -159,15 +149,11 @@ public class User {
         if (email.contains("@")&& email.contains(".")){
             return true;
         }
-
-
-
         return false;
     }
 
 
     public boolean checkPhoneNumber(String phoneNumber) {
-
 
         return phoneNumber.matches("\\d+");
     }

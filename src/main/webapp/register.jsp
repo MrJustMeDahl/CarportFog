@@ -6,7 +6,7 @@
 
 <t:pagetemplate>
     <jsp:attribute name="header">
-             Opret konto
+
     </jsp:attribute>
 
     <jsp:attribute name="footer">
@@ -15,30 +15,42 @@
 
     <jsp:body>
 
-        <h3>Du kan Oprette her</h3>
-
-        <div class="row d-flex justify-content-center align-items-center ">
-            <form class=action="signup" method="post">
-
-                <label for="email">Email: </label>
-                <input type="text" id="email" name="email"/> <br/>
-
-                <label for="password">Kodeord: </label>
-                <input type="password" id="password" name="password"/> <br/>
-
-                <label for="fullName">Fulde Navn: </label>
-                <input type="fullName" id="fullName" name="fullName"/> <br/>
-
-                <label for="phoneNumber">Telefon nummer: </label>
-                <input type="phoneNumber" id="phoneNumber" name="phoneNumber"/> <br/>
-
-                <label for="address">addresse: </label>
-                <input type="address" id="address" name="address"/> <br/>
-
-                <input type="submit" value="Opret"/>
-
-            </form>
+        <div class="align-center text-center">
+            <div class="card w-50 border-primary mx-auto">
+                <div class="card-body">
+                    <div class="row">
+                        <h1 class="card-title">Opret ny konto</h1>
+                    </div>
+                    <form action="signup" method="post">
+                        <div class="row mt-3 w-75 mx-auto">
+                            <input type="email" name="email" placeholder="email@email.dk">
+                        </div>
+                        <div class="row mt-3 w-75 mx-auto">
+                            <input type="password" name="password" placeholder="Kodeord">
+                        </div>
+                        <div class="row mt-3 w-75 mx-auto">
+                            <input type="text" name="fullName" placeholder="Fulde navn">
+                        </div>
+                        <div class="row mt-3 w-75 mx-auto">
+                            <input type="number" min="10000000" max="99999999" name="phoneNumber"
+                                   placeholder="Telefon nr.">
+                        </div>
+                        <div class="row mt-3 w-75 mx-auto">
+                            <input type="text" name="address" placeholder="Adresse">
+                        </div>
+                        <div class="row mt-3 w-50 mx-auto">
+                            <button class="btn btn-primary" type="submit" value="Opret">
+                                Opret konto
+                            </button>
+                        </div>
+                        <c:if test="${requestScope.registermessage != null}">
+                            <div class="row mt-3 w-50 mx-auto">
+                                <p>${requestScope.registermessage}</p>
+                            </div>
+                        </c:if>
+                    </form>
+                </div>
+            </div>
         </div>
-
     </jsp:body>
 </t:pagetemplate>

@@ -34,7 +34,15 @@
                             </button>
                         </div>
                         <div class="row mt-2 w-50 mx-auto">
-                            <p>Er du ikke allerede kunde hos os kan du tilmelde dig <a href="register.jsp">her.</a></p>
+                            <c:choose>
+                                <c:when test="${requestScope.registermessage != null}">
+                                    <p>${requestScope.registermessage}</p>
+                                </c:when>
+                                <c:otherwise>
+                                    <p>Er du ikke allerede kunde hos os kan du tilmelde dig <a
+                                            href="register.jsp">her.</a></p>
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                     </form>
                 </div>
