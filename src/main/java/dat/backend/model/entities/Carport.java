@@ -15,7 +15,6 @@ public class Carport {
     private int length;
     private int minHeight;
     private Shed shed;
-    Boolean checkShed = false;
 
     /**
      * This constructor is used when creating a new order - meaning you don't know the price yet, it will calculate the price of all materials for you and give you a suggested indicative price.
@@ -132,13 +131,5 @@ public class Carport {
 
     public void setShed(Shed shed) {
         this.shed = shed;
-    }
-
-    public Boolean getCheckShed() {
-        return checkShed;
-    }
-
-    public void setCheckShed(Boolean checkShed) {
-        this.checkShed = checkShed;
     }
 }

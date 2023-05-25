@@ -48,7 +48,7 @@ public class Product extends HttpServlet {
 
         for (Order o : orderList) {
             if (Objects.equals(o.getOrderStatus(), "pending")) {
-                String messageString = "Der ligger allerede en carport i din indkøbskurv!";
+                String messageString = "Der ligger allerede en carport i din indkøbskurv - ønsker du mere end en carport bedes du kontakte os direkte.";
                 request.setAttribute("message", messageString);
                 request.getRequestDispatcher("shoppingbasket").forward(request, response);
             }

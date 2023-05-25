@@ -10,57 +10,86 @@
     </jsp:attribute>
 
     <jsp:attribute name="footer">
-
+        Indkøbskurv
     </jsp:attribute>
 
     <jsp:body>
-        <h1><u>Indkøbskurv</u></h1>
-
-        <br/>
-        <br/>
-        <h5> ${requestScope.message}</h5>
-        <br/>
-        <c:if test="${requestScope.order.carport.checkShed == true}">
-            <h4>Carport med fladt tag inkl. skur</h4>
+        <div class="row">
+            <h1><u>Indkøbskurv</u></h1>
+        </div>
+        <c:if test="${!requestScope.message.equals('Din indkøbskurv er tom') || requestScope.order == null}">
+            <div class="row mt-3">
+                <h5> ${requestScope.message}</h5>
+            </div>
         </c:if>
-        <c:if test="${requestScope.order.carport.checkShed == false}">
-            <h4>Carport med fladt tag</h4>
+        <c:if test="${requestScope.order != null}">
+            <div class="card mx-auto w-50">
+                <c:choose>
+                    <c:when test="${requestScope.order.carport.shed.length != 0}">
+                        <img class="card-img-top" src="${pageContext.request.contextPath}/images/carportmedskur.jpg">
+                    </c:when>
+                    <c:otherwise>
+                        <img class="card-img-top" src="${pageContext.request.contextPath}/images/carportFladt.jpg">
+                    </c:otherwise>
+                </c:choose>
+                <div class="card-body">
+                    <c:choose>
+                        <c:when test="${requestScope.order.carport.shed.length != 0}">
+                            <h3 class="card-title">Carport med fladt tag inkl. skur</h3>
+                        </c:when>
+                        <c:otherwise>
+                            <h3 class="card-title">Carport med fladt tag</h3>
+                        </c:otherwise>
+                    </c:choose>
+                    <table class="table table-hover table-responsive">
+                        <thead>
+                        <th></th>
+                        <th>Længde:</th>
+                        <th>Bredde:</th>
+                        <th>Højde:</th>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Carport</td>
+                            <td>${requestScope.order.carport.length}</td>
+                            <td>${requestScope.order.carport.width}</td>
+                            <td>${requestScope.order.carport.minHeight}</td>
+                        </tr>
+                        <c:if test="${requestScope.order.carport.shed.length != 0}">
+                            <tr>
+                                <td>Skur</td>
+                                <td>${requestScope.order.carport.shed.length}</td>
+                                <td>${requestScope.order.carport.shed.width}</td>
+                                <td>${requestScope.order.carport.minHeight}</td>
+                            </tr>
+                        </c:if>
+                        </tbody>
+                    </table>
+                    <div class="row">
+                        <div class="col-8">
+                        </div>
+                        <div class="col-4">
+                            <h5>Vejl. pris ${requestScope.order.indicativePrice}</h5>
+                        </div>
+                    </div>
+                    <form>
+                        <div class="row">
+                            <button class="btn btn-primary mx-auto mt-1" formaction="orderandpayment" formmethod="post"
+                                    value="${requestScope.order.orderID}" name="OrderId" type="submit">
+                                <img src="${pageContext.request.contextPath}/images/indkøbskurv.png" class="btn-icon"
+                                     style="width: 10%">
+                                Bestil tilbud
+                            </button>
+                            <button class="btn btn-danger mx-auto mt-1" formaction="orders" formmethod="post"
+                                    value="${requestScope.order.orderID}" name="currentID" type="submit">
+                                Annuller ordre
+                            </button>
+                            <input type="hidden" name="shoppingDelete" value="true">
+                        </div>
+                    </form>
+                </div>
+            </div>
         </c:if>
-
-
-
-
-
-        <c:if test="${requestScope.order.orderID == null}">
-            <h5>Din indkøbskurv er tom!</h5>
-        </c:if>
-        <c:if test="${requestScope.order.orderID != null}">
-        <table class="table">
-
-            <thead>
-            <th>Vejl. Pris: ${requestScope.order.indicativePrice} kr</th>
-            <th>Ordre Status: "${requestScope.order.orderStatus}"</th>
-            <th>Længde: ${requestScope.order.carport.length} cm</th>
-            <th>Bredde: ${requestScope.order.carport.width} cm</th>
-            <th>Højde: ${requestScope.order.carport.minHeight} cm</th>
-            <th>Skur Længde: ${requestScope.order.carport.shed.length} cm</th>
-            <th>Skur Bredde: ${requestScope.order.carport.shed.width} cm</th>
-            </thead>
-
-        <tr></tr>
-
-        </table>
-
-        <form action="orderandpayment" method="post">
-            <button class="btn btn-outline-primary" type="submit" value="${requestScope.order.orderID}" name="OrderId">Få Tilbud</button>
-        </form>
-        <form action="orders" method="post">
-            <button class="btn btn-outline-primary" type="submit" value="${requestScope.order.orderID}" name="currentID">Annuller</button>
-            <input type="hidden" name="shoppingDelete" value="true">
-        </form>
-        </c:if>
-
-
 
     </jsp:body>
 </t:pagetemplate>

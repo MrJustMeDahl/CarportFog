@@ -19,36 +19,33 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet(name = "carport", urlPatterns = {"/carport"} )
-public class Carports extends HttpServlet
-{
+@WebServlet(name = "carport", urlPatterns = {"/carport"})
+public class Carports extends HttpServlet {
     private ConnectionPool connectionPool;
 
     @Override
-    public void init() throws ServletException
-    {
+    public void init() throws ServletException {
         this.connectionPool = ApplicationStart.getConnectionPool();
     }
 
 
     /**
      * doGet is used to redirect to the carport.jsp, where the user is able to customize the dimensions of a carport.
-     * @param request Used for loading in the data on the request scope.
+     *
+     * @param request  Used for loading in the data on the request scope.
      * @param response Is used to set the contentType.
-     * @throws IOException Is cast if the input/output is invalid.
+     * @throws IOException      Is cast if the input/output is invalid.
      * @throws ServletException is cast when theres an error using Servlets in general.
      * @author pelle112112
      */
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
-    {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
         //response.sendRedirect("WEB-INF/carport.jsp");
         int skur = Integer.parseInt(request.getParameter("shed"));
-        if (skur == 1){
+        if (skur == 1) {
             request.setAttribute("shed", 1);
-        }
-        else if(skur == 0){
+        } else if (skur == 0) {
             request.setAttribute("shed", 0);
 
         }
@@ -61,59 +58,52 @@ public class Carports extends HttpServlet
     /**
      * doPost is designed to take the users input and make use of the createOrder() method. The itemlist will also be
      * generated for both the carport and the shed (if applicable). Both the order and itemlist are then saved to the DB.
-     * @param request Used for loading in the data on the request scope.
+     *
+     * @param request  Used for loading in the data on the request scope.
      * @param response Is used to set the contentType.
-     * @throws IOException Is cast if the input/output is invalid.
+     * @throws IOException      Is cast if the input/output is invalid.
      * @throws ServletException is cast when theres an error using Servlets in general.
      * @author pelle112112
      */
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
-    {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("text/html");
         HttpSession session = request.getSession();
         ServletContext applicationScope = getServletContext();
         User user = (User) session.getAttribute("user");
         int width = Integer.parseInt(request.getParameter("width"));
         int length = Integer.parseInt(request.getParameter("length"));
-        int  height = Integer.parseInt(request.getParameter("height"));
-
-
-        Boolean check = Boolean.valueOf(request.getParameter("shedCheck"));
+        int height = Integer.parseInt(request.getParameter("height"));
         int shedLength = 0;
         int shedWidth = 0;
 
-
-        if(check == true){
-
+        try {
             shedLength = Integer.parseInt(request.getParameter("shedLength"));
             shedWidth = Integer.parseInt(request.getParameter("shedWidth"));
-
+        } catch (NullPointerException e) {
         }
+
 
         ItemList itemList = null;
         try {
-            itemList = new ItemList(length, width, height, check, shedLength, shedWidth, (List<Post>) applicationScope.getAttribute("allPosts"), (List<Purlin>) applicationScope.getAttribute("allPurlins"), (List<Rafter>) applicationScope.getAttribute("allRafters"), (List<Roof>) applicationScope.getAttribute("allRoofs"), (List<Sheathing>) applicationScope.getAttribute("allSheathings"));
-        } catch (NoMaterialFoundException e){
+            boolean hasShed;
+            if(shedLength != 0){
+                hasShed = true;
+            } else {
+                hasShed = false;
+            }
+            itemList = new ItemList(length, width, height, hasShed, shedLength, shedWidth, (List<Post>) applicationScope.getAttribute("allPosts"), (List<Purlin>) applicationScope.getAttribute("allPurlins"), (List<Rafter>) applicationScope.getAttribute("allRafters"), (List<Roof>) applicationScope.getAttribute("allRoofs"), (List<Sheathing>) applicationScope.getAttribute("allSheathings"));
+        } catch (NoMaterialFoundException e) {
             request.setAttribute("errormessage", e);
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }
-            Carport carport = new Carport(itemList.getMaterialsForCarport(), width, length, height, new Shed(itemList.getMaterialsForShed(), shedWidth, shedLength, height));
+        Carport carport = new Carport(itemList.getMaterialsForCarport(), width, length, height, new Shed(itemList.getMaterialsForShed(), shedWidth, shedLength, height));
 
-        if (check == true){
-            carport.setCheckShed(true);
-            request.setAttribute("shed", 1);
-        }
-        else {
-            request.setAttribute("shed", 0);
-        }
-
-        try{
-            Order order = OrderFacade.createOrder(carport, user.getUserID(), carport.getPrice()+carport.getShed().getPrice(), carport.getIndicativePrice()+carport.getShed().getIndicativePrice(), itemList, connectionPool);
+        try {
+            Order order = OrderFacade.createOrder(carport, user.getUserID(), carport.getPrice() + carport.getShed().getPrice(), carport.getIndicativePrice() + carport.getShed().getIndicativePrice(), itemList, connectionPool);
             OrderFacade.addItemlistToDB(order.getItemList(), order.getOrderID(), connectionPool);
             user.addOrder(order);
             request.getRequestDispatcher("shoppingbasket").forward(request, response);
-        }
-        catch (DatabaseException e){
+        } catch (DatabaseException e) {
             request.setAttribute("errormessage", e);
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }

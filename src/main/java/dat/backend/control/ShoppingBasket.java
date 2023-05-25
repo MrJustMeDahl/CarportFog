@@ -42,6 +42,9 @@ public class ShoppingBasket extends HttpServlet {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         String message = (String) request.getAttribute("message");
+        if(message == null){
+            message = "Din indkøbskurv er tom";
+        }
         request.setAttribute("message", message);
 
         List<Order> orderList = user.getOrders();

@@ -10,7 +10,7 @@
     </jsp:attribute>
 
     <jsp:attribute name="footer">
-Bestil din carport
+        Bestil din carport
     </jsp:attribute>
 
     <jsp:body>
@@ -140,14 +140,8 @@ Bestil din carport
                                         <option value="520">520 cm</option>
                                     </select>
                                 </div>
-                                <input type="hidden" name="shedCheck" value="true">
-
                             </c:if>
-
-
                             <input type="submit" value="Tilføj til kurv" class="mt-3 btn btn-primary">
-
-
                         </form>
                     </div>
                 </div>
