@@ -45,16 +45,11 @@ public class Orders extends HttpServlet
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
 
-        try {
-            List orderlist = OrderFacade.getOrdersByUserID(user.getUserID(), connectionPool);
+            List orderlist = user.getOrders();
             request.setAttribute("orderlist", orderlist);
 
 
             request.getRequestDispatcher("WEB-INF/orders.jsp").forward(request, response);
-        } catch (DatabaseException e) {
-            request.setAttribute("errormessage", e);
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-        }
     }
 
     /**

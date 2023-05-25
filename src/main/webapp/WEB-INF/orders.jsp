@@ -22,7 +22,6 @@
             <thead>
             <th>Ordre ID:</th>
             <th>Ordre Status:</th>
-            <th>Samlet pris:</th>
             <th>Vejledende pris:</th>
             <th>Carport Højde:</th>
             <th>Carport Bredde:</th>
@@ -40,10 +39,6 @@
 
                             <td>
                                     ${order.orderStatus}
-                            </td>
-
-                            <td>
-                                    ${order.price}
                             </td>
 
                             <td>
