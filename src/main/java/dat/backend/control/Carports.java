@@ -73,7 +73,6 @@ public class Carports extends HttpServlet
         HttpSession session = request.getSession();
         ServletContext applicationScope = getServletContext();
         User user = (User) session.getAttribute("user");
-
         int width = Integer.parseInt(request.getParameter("width"));
         int length = Integer.parseInt(request.getParameter("length"));
         int  height = Integer.parseInt(request.getParameter("height"));

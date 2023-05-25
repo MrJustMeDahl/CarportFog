@@ -18,56 +18,47 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
-@WebServlet(name = "product", urlPatterns = {"/product"} )
-public class Product extends HttpServlet
-{
+@WebServlet(name = "product", urlPatterns = {"/product"})
+public class Product extends HttpServlet {
     private ConnectionPool connectionPool;
 
     @Override
-    public void init() throws ServletException
-    {
+    public void init() throws ServletException {
         this.connectionPool = ApplicationStart.getConnectionPool();
     }
 
     /**
      * doGet will redirect the user to products.jsp, but later we will add more products, which then have to be loaded
      * through this servlet.
-     * @param request Used for loading in the data on the request scope.
+     *
+     * @param request  Used for loading in the data on the request scope.
      * @param response Is used to set the contentType.
-     * @throws IOException Is cast if the input/output is invalid.
+     * @throws IOException      Is cast if the input/output is invalid.
      * @throws ServletException is cast when theres an error using Servlets in general.
      * @author pelle112112
      */
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
-    {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
 
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-        try {
-            List<Order> orderList = OrderMapper.getOrdersByUserID(user.getUserID() , connectionPool);
-            request.setAttribute("orderlist", orderList);
+        List<Order> orderList = user.getOrders();
 
-            for (Order o: orderList) {
-                if(Objects.equals(o.getOrderStatus(), "pending")){
 
-                    String messageString = "Der ligger allerede en ordre i din indkøbskurv!";
-                    request.setAttribute("message", messageString);
-                    request.getRequestDispatcher("shoppingbasket").forward(request, response);
+        for (Order o : orderList) {
+            if (Objects.equals(o.getOrderStatus(), "pending")) {
 
-                }
+                String messageString = "Der ligger allerede en ordre i din indkøbskurv!";
+                request.setAttribute("message", messageString);
+                request.getRequestDispatcher("shoppingbasket").forward(request, response);
+
             }
-        } catch (DatabaseException e) {
-            request.setAttribute("errormessage", e);
-            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
         request.getRequestDispatcher("WEB-INF/product.jsp").forward(request, response);
-
     }
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
-    {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
 
     }

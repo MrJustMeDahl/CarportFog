@@ -43,8 +43,8 @@
             <th>Længde: ${requestScope.order.carport.length} cm</th>
             <th>Bredde: ${requestScope.order.carport.width} cm</th>
             <th>Højde: ${requestScope.order.carport.minHeight} cm</th>
-            <th>Skur Længde: ${requestScope.shed.length} cm</th>
-            <th>Skur Bredde: ${requestScope.shed.width} cm</th>
+            <th>Skur Længde: ${requestScope.order.carport.shed.length} cm</th>
+            <th>Skur Bredde: ${requestScope.order.carport.shed.width} cm</th>
             </thead>
 
         <tr></tr>
