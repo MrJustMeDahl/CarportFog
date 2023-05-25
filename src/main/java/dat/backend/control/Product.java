@@ -48,11 +48,9 @@ public class Product extends HttpServlet {
 
         for (Order o : orderList) {
             if (Objects.equals(o.getOrderStatus(), "pending")) {
-
-                String messageString = "Der ligger allerede en ordre i din indkøbskurv!";
+                String messageString = "Der ligger allerede en carport i din indkøbskurv!";
                 request.setAttribute("message", messageString);
                 request.getRequestDispatcher("shoppingbasket").forward(request, response);
-
             }
         }
         request.getRequestDispatcher("WEB-INF/product.jsp").forward(request, response);

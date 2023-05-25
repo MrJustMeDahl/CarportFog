@@ -109,6 +109,22 @@ public class User {
         return orders;
     }
 
+    public void addOrder(Order order){
+        orders.add(order);
+    }
+
+    public void removeOrder(int orderID){
+        Order deleteOrder = null;
+        for(Order o: orders){
+            if(o.getOrderID() == orderID){
+                deleteOrder = o;
+            }
+        }
+        if(deleteOrder != null){
+            orders.remove(deleteOrder);
+        }
+    }
+
     /**
      * When using the equals method a user is the same if every variable is the same except List of Order.
      * @param o Any object

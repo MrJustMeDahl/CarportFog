@@ -25,7 +25,15 @@
         <div class="container mt-5">
             <div class="row text-center">
                 <div class="col-8">
-                    <h1>Få tilbud på carport efter egne mål,<br/><a href="login.jsp">log ind her for at komme i gang.</a> </h1>
+                    <c:choose>
+                        <c:when test="${sessionScope.user == null}">
+                            <h1>Få tilbud på carport efter egne mål,<br/><a href="login.jsp">log ind her for at komme i
+                                gang.</a></h1>
+                        </c:when>
+                        <c:otherwise>
+                            <h1>Velkommen hos Fog carporte, <br/><a href="product">bestil din carport her.</a></h1>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
                 <div class="col-4">
                     <img src="${pageContext.request.contextPath}/images/forside4.png" width="80%" class="img-fluid"/>

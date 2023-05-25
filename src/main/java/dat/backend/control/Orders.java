@@ -41,7 +41,6 @@ public class Orders extends HttpServlet
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
-        // You shouldn't end up here with a GET-request, thus you get sent back to frontpage
         response.setContentType("text/html");
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
@@ -70,9 +69,11 @@ public class Orders extends HttpServlet
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
         response.setContentType("text/html");
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
         try{
             boolean shoppingDeleteCheck = Boolean.parseBoolean(request.getParameter("shoppingDelete"));
-
+            user.removeOrder(Integer.parseInt(request.getParameter("currentID")));
             OrderFacade.deleteOrder(Integer.parseInt(request.getParameter("currentID")), connectionPool);
             if(shoppingDeleteCheck == true){
                 request.getRequestDispatcher("shoppingbasket").forward(request, response);

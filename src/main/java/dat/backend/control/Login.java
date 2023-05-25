@@ -92,7 +92,7 @@ public class Login extends HttpServlet
                 allMaterialFunctions = MaterialFacade.getAllMaterialFunctions(connectionPool);
                 applicationScope.setAttribute("allMaterialFunctions", allMaterialFunctions);
             }
-            request.getRequestDispatcher("WEB-INF/product.jsp").forward(request, response);
+            request.getRequestDispatcher("index.jsp").forward(request, response);
         }
         catch (DatabaseException e)
         {

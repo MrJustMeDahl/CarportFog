@@ -110,6 +110,7 @@ public class Carports extends HttpServlet
         try{
             Order order = OrderFacade.createOrder(carport, user.getUserID(), carport.getPrice()+carport.getShed().getPrice(), carport.getIndicativePrice()+carport.getShed().getIndicativePrice(), itemList, connectionPool);
             OrderFacade.addItemlistToDB(order.getItemList(), order.getOrderID(), connectionPool);
+            user.addOrder(order);
             request.getRequestDispatcher("shoppingbasket").forward(request, response);
         }
         catch (DatabaseException e){
