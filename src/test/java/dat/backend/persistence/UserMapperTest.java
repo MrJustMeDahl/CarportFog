@@ -20,14 +20,13 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class UserMapperTest {
-
+public class UserMapperTest {
 
     private final static String USER = System.getenv("USERNAME");
     private final static String PASSWORD = System.getenv("PASSWORD");
     private final static String URL = "jdbc:mysql://134.122.87.83:3306/fog_test?serverTimezone=CET&allowPublicKeyRetrieval=true&useSSL=false";
 
-    public static ConnectionPool connectionPool;
+    private static ConnectionPool connectionPool;
 
     @BeforeAll
     public static void setUpClass() {
@@ -93,14 +92,12 @@ class UserMapperTest {
 
     @Test
     void createUser() throws DatabaseException {
-        /*User newUser = UserFacade.createUser("jill", "1234", "user", connectionPool);
-        User logInUser = UserFacade.login("jill", "1234", connectionPool);
-        User expectedUser = new User("jill", "1234", "user");
+        /*
+        User newUser = UserFacade.createUser("qwe@qwe.qwe", "awdawd",123124124, "asewqes","lars jensen", "user", connectionPool);
+        User expectedUser = new User(4, "qwe@qwe.qwe", "awdawd","lars jensen", 123124124,"asewges", "user", connectionPool);
         assertEquals(expectedUser, newUser);
-        assertEquals(expectedUser, logInUser);
+        */
 
-
-         */
     }
 
     @Test
@@ -111,6 +108,12 @@ class UserMapperTest {
         orders.add(new Order(3, 2, new Carport(new HashMap<>(), 300, 580, 210, null), "ordered", 1000, 1500, null));
         Set<User> users = UserFacade.getUsersForOrders(orders, connectionPool);
         assertEquals(2, users.size());
+    }
+
+    @Test
+    void getAllUsers() throws DatabaseException{
+        List<User>allUsers = UserFacade.getAllUsers(connectionPool);
+        assertEquals(2,allUsers.size());
     }
 
 }
