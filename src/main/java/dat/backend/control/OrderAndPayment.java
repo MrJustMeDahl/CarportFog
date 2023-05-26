@@ -83,11 +83,18 @@ public class OrderAndPayment extends HttpServlet
     {
         response.setContentType("text/html");
         HttpSession session = request.getSession();
-
-        Order order = (Order) session.getAttribute("order");
+        User user = (User) session.getAttribute("user");
+        int orderID = Integer.parseInt(request.getParameter("OrderId"));
+        Order order = null;
+        for(Order o: user.getOrders()){
+            if(o.getOrderID() == orderID){
+                order = o;
+            }
+        }
 
         try {
             OrderFacade.updateOrderOrdered(order.getOrderID(), connectionPool);
+            order.setOrderStatus("ordered");
             request.getRequestDispatcher("shoppingbasket").forward(request, response);
 
         } catch (DatabaseException e) {
