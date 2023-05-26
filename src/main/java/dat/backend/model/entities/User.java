@@ -154,9 +154,13 @@ public class User {
     public String toString() {
         return "User{" +
                 "Email='" + email + '\'' +
-                ", kodeord='" + password + '\'' +
-                ", rolle='" + role + '\'' +
-                '}';
+        ", kodeord='" + password + '\'' +
+        ", rolle='" + role + '\'' +
+        ", bruger id='" + userID + '\'' +
+        ", tlf nr='" + phoneNumber + '\'' +
+        ", addresse=" + address + '\'' +
+        ", navn=" + name + '\'' +
+        '}';
     }
 
 

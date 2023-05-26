@@ -42,7 +42,6 @@ class Carport{
 - int length
 - int minHeight
 - Shed shed
-- Boolean checkShed
 
 + Carport(Map<Material, Integer materials, int width, int length, int minHeight, Shed shed)
 + Carport(Map<Material, Integer materials, double price, double indicativePrice, int width, int length, int minHeight, Shed shed)
