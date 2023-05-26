@@ -105,7 +105,11 @@ class UserMapper {
                     userID = rs.getInt(1);
                 }
                 if (userID != 0) {
-                    user = new User(userID, email, password, fullName, phoneNumber, address, role);
+                    if(ApplicationStart.getConnectionPool() == null){
+                        user = new User(userID, email, password, fullName, phoneNumber, address, role, connectionPool);
+                    } else {
+                        user = new User(userID, email, password, fullName, phoneNumber, address, role);
+                    }
                 } else {
                     throw new DatabaseException("The user with email = " + email + " could not be inserted into the database");
                 }
@@ -180,8 +184,11 @@ class UserMapper {
                     int phoneNumber = rs.getInt("phoneNumber");
                     String address = rs.getString("address");
                     String role = rs.getString("role");
-
-                    allUsers.add(new User(userId, email, password, name, phoneNumber, address, role));
+                    if(ApplicationStart.getConnectionPool() == null){
+                        allUsers.add(new User(userId, email, password, name, phoneNumber, address, role, connectionPool));
+                    } else {
+                        allUsers.add(new User(userId, email, password, name, phoneNumber, address, role));
+                    }
                 }
             }
         } catch (SQLException e) {
