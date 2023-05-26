@@ -53,7 +53,7 @@ public class OrderAndPayment extends HttpServlet
             int idCheck;
             idCheck = OrderFacade.updateOrderPayed(Integer.parseInt(request.getParameter("currentID")), connectionPool);
 
-            List<Order> list  = OrderFacade.getOrdersByUserID(user.getUserID(), connectionPool);
+            List<Order> list  = user.getOrders();
             for (int i = 0; i < list.size(); i++) {
                 if (list.get(i).getOrderID()==idCheck){
                     order = list.get(i);
