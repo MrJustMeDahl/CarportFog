@@ -70,7 +70,7 @@ public class MaterialCalculatorTest {
      }
 
      @Test
-    void calculateRoofs() {
+    void calculateRoofs() throws NoMaterialFoundException{
          MaterialCalculator mc1 = new MaterialCalculator(780, 600, 210, true, 210, 600);
          Set<ItemListMaterial> setRoofs = mc1.calculateRoofs(roofs);
          ItemListMaterial itemListMaterial = null;
@@ -81,7 +81,7 @@ public class MaterialCalculatorTest {
      }
 
      @Test
-    void calculateSheathings(){
+    void calculateSheathings() throws NoMaterialFoundException{
          MaterialCalculator mc1 = new MaterialCalculator(780, 600, 210, true, 210, 600);
          Set<ItemListMaterial> sheathing = mc1.calculateSheathings(sheathings);
          ItemListMaterial itemListMaterial = null;

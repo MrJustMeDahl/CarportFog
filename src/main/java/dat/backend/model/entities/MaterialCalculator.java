@@ -171,9 +171,10 @@ public class MaterialCalculator {
      *
      * @param allRoofs List of sheathings to choose from.
      * @return ItemListMaterial which contains the chosen roof and how many are needed for the size.
+     * @throws NoMaterialFoundException Is thrown if there is no material in the list that fulfill the requirements.
      * @author MrJustMeDahl
      */
-    public Set<ItemListMaterial> calculateRoofs(List<Roof> allRoofs) {
+    public Set<ItemListMaterial> calculateRoofs(List<Roof> allRoofs) throws NoMaterialFoundException{
         Set<ItemListMaterial> roofs = new HashSet<>();
         Roof chosenRoof = null;
         int actualNumberOfRoofsNeeded = 0;
@@ -212,6 +213,9 @@ public class MaterialCalculator {
                 actualNumberOfRowsNeeded = numberOfRowsNeeded;
             }
         }
+        if(chosenRoof == null){
+            throw new NoMaterialFoundException("Could not find sheathings that matches the measurements for the chosen carport");
+        }
         roofs.add(new ItemListMaterial(chosenRoof, actualNumberOfRoofsNeeded, "Tagplader moneters på spær", "carport", length / actualNumberOfRowsNeeded));
         return roofs;
     }
@@ -221,9 +225,10 @@ public class MaterialCalculator {
      *
      * @param allSheathings List of sheathings to choose from.
      * @return ItemListMaterial which contains the chosen sheathing and how many are needed for the size.
+     * @throws NoMaterialFoundException Is thrown if there is no material in the list that fulfill the requirements.
      * @author MrJustMeDahl
      */
-    public Set<ItemListMaterial> calculateSheathings(List<Sheathing> allSheathings) {
+    public Set<ItemListMaterial> calculateSheathings(List<Sheathing> allSheathings) throws NoMaterialFoundException{
         Set<ItemListMaterial> sheathings = new HashSet<>();
         Sheathing chosenSheathing = null;
         int numberOfSheathings = (int) Math.ceil((2 * (shedLength / 8.5) + 2 * (shedWidth / 8.5)) + 4);
@@ -233,6 +238,9 @@ public class MaterialCalculator {
                 chosenSheathing = s;
                 break;
             }
+        }
+        if(chosenSheathing == null){
+            throw new NoMaterialFoundException("Could not find sheathings that matches the measurements for the chosen carport");
         }
         sheathings.add(new ItemListMaterial(chosenSheathing, numberOfSheathings, "Til beklædning af skur", "shed", actualLength));
         sheathings.add(new ItemListMaterial(new UnspecifiedMaterial(17, 38, "45x95mm. Reglar ubh.", "træ", "løsholter", 16.95, shedLength, 16.95 * (shedLength / 100)), 4, "Løsholter til skur sider", "shed", shedLength));

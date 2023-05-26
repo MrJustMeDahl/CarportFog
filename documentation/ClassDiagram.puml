@@ -131,19 +131,6 @@ class ItemList{
 + addMaterialToItemList()
 }
 
-class MaterialCalculator{
-- int length
-- int width
-- int minHeight
-- boolean hasShed
-- DecimalFormat df
-
-+ MaterialCalculator(int length, int width, int minHeight, boolean hasShed)
-+ Set<ItemListMaterial> calculatePosts(List<Post> allPosts)
-+ Set<ItemListMaterial> calculatePurlins(List<Purlin> allPurlins)
-+ ItemListMaterial calculateRafters(List<Rafter> allRafters)
-}
-
 class ItemListMaterial{
 - Material material
 - int amount
@@ -212,11 +199,11 @@ class MaterialCalculator{
 - final DecimalFormat df
 
 + MaterialCalculator(int length, int width, int minHeight, boolean hasShed, int shedLength, int shedWidth)
-+ Set<ItemListMaterial> calculatePosts()
-+ Set<ItemListMaterial> calculatePurlins()
-+ Set<ItemListMaterial> calculateRafters()
-+ Set<ItemListMaterial> calculateRoofs()
-+ Set<ItemListMaterial> calculateSheathings()
++ Set<ItemListMaterial> calculatePosts(List<Post> allPosts) throws NoMaterialFoundException
++ Set<ItemListMaterial> calculatePurlins(List<Purlin> allPurlins)
++ ItemListMaterial calculateRafters(List<Rafter> allRafters)
++ Set<ItemListMaterial> calculateRoofs(List<Roof> allRoofs)
++ Set<ItemListMaterial> calculateSheathings(List<Sheathing> allSheathing)
 }
 
 User *-- Order
