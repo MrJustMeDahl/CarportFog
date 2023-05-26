@@ -28,8 +28,8 @@ public class ConnectionPool
         if (deployed != null)
         {
             // Prod: hent variabler fra setenv.sh i Tomcats bin folder
-            USER = System.getenv("JDBC_USER");
-            PASSWORD = System.getenv("JDBC_PASSWORD");
+            USER = System.getenv("USERNAME");
+            PASSWORD = System.getenv("PASSWORD");
             URL = System.getenv("JDBC_CONNECTION_STRING");
         }
 
