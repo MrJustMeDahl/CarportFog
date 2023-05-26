@@ -25,7 +25,4 @@ public class Sheathing extends Material{
         return actualPrice;
     }
 
-    public double getActualPrice() {
-        return actualPrice;
-    }
 }

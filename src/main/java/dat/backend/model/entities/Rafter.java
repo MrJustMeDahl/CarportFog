@@ -25,7 +25,4 @@ public class Rafter extends Material{
         return actualPrice;
     }
 
-    public double getActualPrice() {
-        return actualPrice;
-    }
 }

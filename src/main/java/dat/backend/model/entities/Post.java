@@ -25,7 +25,4 @@ public class Post extends Material{
         return actualPrice;
     }
 
-    public double getActualPrice() {
-        return actualPrice;
-    }
 }

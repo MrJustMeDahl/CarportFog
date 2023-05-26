@@ -28,10 +28,10 @@ public class AllOrders extends HttpServlet {
     /**
      * A servlet to pull all orders and users from the DB, stores them on the session scope, and shows specific info to the admin,
      * so he/she can keep a track on all active orders
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
+     * @param request Is used for loading in the data on the request scope.
+     * @param response Is used to set the contentType.
+     * @throws ServletException is cast when theres an error using Servlets in general.
+     * @throws IOException Is cast if the input/output is invalid.
      * @author CarstenJuhl
      */
 

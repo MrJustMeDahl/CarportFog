@@ -1,8 +1,6 @@
 package dat.backend.persistence;
 
-import dat.backend.model.entities.Post;
-import dat.backend.model.entities.Purlin;
-import dat.backend.model.entities.Rafter;
+import dat.backend.model.entities.*;
 import dat.backend.model.exceptions.DatabaseException;
 import dat.backend.model.persistence.ConnectionPool;
 import dat.backend.model.persistence.MaterialFacade;
@@ -60,11 +58,11 @@ public class MaterialMapperTest {
 
 
                 //Insert new test data
-                stmt.execute("INSERT into fog_test.materialType (description) VALUES ('træ'), ('metal'), ('plastik');");
-                stmt.execute("INSERT INTO fog_test.materialBuildFunction (description) VALUES ('stolpe'), ('rem'), ('spær');");
+                stmt.execute("INSERT into fog_test.materialType (description) VALUES ('træ'), ('metal'), ('plastik'), ('uspecificeret');");
+                stmt.execute("INSERT INTO fog_test.materialBuildFunction (description) VALUES ('stolpe'), ('rem'), ('spær'), ('tag'), ('bræddebeklædning'), ('uspecificeret');");
                 stmt.execute("INSERT INTO fog_test.material (price, description, materialTypeId, materialBuildFunctionId) VALUES " +
-                        "(55, '97x97mm. trykimp.', 1, 1), (35, '45x195mm. spærtræ', 1, 2), (35, '45x195mm. spærtræ', 1, 3);");
-                stmt.execute("INSERT into fog_test.materialVariant (length, materialId) VALUES (330, 1), (420, 2), (360, 3);");
+                        "(55, '97x97mm. trykimp.', 1, 1), (35, '45x195mm. spærtræ', 1, 2), (35, '45x195mm. spærtræ', 1, 3), (140, 'bølgeplade sunlux sort', 3,4), (18,'19x125mm beklædning høvlet',1,5), (0,'Uspecificeret materiale',4,6);");
+                stmt.execute("INSERT into fog_test.materialVariant (length, materialId) VALUES (330, 1), (420, 2), (360, 3), (200,4), (210,5), (0,6)");
             }
         } catch (SQLException throwables) {
             System.out.println(throwables.getMessage());
@@ -106,6 +104,21 @@ public class MaterialMapperTest {
     }
 
     @Test
+    void getAllSheathing() throws DatabaseException{
+        List<Sheathing> allSheathing = MaterialMapper.getAllSheathing(connectionPool);
+        assertEquals("19x125mm beklædning høvlet", allSheathing.get(0).getDescription());
+        assertEquals("træ",allSheathing.get(0).getType());
+        assertEquals("bræddebeklædning",allSheathing.get(0).getFunction());
+    }
+    @Test
+    void getAllRoofs() throws DatabaseException{
+        List<Roof> allRoofs = MaterialMapper.getAllRoofs(connectionPool);
+        assertEquals("bølgeplade sunlux sort", allRoofs.get(0).getDescription());
+        assertEquals("plastik",allRoofs.get(0).getType());
+        assertEquals("tag",allRoofs.get(0).getFunction());
+    }
+
+    @Test
     void getAllMaterialTypes() throws DatabaseException {
         List<String> allTypes = MaterialMapper.getAllMaterialTypes(connectionPool);
         assertEquals("træ", allTypes.get(0));
@@ -128,12 +141,12 @@ public class MaterialMapperTest {
 
     @Test
     void createNewMaterial() throws DatabaseException {
-        assertEquals(4, MaterialFacade.newMaterial("105x105", 1, 1, 50, connectionPool));
+        assertEquals(7, MaterialFacade.newMaterial("105x105", 1, 1, 50, connectionPool));
     }
 
     @Test
     void addLength() throws DatabaseException {
-        assertEquals(4, MaterialFacade.addLength(1, 360, connectionPool));
+        assertEquals(7, MaterialFacade.addLength(1, 360, connectionPool));
     }
 
 

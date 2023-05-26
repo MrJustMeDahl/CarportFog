@@ -40,8 +40,7 @@ public class Carports extends HttpServlet {
      */
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-
-        //response.sendRedirect("WEB-INF/carport.jsp");
+        
         int skur = Integer.parseInt(request.getParameter("shed"));
         if (skur == 1) {
             request.setAttribute("shed", 1);

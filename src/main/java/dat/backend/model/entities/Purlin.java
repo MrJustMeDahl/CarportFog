@@ -24,7 +24,4 @@ public class Purlin extends Material{
         return price * ((double) length / 100);
     }
 
-    public double getActualPrice() {
-        return actualPrice;
-    }
 }

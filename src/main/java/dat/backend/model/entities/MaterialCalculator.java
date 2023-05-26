@@ -89,15 +89,7 @@ public class MaterialCalculator {
         int numberOfPurlins = 2;
         int purlin1Size = 0;
         int purlin2Size = 0;
-        if (length <= 440) {
-            for (int i = 0; i < allPurlins.size(); i++) {
-                if (allPurlins.get(i).length >= length) {
-                    chosenPurlin1 = allPurlins.get(i);
-                    purlin1Size = length;
-                    break;
-                }
-            }
-        } else if (length <= 600) {
+        if (length <= 600) {
             for (int i = 0; i < allPurlins.size(); i++) {
                 if (allPurlins.get(i).length >= length) {
                     chosenPurlin1 = allPurlins.get(i);

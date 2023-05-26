@@ -74,10 +74,6 @@ public class Shed {
         return length;
     }
 
-    public int getMinHeight() {
-        return minHeight;
-    }
-
     public void setPrice(double price) {
         this.price = price;
     }
@@ -92,10 +88,6 @@ public class Shed {
 
     public void setLength(int length) {
         this.length = length;
-    }
-
-    public void setMinHeight(int minHeight) {
-        this.minHeight = minHeight;
     }
 
     public void setMaterials(Map<Material, Integer> materials) {

@@ -30,11 +30,6 @@ public class CreateAccount extends HttpServlet
         this.connectionPool = ApplicationStart.getConnectionPool();
     }
 
-
-    /**
-
-     */
-
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
         // You shouldn't end up here with a GET-request, thus you get sent back to frontpage

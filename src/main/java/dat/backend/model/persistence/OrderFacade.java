@@ -146,7 +146,7 @@ public class OrderFacade {
     /**
      * This method handles the request to retrive all orders from the mapper, and forward it to the allOrders servlet
      * @param connectionPool
-     * @return
+     * @return Returns all the orders retrieved from the OrderMapper method
      * @throws DatabaseException
      * @author CarstenJuhl
      */

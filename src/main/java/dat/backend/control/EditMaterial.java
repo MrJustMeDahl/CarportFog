@@ -40,9 +40,7 @@ public class EditMaterial extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        HttpSession session = request.getSession();
         ServletContext applicationScope = getServletContext();
-        User admin = (User) session.getAttribute("admin");
         int materialId = Integer.parseInt(request.getParameter("changematerial"));
         double newPrice = Double.parseDouble(request.getParameter("changeprice"));
         String newDescription = request.getParameter("changematerialdescription");
