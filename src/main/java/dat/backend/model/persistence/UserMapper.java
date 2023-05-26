@@ -70,6 +70,19 @@ class UserMapper {
         return user;
     }
 
+    /**
+     * The method creates a user and saves it in the database if all the checks are passed.
+     * @param email User email
+     * @param password User password
+     * @param phoneNumber User PhoneNumber
+     * @param address User address
+     * @param fullName User fullName
+     * @param role User role : USER
+     * @param connectionPool Required to establish connection to the database
+     * @return User
+     * @throws DatabaseException If there isnt connection do database, or if a user isnt created
+     * @author Danyal
+     */
     static User createUser(String email, String password, int phoneNumber, String address, String fullName, String role, ConnectionPool connectionPool) throws DatabaseException
     {
         Logger.getLogger("web").log(Level.INFO, "");

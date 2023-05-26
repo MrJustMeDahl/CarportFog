@@ -44,7 +44,20 @@ public class CreateAccount extends HttpServlet
 
 
     /**
-
+     *Using the dopost method we get some parameters from the register.jsp that are input from user and  we check the email phonenumber and
+     * name to see if its input correctly, if all conditions are met, then we create a user. and write it down in database
+     *
+     * @param request   an {@link HttpServletRequest} object that
+     *                  contains the request the client has made
+     *                  of the servlet
+     *
+     * @param response  an {@link HttpServletResponse} object that
+     *                  contains the response the servlet sends
+     *                  to the client
+     *
+     * @throws IOException
+     * @throws ServletException
+     * @author Danyal
      */
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
