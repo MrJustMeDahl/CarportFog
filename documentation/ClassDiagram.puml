@@ -146,7 +146,7 @@ class UserMapper{
 + User login(String email, String password, ConnectionPool connectionPool) throws DatabaseException
 + User createUser(String name, String email, String password, ConnectionPool connectionPool) throws DatabaseException
 + Set<User> getUsersForOrders(List<Order> orders, ConnectionPool connectionPool) throws DatabaseException
-+ List<User> getAllUsers(ConnectionPool connectionPool)
++ List<User> getAllUsers(ConnectionPool connectionPool) throws DatabaseException
 }
 
 class OrderMapper{
@@ -162,7 +162,7 @@ class OrderMapper{
 + boolean sendOfferToCustomer(int orderID, double salesPrice, ConnectionPool connectionPool) throws DatabaseException
 + boolean updateItemListForOrder(int orderID, ItemList itemList, ConnectionPool connectionPool) throws DatabaseException
 + boolean updateMeasurementsForOrder(int orderID, Carport carport, ConnectionPool connectionPool) throws DatabaseException
-+ List<Order> getAllOrders(ConnectionPool connectionPool)
++ List<Order> getAllOrders(ConnectionPool connectionPool) throws DatabaseException
 }
 
 class MaterialMapper{
@@ -175,8 +175,8 @@ class MaterialMapper{
 + updateMaterial (int materialId, double newPrice, String newDescription, (ConnectionPool connectionPool)) throws DatabaseException
 + int createNewMaterial(String description, int materialType, int materialFunction, double price, (ConnectionPool connectionPool)) throws DatabaseException
 + int addLength (int materialId, int length, (ConnectionPool connectionPool)) throws DatabaseException
-+ List<Sheathing> getAllSheathing(ConnectionPool connectionPool)
-+ List<Roof> getAllRoofs(ConnectionPool connectionPool)
++ List<Sheathing> getAllSheathing(ConnectionPool connectionPool) throws DatabaseException
++ List<Roof> getAllRoofs(ConnectionPool connectionPool) throws DatabaseException
 }
 
 class ConnectionPool{
@@ -200,10 +200,10 @@ class MaterialCalculator{
 
 + MaterialCalculator(int length, int width, int minHeight, boolean hasShed, int shedLength, int shedWidth)
 + Set<ItemListMaterial> calculatePosts(List<Post> allPosts) throws NoMaterialFoundException
-+ Set<ItemListMaterial> calculatePurlins(List<Purlin> allPurlins)
-+ ItemListMaterial calculateRafters(List<Rafter> allRafters)
-+ Set<ItemListMaterial> calculateRoofs(List<Roof> allRoofs)
-+ Set<ItemListMaterial> calculateSheathings(List<Sheathing> allSheathing)
++ Set<ItemListMaterial> calculatePurlins(List<Purlin> allPurlins) throws NoMaterialFoundException
++ ItemListMaterial calculateRafters(List<Rafter> allRafters) throws NoMaterialFoundException
++ Set<ItemListMaterial> calculateRoofs(List<Roof> allRoofs) throws NoMaterialFoundException
++ Set<ItemListMaterial> calculateSheathings(List<Sheathing> allSheathing) throws NoMaterialFoundException
 }
 
 User *-- Order
