@@ -170,7 +170,7 @@ class UserMapper {
      * @throws DatabaseException
      * @author CarstenJuhl
      */
-    public static List<User> getAllUsers(ConnectionPool connectionPool)throws DatabaseException {
+    static List<User> getAllUsers(ConnectionPool connectionPool)throws DatabaseException {
         List<User> allUsers = new ArrayList<>();
         String SQL = "SELECT * FROM user";
         try (Connection connection = connectionPool.getConnection()) {

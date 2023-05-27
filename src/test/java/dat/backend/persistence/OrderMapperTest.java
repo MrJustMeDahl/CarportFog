@@ -9,9 +9,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -165,8 +163,24 @@ public class OrderMapperTest {
     }
 
     @Test
+    void updateOrderPayed() throws DatabaseException{
+        OrderFacade.updateOrderPayed(3, connectionPool);
+        try(Connection connection = connectionPool.getConnection()){
+            try(PreparedStatement ps = connection.prepareStatement("SELECT orderStatus FROM orders WHERE orderId = 3")){
+                ResultSet rs = ps.executeQuery();
+                String orderStatus = "";
+                while(rs.next()){
+                    orderStatus = rs.getString(1);
+                }
+                assertEquals("payed", orderStatus);
+            }
+        } catch (SQLException e){
+        }
+    }
+
+    @Test
     void getNewOrders() throws DatabaseException{
-        List<Order> newOrders = OrderMapper.getNewOrders(connectionPool);
+        List<Order> newOrders = OrderFacade.getNewOrders(connectionPool);
         assertEquals(1, newOrders.size());
         assertEquals(1, newOrders.get(0).getCarport().getMaterials().size());
         assertEquals(1, newOrders.get(0).getUserID());
@@ -208,7 +222,7 @@ public class OrderMapperTest {
 
     @Test
     void getAllOrders() throws DatabaseException{
-        List allOrders = OrderMapper.getAllOrders( connectionPool);
+        List allOrders = OrderFacade.getAllOrders( connectionPool);
         assertEquals(3, allOrders.size());
     }
 

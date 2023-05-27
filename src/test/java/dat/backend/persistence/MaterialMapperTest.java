@@ -81,7 +81,7 @@ public class MaterialMapperTest {
 
     @Test
     void getAllPosts() throws DatabaseException {
-        List<Post> allPosts = MaterialMapper.getAllPosts(connectionPool);
+        List<Post> allPosts = MaterialFacade.getAllPosts(connectionPool);
         assertEquals("97x97mm. trykimp.", allPosts.get(0).getDescription());
         assertEquals("træ", allPosts.get(0).getType());
         assertEquals("stolpe", allPosts.get(0).getFunction());
@@ -89,7 +89,7 @@ public class MaterialMapperTest {
 
     @Test
     void getAllRafters() throws DatabaseException {
-        List<Rafter> allRafters = MaterialMapper.getAllRafters(connectionPool);
+        List<Rafter> allRafters = MaterialFacade.getAllRafters(connectionPool);
         assertEquals("45x195mm. spærtræ", allRafters.get(0).getDescription());
         assertEquals("træ", allRafters.get(0).getType());
         assertEquals("spær", allRafters.get(0).getFunction());
@@ -97,7 +97,7 @@ public class MaterialMapperTest {
 
     @Test
     void getAllPurlins() throws DatabaseException {
-        List<Purlin> allPurlins = MaterialMapper.getAllPurlins(connectionPool);
+        List<Purlin> allPurlins = MaterialFacade.getAllPurlins(connectionPool);
         assertEquals("45x195mm. spærtræ", allPurlins.get(0).getDescription());
         assertEquals("træ", allPurlins.get(0).getType());
         assertEquals("rem", allPurlins.get(0).getFunction());
@@ -105,14 +105,14 @@ public class MaterialMapperTest {
 
     @Test
     void getAllSheathing() throws DatabaseException{
-        List<Sheathing> allSheathing = MaterialMapper.getAllSheathing(connectionPool);
+        List<Sheathing> allSheathing = MaterialFacade.getAllSheathing(connectionPool);
         assertEquals("19x125mm beklædning høvlet", allSheathing.get(0).getDescription());
         assertEquals("træ",allSheathing.get(0).getType());
         assertEquals("bræddebeklædning",allSheathing.get(0).getFunction());
     }
     @Test
     void getAllRoofs() throws DatabaseException{
-        List<Roof> allRoofs = MaterialMapper.getAllRoofs(connectionPool);
+        List<Roof> allRoofs = MaterialFacade.getAllRoofs(connectionPool);
         assertEquals("bølgeplade sunlux sort", allRoofs.get(0).getDescription());
         assertEquals("plastik",allRoofs.get(0).getType());
         assertEquals("tag",allRoofs.get(0).getFunction());
@@ -120,7 +120,7 @@ public class MaterialMapperTest {
 
     @Test
     void getAllMaterialTypes() throws DatabaseException {
-        List<String> allTypes = MaterialMapper.getAllMaterialTypes(connectionPool);
+        List<String> allTypes = MaterialFacade.getAllMaterialTypes(connectionPool);
         assertEquals("træ", allTypes.get(0));
         assertEquals("metal", allTypes.get(1));
         assertEquals("plastik", allTypes.get(2));
@@ -128,7 +128,7 @@ public class MaterialMapperTest {
 
     @Test
     void getAllMaterialFunctions() throws DatabaseException {
-        List<String> allFunctions = MaterialMapper.getAllMaterialFunctions(connectionPool);
+        List<String> allFunctions = MaterialFacade.getAllMaterialFunctions(connectionPool);
         assertEquals("stolpe", allFunctions.get(0));
         assertEquals("rem", allFunctions.get(1));
         assertEquals("spær", allFunctions.get(2));

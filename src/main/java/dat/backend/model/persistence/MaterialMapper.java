@@ -28,7 +28,7 @@ public class MaterialMapper {
      * @throws DatabaseException is thrown if connection to database fails.
      * @author MrJustMeDahl
      */
-    public static List<Post> getAllPosts(ConnectionPool connectionPool) throws DatabaseException {
+    static List<Post> getAllPosts(ConnectionPool connectionPool) throws DatabaseException {
         List<Post> allPosts = new ArrayList<>();
         String SQL = "SELECT * FROM allMaterialsView WHERE buildFunction = 'stolpe'";
         try (Connection connection = connectionPool.getConnection()) {
@@ -62,7 +62,7 @@ public class MaterialMapper {
      * @throws DatabaseException is thrown if connection to database fails.
      * @author MrJustMeDahl
      */
-    public static List<Rafter> getAllRafters(ConnectionPool connectionPool) throws DatabaseException {
+    static List<Rafter> getAllRafters(ConnectionPool connectionPool) throws DatabaseException {
         List<Rafter> allRafters = new ArrayList<>();
         String SQL = "SELECT * FROM allMaterialsView WHERE buildFunction = 'spær'";
         try (Connection connection = connectionPool.getConnection()) {
@@ -96,7 +96,7 @@ public class MaterialMapper {
      * @throws DatabaseException is thrown if connection to database fails.
      * @author MrJustMeDahl
      */
-    public static List<Purlin> getAllPurlins(ConnectionPool connectionPool) throws DatabaseException {
+    static List<Purlin> getAllPurlins(ConnectionPool connectionPool) throws DatabaseException {
         List<Purlin> allPurlins = new ArrayList<>();
         String SQL = "SELECT * FROM allMaterialsView WHERE buildFunction = 'rem'";
         try (Connection connection = connectionPool.getConnection()) {
@@ -129,7 +129,7 @@ public class MaterialMapper {
      * @throws DatabaseException Is thrown if any SQL exception is thrown.
      * @author MrJustMeDahl
      */
-    public static List<String> getAllMaterialTypes(ConnectionPool connectionPool) throws DatabaseException {
+    static List<String> getAllMaterialTypes(ConnectionPool connectionPool) throws DatabaseException {
         List<String> allTypes = new ArrayList<>();
         String SQL = "SELECT * FROM materialType";
         try (Connection connection = connectionPool.getConnection()) {
@@ -153,7 +153,7 @@ public class MaterialMapper {
      * @throws DatabaseException Is thrown if any SQL exception is thrown.
      * @author MrJustMeDahl
      */
-    public static List<String> getAllMaterialFunctions(ConnectionPool connectionPool) throws DatabaseException {
+    static List<String> getAllMaterialFunctions(ConnectionPool connectionPool) throws DatabaseException {
         List<String> allFunctions = new ArrayList<>();
         String SQL = "SELECT * FROM materialBuildFunction";
         try (Connection connection = connectionPool.getConnection()) {
@@ -180,7 +180,7 @@ public class MaterialMapper {
      * @author CarstenJuhl
      */
 
-    public static boolean updateMaterial(int materialId, double newPrice, String newDescription, ConnectionPool connectionPool) throws DatabaseException {
+    static boolean updateMaterial(int materialId, double newPrice, String newDescription, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "UPDATE material SET price = ?, description = ?  WHERE materialId = ?";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -212,7 +212,7 @@ public class MaterialMapper {
      * @author CarstenJuhl
      */
 
-    public static int createNewMaterial(String description, int materialType, int materialFunction, double price, ConnectionPool connectionPool) throws DatabaseException {
+    static int createNewMaterial(String description, int materialType, int materialFunction, double price, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "INSERT into material (price, description, materialTypeId, materialBuildFunctionId) VALUES (?,?,?,?)";
         int newmaterialId = -1;
         try (Connection connection = connectionPool.getConnection()) {
@@ -245,7 +245,7 @@ public class MaterialMapper {
      * @return the newly created materialvariantId
      * @throws DatabaseException
      */
-    public static int addLength(int materialId, int length, ConnectionPool connectionPool) throws DatabaseException {
+    static int addLength(int materialId, int length, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "INSERT into materialVariant (length, materialId) VALUES (?,?)";
         int newMaterialVariantId = -1;
         try (Connection connection = connectionPool.getConnection()) {
@@ -274,7 +274,7 @@ public class MaterialMapper {
      * @throws DatabaseException is thrown if connection to database fails.
      * @author MrJustMeDahl
      */
-    public static List<Sheathing> getAllSheathing(ConnectionPool connectionPool) throws DatabaseException{
+    static List<Sheathing> getAllSheathing(ConnectionPool connectionPool) throws DatabaseException{
         String SQL = "SELECT * FROM allMaterialsView WHERE buildFunction = 'bræddebeklædning'";
         List<Sheathing> allSheathings = new ArrayList<>();
         try(Connection connection = connectionPool.getConnection()){
@@ -308,7 +308,7 @@ public class MaterialMapper {
      * @throws DatabaseException is thrown if connection to database fails.
      * @author MrJustMeDahl
      */
-    public static List<Roof> getAllRoofs(ConnectionPool connectionPool) throws DatabaseException{
+    static List<Roof> getAllRoofs(ConnectionPool connectionPool) throws DatabaseException{
         String SQL = "SELECT * FROM allMaterialsView WHERE buildFunction = 'tag'";
         List<Roof> allRoofs = new ArrayList<>();
         try(Connection connection = connectionPool.getConnection()){

@@ -28,7 +28,7 @@ public class OrderMapper {
      * @throws DatabaseException is thrown if there is no connection to the database, or if data retrieved from the database is invalid.
      * @author MrJustMeDahl
      */
-    public static List<Order> getOrdersByUserID(int userID, ConnectionPool connectionPool) throws DatabaseException {
+    static List<Order> getOrdersByUserID(int userID, ConnectionPool connectionPool) throws DatabaseException {
         List<Order> allOrders = new ArrayList<>();
         String sql = "SELECT * FROM orders WHERE userId = ?";
 
@@ -133,7 +133,7 @@ public class OrderMapper {
      * @throws DatabaseException is thrown if there isn't a connection to the database or if the data in the database is invalid.
      * @author pelle112112
      */
-    public static Order createOrder(Carport carport, int userId, double price, double indicativePrice, ItemList itemList, ConnectionPool connectionPool) throws DatabaseException {
+    static Order createOrder(Carport carport, int userId, double price, double indicativePrice, ItemList itemList, ConnectionPool connectionPool) throws DatabaseException {
         int orderId = 0;
         String SQL = "INSERT INTO orders (price, indicativePrice, orderStatus, userId, carportLength, carportWidth, carportMinHeight, carportPrice, carportIndicativePrice, shedLength, shedWidth, shedPrice, shedIndicativePrice) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
         try (Connection connection = connectionPool.getConnection()) {
@@ -185,7 +185,7 @@ public class OrderMapper {
      * @throws DatabaseException is thrown if there isn't a connection to the database or if the data in the database is invalid.
      * @author pelle112112
      */
-    public static void updateOrderOrdered(int orderId, ConnectionPool connectionPool) throws DatabaseException {
+    static void updateOrderOrdered(int orderId, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "UPDATE orders SET orders.orderStatus = ? WHERE orderId = ?";
 
         try (Connection connection = connectionPool.getConnection()) {
@@ -208,7 +208,7 @@ public class OrderMapper {
      * @throws DatabaseException is thrown if there isn't a connection to the database or if the data in the database is invalid.
      * @author pelle112112
      */
-    public static int updateOrderPayed(int orderId, ConnectionPool connectionPool) throws DatabaseException {
+    static int updateOrderPayed(int orderId, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "UPDATE orders SET orders.orderStatus = ? WHERE orderId = ?";
 
         try (Connection connection = connectionPool.getConnection()) {
@@ -234,7 +234,7 @@ public class OrderMapper {
      * @throws DatabaseException is thrown if there isn't a connection to the database or if the data in the database is invalid.
      * @author pelle112112
      */
-    public static void addItemlistToDB(ItemList itemList, int orderId, ConnectionPool connectionPool) throws DatabaseException {
+    static void addItemlistToDB(ItemList itemList, int orderId, ConnectionPool connectionPool) throws DatabaseException {
 
         String SQL = "INSERT INTO itemList (amount, orderId, materialVariantId, partFor, message, actualLength) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection connection = connectionPool.getConnection()) {
@@ -264,7 +264,7 @@ public class OrderMapper {
      * @throws DatabaseException Is thrown if there isn't a valid connection to the database or if the data in the database is invalid.
      * @author MrJustMeDahl
      */
-    public static List<Order> getNewOrders(ConnectionPool connectionPool) throws DatabaseException {
+    static List<Order> getNewOrders(ConnectionPool connectionPool) throws DatabaseException {
         List<Order> newOrders = new ArrayList<>();
         String SQL = "SELECT * FROM orders WHERE orderStatus = 'ordered'";
         try (Connection connection = connectionPool.getConnection()) {
@@ -309,7 +309,7 @@ public class OrderMapper {
      * @throws DatabaseException Is thrown if there isn't a valid connection to the database.
      * @author MrJustMeDahl
      */
-    public static boolean deleteOrder(int orderID, ConnectionPool connectionPool) throws DatabaseException {
+    static boolean deleteOrder(int orderID, ConnectionPool connectionPool) throws DatabaseException {
         String ordersSQL = "DELETE FROM orders WHERE orderId = ?";
         String itemListSQL = "DELETE FROM itemList WHERE orderId = ?";
         boolean itemList = false;
@@ -344,7 +344,7 @@ public class OrderMapper {
      * @throws DatabaseException Is thrown there is no connection to the database or if input data is invalid.
      * @author MrJustMeDahl
      */
-    public static boolean sendOfferToCustomer(int orderID, double salesPrice, ConnectionPool connectionPool) throws DatabaseException {
+    static boolean sendOfferToCustomer(int orderID, double salesPrice, ConnectionPool connectionPool) throws DatabaseException {
         String SQL = "UPDATE orders SET indicativePrice = ?, orderStatus = ? WHERE orderId = ?";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(SQL)) {
@@ -372,7 +372,7 @@ public class OrderMapper {
      * @throws DatabaseException is thrown if there isn't any rows inserted in itemList table.
      * @author MrJustMeDahl
      */
-    public static boolean updateItemListForOrder(int orderID, ItemList itemList, ConnectionPool connectionPool) throws DatabaseException {
+    static boolean updateItemListForOrder(int orderID, ItemList itemList, ConnectionPool connectionPool) throws DatabaseException {
         String removeOldItemListSQL = "DELETE FROM itemList WHERE orderId = ?";
         String insertNewItemListSQL = "INSERT INTO itemList (amount, orderId, materialVariantId, partFor, message) VALUES (?, ?, ?, ?, ?)";
         boolean deleteSucces = false;
@@ -413,7 +413,7 @@ public class OrderMapper {
      * @throws DatabaseException Is thrown there is no connection to the database or if input data is invalid.
      * @author MrJustMeDahl
      */
-    public static boolean updateMeasurementsForOrder(int orderID, Carport carport, ConnectionPool connectionPool) throws DatabaseException{
+    static boolean updateMeasurementsForOrder(int orderID, Carport carport, ConnectionPool connectionPool) throws DatabaseException{
         String SQL = "UPDATE orders SET carportLength = ?, carportWidth = ?, carportMinHeight = ?, price = ?, indicativePrice = ?, carportPrice = ?, carportIndicativePrice = ?, shedLength = ?, shedWidth = ?, shedPrice = ?, shedIndicativePrice = ? WHERE orderId = ?";
         boolean updateSucces = false;
         try(Connection connection = connectionPool.getConnection()){
@@ -447,7 +447,7 @@ public class OrderMapper {
      * @throws DatabaseException
      * @author CarstenJuhl
      */
-    public static List<Order> getAllOrders(ConnectionPool connectionPool) throws DatabaseException {
+    static List<Order> getAllOrders(ConnectionPool connectionPool) throws DatabaseException {
         List<Order> allOrders = new ArrayList<>();
         String SQL = "SELECT * FROM orders";
         try (Connection connection = connectionPool.getConnection()) {
