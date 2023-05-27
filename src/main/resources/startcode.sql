@@ -1,57 +1,106 @@
-CREATE DATABASE  IF NOT EXISTS `startcode` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `startcode`;
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
---
--- Table structure for table `user`
---
-
-DROP TABLE IF EXISTS `user`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `user` (
-  `username` varchar(45) NOT NULL,
-  `password` varchar(45) NOT NULL,
-  `role` varchar(45) NOT NULL,
-  PRIMARY KEY (`username`)
+CREATE DATABASE `fog` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `fog`;
+CREATE TABLE `itemList` (
+                          `itemListId` int NOT NULL AUTO_INCREMENT,
+                          `amount` int DEFAULT NULL,
+                          `orderId` int DEFAULT NULL,
+                          `materialVariantId` int DEFAULT NULL,
+                          PRIMARY KEY (`itemListId`),
+                          UNIQUE KEY `itemListId_UNIQUE` (`itemListId`),
+                          KEY `fk_itemList_order1_idx` (`orderId`),
+                          KEY `fk_itemList_materialVariant1_idx` (`materialVariantId`),
+                          CONSTRAINT `fk_itemList_materialVariant1` FOREIGN KEY (`materialVariantId`) REFERENCES `materialVariant` (`materialVariantId`),
+                          CONSTRAINT `fk_itemList_order1` FOREIGN KEY (`orderId`) REFERENCES `order` (`orderId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `user`
---
+CREATE TABLE `material` (
+                          `materialId` int NOT NULL AUTO_INCREMENT,
+                          `price` double DEFAULT NULL,
+                          `description` varchar(45) DEFAULT NULL,
+                          `materialTypeId` int NOT NULL,
+                          `materialBuildFunctionId` int DEFAULT NULL,
+                          PRIMARY KEY (`materialId`,`materialTypeId`),
+                          UNIQUE KEY `materialId_UNIQUE` (`materialId`),
+                          KEY `fk_material_materialType1_idx` (`materialTypeId`),
+                          KEY `fk_material_materialBuildFunction1_idx` (`materialBuildFunctionId`),
+                          CONSTRAINT `fk_material_materialBuildFunction1` FOREIGN KEY (`materialBuildFunctionId`) REFERENCES `materialBuildFunction` (`materialBuildFunctionId`),
+                          CONSTRAINT `fk_material_materialType1` FOREIGN KEY (`materialTypeId`) REFERENCES `materialType` (`materialTypeId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES ('admin','1234','admin'),('user','1234','user');
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+CREATE TABLE `materialBuildFunction` (
+                                       `materialBuildFunctionId` int NOT NULL AUTO_INCREMENT,
+                                       `description` varchar(45) DEFAULT NULL,
+                                       PRIMARY KEY (`materialBuildFunctionId`),
+                                       UNIQUE KEY `materialBuildFunctionId_UNIQUE` (`materialBuildFunctionId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+CREATE TABLE `materialVariant` (
+                                 `materialVariantId` int NOT NULL AUTO_INCREMENT,
+                                 `length` int DEFAULT NULL,
+                                 `materialId` int DEFAULT NULL,
+                                 PRIMARY KEY (`materialVariantId`),
+                                 UNIQUE KEY `materialVariantId_UNIQUE` (`materialVariantId`),
+                                 KEY `fk_materialVariant_material1_idx` (`materialId`),
+                                 CONSTRAINT `fk_materialVariant_material1` FOREIGN KEY (`materialId`) REFERENCES `material` (`materialId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+CREATE TABLE `materialType` (
+                              `materialTypeId` int NOT NULL AUTO_INCREMENT,
+                              `desciption` varchar(45) DEFAULT NULL,
+                              PRIMARY KEY (`materialTypeId`),
+                              UNIQUE KEY `materialTypeId_UNIQUE` (`materialTypeId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-/* Create test database from startcode structure */
+CREATE TABLE `order` (
+                       `orderId` int NOT NULL AUTO_INCREMENT,
+                       `price` double DEFAULT NULL,
+                       `indicativePrice` double DEFAULT NULL,
+                       `orderStatus` varchar(45) DEFAULT NULL,
+                       `userId` int DEFAULT NULL,
+                       `carportLength` int DEFAULT NULL,
+                       `carportWidth` int DEFAULT NULL,
+                       `carportMinHeigth` int DEFAULT NULL,
+                       `carportPrice` double DEFAULT NULL,
+                       `carportIndicativePrice` double DEFAULT NULL,
+                       `shedLength` int DEFAULT NULL,
+                       `shedWidth` int DEFAULT NULL,
+                       `shedPrice` double DEFAULT NULL,
+                       `shedIndicativePrice` double DEFAULT NULL,
+                       PRIMARY KEY (`orderId`),
+                       UNIQUE KEY `orderId_UNIQUE` (`orderId`),
+                       KEY `fk_order_user1_idx` (`userId`),
+                       CONSTRAINT `fk_order_user1` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE DATABASE  IF NOT EXISTS `startcode_test` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `startcode_test`;
-CREATE TABLE startcode_test.user LIKE startcode.user;
+CREATE TABLE `reciept` (
+                         `recieptId` int NOT NULL AUTO_INCREMENT,
+                         `date` varchar(45) DEFAULT NULL,
+                         `orderId` int NOT NULL,
+                         PRIMARY KEY (`recieptId`,`orderId`),
+                         UNIQUE KEY `recieptId_UNIQUE` (`recieptId`),
+                         KEY `fk_reciept_order_idx` (`orderId`),
+                         CONSTRAINT `fk_reciept_order` FOREIGN KEY (`orderId`) REFERENCES `order` (`orderId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+CREATE TABLE `user` (
+                      `userId` int NOT NULL AUTO_INCREMENT,
+                      `email` varchar(45) NOT NULL,
+                      `password` varchar(45) NOT NULL,
+                      `phoneNumber` int NOT NULL,
+                      `address` varchar(45) NOT NULL,
+                      `FullName` varchar(45) NOT NULL,
+                      `role` varchar(45) NOT NULL,
+                      PRIMARY KEY (`userId`),
+                      UNIQUE KEY `userId_UNIQUE` (`userId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-
+CREATE SCHEMA IF NOT EXISTS fog_test;
+USE fog_test;
+CREATE TABLE IF NOT EXISTS itemList LIKE fog.itemList;
+CREATE TABLE IF NOT EXISTS material LIKE fog.material;
+CREATE TABLE IF NOT EXISTS materialBuildFunction LIKE fog.materialBuildFunction;
+CREATE TABLE IF NOT EXISTS materialType LIKE fog.materialType;
+CREATE TABLE IF NOT EXISTS materialVariant LIKE fog.materialVariant;
+CREATE TABLE IF NOT EXISTS order LIKE fog.order;
+CREATE TABLE IF NOT EXISTS reciept LIKE fog.reciept;
+CREATE TABLE IF NOT EXISTS user LIKE fog.user;

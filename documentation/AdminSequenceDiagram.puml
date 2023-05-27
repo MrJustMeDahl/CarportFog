@@ -1,0 +1,23 @@
+@startuml
+autonumber
+
+Admin -> index.jsp: Enter site
+index.jsp -> login.jsp:
+login.jsp -> loginServlet: doPost()
+loginServlet -> UserMapper: login(String email, String password)
+UserMapper -> DB: check for userinfo
+DB -> UserMapper: return userinfo
+UserMapper -> loginServlet
+loginServlet -> productServlet: request productdata
+productServlet -> product.jsp
+product.jsp -> orderServlet: via orders in navbar
+orderServlet -> orders.jsp
+orders.jsp -> orderServlet: doPost()
+orderServlet -> orderMapper:updateApproveOrder()
+orderMapper -> DB: changes orderStatus
+DB -> orderMapper
+orderMapper -> orderServlet: doGet
+orderServlet -> orders.jsp: redirect
+
+
+@enduml

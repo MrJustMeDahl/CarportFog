@@ -13,9 +13,9 @@ public class ConnectionPool
     // TODO: Change access credentials for MySql server as needed below:
 
     private HikariDataSource ds;
-    private static String USER = "root";
-    private static String PASSWORD = "root";
-    private static String URL = "jdbc:mysql://localhost:3306/startcode";
+    private static String USER = System.getenv("USERNAME");
+    private static String PASSWORD = System.getenv("PASSWORD");
+    private static String URL = "jdbc:mysql://134.122.87.83:3306/fog";
 
     public ConnectionPool()
     {
@@ -28,8 +28,8 @@ public class ConnectionPool
         if (deployed != null)
         {
             // Prod: hent variabler fra setenv.sh i Tomcats bin folder
-            USER = System.getenv("JDBC_USER");
-            PASSWORD = System.getenv("JDBC_PASSWORD");
+            USER = System.getenv("USERNAME");
+            PASSWORD = System.getenv("PASSWORD");
             URL = System.getenv("JDBC_CONNECTION_STRING");
         }
 

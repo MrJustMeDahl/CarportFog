@@ -1,0 +1,236 @@
+@startuml
+
+class User {
+- int userID
+- String email
+- String password
+- String name
+- int phoneNumber
+- String address
+- String role
+- List<Order> orders
+
++ User(int userID, String email, String password, String name,int phoneNumber, String address, String role)
++ User(int userID, String email, String password, String name, int phoneNumber, String address, String role, ConnectionPool connectionPool)
++ User(String email, String password, String name, int phoneNumber, String address)
++ boolean equals()
++ int hashCode()
++ boolean checkEmail()
++ boolean checkPhonenumber()
++ boolean checkName()
+
+}
+
+class Order{
+- int orderID
+- int userID
+- boolean orderStatus
+- Carport carport
+- double price
+- double indicativePrice
+- ItemList itemList
+
++ Order (int orderID, int userID, String orderStatus, Carport carport, double price, double indicativePrice)
++ Order (int orderID, int userID, String orderStatus, double price)
+}
+
+class Carport{
+- double price
+- double indicativePrice
+- Map<Material, Integer> materials
+- int width
+- int length
+- int minHeight
+- Shed shed
+
++ Carport(Map<Material, Integer materials, int width, int length, int minHeight, Shed shed)
++ Carport(Map<Material, Integer materials, double price, double indicativePrice, int width, int length, int minHeight, Shed shed)
++ double calculatePrice()
++ double calculateIndicativePrice()
+}
+
+class Shed{
+- double price
+- double indicativePrice
+- int width
+- int length
+- int minHeight
+- Map<Material, Integer> materials
+
++ Shed(Map<Material, Integer> materials, int width, int length, int minHeight)
++ Shed(Map<Material, Integer> materials, int width, int length, int minHeight, double price, double indicativePrice)
++ double calculatePrice()
++ double calculateIndicativePrice()
+}
+
+abstract class Material{
+# int materialID
+# int materialVariantId
+# String Description
+# String type
+# String function
+# double price
+# int length
+# Material(int materialID, int materialVariantId, String description, String type, String function, double price, int length)
+
++ abstract double calculateActualPrice()
+}
+
+class Rafter{
+- double actualPrice
+
++ Rafter(int materialID, int materialVariantId, String description, String type, String function, double price, int length)
++ double calculateActualPrice()
+}
+
+class Post{
+- double actualPrice
+
++ Post(int materialID, int materialVariantId, String description, String type, String function, double price, int length)
++ double calculateActualPrice()
+}
+
+class Purlin{
+- double actualPrice
+
++ Purlin(int materialID, int materialVariantId, String description, String type, String function, double price, int length)
++ double calculateActualPrice()
+}
+
+class Roof{
+- double actualPrice
+
++ Roof(int materialID, int materialVariantID, String description, String type, String function, double price, int length)
++ double calculateActualPrice()
+}
+
+class Sheathing{
+- double actualPrice
+
++ Sheathing(int materialID, int materialVariantID, String description, String type, String function, double price, int length)
++ double calculateActualPrice()
+}
+
+class UnspecifiedMaterial{
+- double actualPrice
+
++ UnspecifiedMaterial(int materialID, int materialVariantID, String description, String type, String function, double price, int length, double actualPrice)
++ double calculateActualPrice
+}
+
+class ItemList{
+- List<ItemListMaterial> materials
+- final MaterialCalculator materialCalculator
+
++ ItemList(int length, int width, int minHeight, boolean hasShed, List<Post> allPosts, List<Purlin> allPurlins, List<Rafter> allRafters, List<Roof> allRoofs, List<Sheathing> allSheathings)
++ ItemList(int length, int width, int minHeight, boolean hasShed, allRoofs, allSheathings)
++ ItemList(int length, int width, int minHeight,boolean hasShed, int shedLength, int shedWidth)
++ void generateItemListContent(List<Post> allPosts, List<Purlin> allPurlins, List<Rafter> allRafters) throws NoMaterialFoundException
++ List<ItemListMaterial> getMaterials()
++ generateItemListContent()
++ addMaterialToItemList()
+}
+
+class ItemListMaterial{
+- Material material
+- int amount
+- String message
+- String partFor
+- int actualLength
+
++ ItemListMaterial(Material material, int amount, String message, String partFor, int actualLength)
+}
+
+class UserMapper{
+<<static>>
++ User login(String email, String password, ConnectionPool connectionPool) throws DatabaseException
++ User createUser(String name, String email, String password, ConnectionPool connectionPool) throws DatabaseException
++ Set<User> getUsersForOrders(List<Order> orders, ConnectionPool connectionPool) throws DatabaseException
++ List<User> getAllUsers(ConnectionPool connectionPool) throws DatabaseException
+}
+
+class OrderMapper{
+<<static>>
++ List<Order> getOrdersByUserID(Int userID, ConnectionPool connectionPool) throws DatabaseException
++ ItemList getItemListContentForOrder(int orderID, ItemList itemList, ConnectionPool connectionPool) throws DatabaseException
++ Order createOrder (Carport carport, int userId, double price, double indicativePrice, ItemList itemList, ConnectionPool connectionPool) throws DatabaseException
++ void updateOrderOrdered(int orderID, ConnectionPool connectionPool) throws DatabaseException
++ void updateOrderPayed (int orderID, ConnectionPool connectionPool) throws DatabaseException
++ void addItemlistToDB(ItemList itemList, int orderId, ConnectionPool connectionPool) throws DatabaseException
++ List<Order> getNewOrders(ConnectionPool connectionPool) throws DatabaseException
++ boolean deleteOrder(int orderID, ConnectionPool connectionPool) throws DatabaseException
++ boolean sendOfferToCustomer(int orderID, double salesPrice, ConnectionPool connectionPool) throws DatabaseException
++ boolean updateItemListForOrder(int orderID, ItemList itemList, ConnectionPool connectionPool) throws DatabaseException
++ boolean updateMeasurementsForOrder(int orderID, Carport carport, ConnectionPool connectionPool) throws DatabaseException
++ List<Order> getAllOrders(ConnectionPool connectionPool) throws DatabaseException
+}
+
+class MaterialMapper{
+<<static>>
++ List<Post> getAllPosts (ConnectionPool connectionPool) throws DatabaseException
++ List<Rafter> getAllRafters (ConnectionPool connectionPool) throws DatabaseException
++ List<Purlin> getAllPurlins (ConnectionPool connectionPool) throws DatabaseException
++ List<String> getAllMaterialTypes(ConnectionPool connectionPool)
++ List<String> getAllMaterialFunctions(ConnectionPool connectionPool)
++ updateMaterial (int materialId, double newPrice, String newDescription, (ConnectionPool connectionPool)) throws DatabaseException
++ int createNewMaterial(String description, int materialType, int materialFunction, double price, (ConnectionPool connectionPool)) throws DatabaseException
++ int addLength (int materialId, int length, (ConnectionPool connectionPool)) throws DatabaseException
++ List<Sheathing> getAllSheathing(ConnectionPool connectionPool) throws DatabaseException
++ List<Roof> getAllRoofs(ConnectionPool connectionPool) throws DatabaseException
+}
+
+class ConnectionPool{
+- HikariDataSource ds
+- String USER
+- String PASSWORD
+- STRING URL
+
++ ConnectionPool(String USER, String PASSWORD, String URL)
++ void close()
+}
+
+class MaterialCalculator{
+- int length
+- int width
+- int minHeight
+- boolean hasShed
+- int shedLength
+- int shedWidth
+- final DecimalFormat df
+
++ MaterialCalculator(int length, int width, int minHeight, boolean hasShed, int shedLength, int shedWidth)
++ Set<ItemListMaterial> calculatePosts(List<Post> allPosts) throws NoMaterialFoundException
++ Set<ItemListMaterial> calculatePurlins(List<Purlin> allPurlins) throws NoMaterialFoundException
++ ItemListMaterial calculateRafters(List<Rafter> allRafters) throws NoMaterialFoundException
++ Set<ItemListMaterial> calculateRoofs(List<Roof> allRoofs) throws NoMaterialFoundException
++ Set<ItemListMaterial> calculateSheathings(List<Sheathing> allSheathing) throws NoMaterialFoundException
+}
+
+User *-- Order
+Order *-- Carport
+Order *-- ItemList
+Carport *-- Material
+Carport *-- Shed
+Shed *-- Material
+ItemList *-- ItemListMaterial
+ItemListMaterial *-- Material
+Material <|-- Rafter
+Material <|-- Post
+Material <|-- Purlin
+Material <|-- Roof
+Material <|-- Sheathing
+Material <|-- UnspecifiedMaterial
+ItemList *-- MaterialCalculator
+MaterialCalculator *-- ItemListMaterial
+
+
+
+
+
+
+
+
+
+
+
+@enduml
