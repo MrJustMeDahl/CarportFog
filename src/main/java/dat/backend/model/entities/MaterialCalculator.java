@@ -214,7 +214,7 @@ public class MaterialCalculator {
             }
         }
         if(chosenRoof == null){
-            throw new NoMaterialFoundException("Could not find sheathings that matches the measurements for the chosen carport");
+            throw new NoMaterialFoundException("Could not find rooftiles that matches the measurements for the chosen carport");
         }
         roofs.add(new ItemListMaterial(chosenRoof, actualNumberOfRoofsNeeded, "Tagplader moneters på spær", "carport", length / actualNumberOfRowsNeeded));
         return roofs;
