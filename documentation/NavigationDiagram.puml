@@ -1,0 +1,67 @@
+@startuml
+
+[*] --> index.jsp
+
+state index.jsp{
+    state LoggedInCustomer
+}
+
+index.jsp --> login.jsp
+LoggedInCustomer --> product.jsp : Product servlet
+
+state login.jsp
+
+login.jsp --> register.jsp
+login.jsp --> index.jsp : Login servlet
+
+state register.jsp
+
+register.jsp --> login.jsp : CreateAccount servlet
+
+state allorders.jsp
+
+state carport.jsp
+
+carport.jsp --> shoppingbasket.jsp : Carports servlet -> ShoppingBasket servlet
+
+state newordersadministration.jsp
+
+newordersadministration.jsp --> newordersadministration.jsp : AdminSendOffer servlet
+newordersadministration.jsp --> newordersadministration.jsp : AdminUpdateOffer servlet
+newordersadministration.jsp --> newordersadministration.jsp : AdminDeleteOffer servlet
+
+state orders.jsp
+
+orders.jsp --> reciept.jsp : OrderAndPayment servlet -> OrderReciept servlet
+
+state product.jsp
+
+product.jsp --> carport.jsp : Carports servlet
+
+state reciept.jsp
+
+state shoppingbasket.jsp
+
+shoppingbasket.jsp --> shoppingbasket.jsp : Orders servlet
+shoppingbasket.jsp --> shoppingbasket.jsp : OrderAndPayment servlet
+
+state updatematerials.jsp
+
+updatematerials.jsp --> updatematerials.jsp : EditChosenMaterialFunction
+updatematerials.jsp --> updatematerials.jsp : EditMaterial servlet
+updatematerials.jsp --> updatematerials.jsp : AddNewItem servlet
+
+state navbar{
+    state customerOptions
+
+    state adminOptions
+}
+
+customerOptions --> product.jsp : Product servlet
+customerOptions --> shoppingbasket.jsp : ShoppingBasket servlet
+customerOptions --> orders.jsp : Orders servlet
+customerOptions --> [*] : Logout servlet
+adminOptions --> allorders.jsp : AllOrders servlet
+adminOptions --> newordersadministration.jsp : AdminNewOrders servlet
+adminOptions --> updatematerials.jsp : EditChosenMaterialFunction servlet
+@enduml
