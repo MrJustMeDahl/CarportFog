@@ -179,7 +179,7 @@ public class MaterialCalculator {
         Roof chosenRoof = null;
         int actualNumberOfRoofsNeeded = 0;
         int actualNumberOfRowsNeeded = 0;
-        double lowestWaste = 0;
+        double lowestWaste = -1;
         for (Roof r : allRoofs) {
             int numberOfRoofsNeeded = 0;
             int numberOfRowsNeeded = 1;
@@ -206,7 +206,7 @@ public class MaterialCalculator {
                 i -= 20;
             }
             waste = (wasteWidth * (numberOfRoofsNeeded / numberOfRoofsPerRow)) + wasteLength;
-            if (waste < lowestWaste || lowestWaste == 0) {
+            if (waste < lowestWaste || lowestWaste == -1) {
                 lowestWaste = waste;
                 chosenRoof = r;
                 actualNumberOfRoofsNeeded = numberOfRoofsNeeded;
