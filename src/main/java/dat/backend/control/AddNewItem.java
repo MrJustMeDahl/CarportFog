@@ -29,14 +29,13 @@ public class AddNewItem extends HttpServlet {
 
     /**
      * The AddNewItemServlet is used to create a new item in the database.
-     * only the admin user can use this servlet, and is needed to fill 5 criteria before he/she is able to add items to the database
-     * <p>
-     * first it takes the input, one by one and increases a counter, if the counter reaches 5, then there is a check in the DB for the same item, if none is found, then a new  materialtype is created
+     * only the admin can use this servlet, and is needed to fill 5 criteria before he/she is able to add items to the database
+     * first it takes the input, one by one and increases a counter, if the counter reaches 5, then there is a check in the DB for the same itemtype, if none is found, then a new  materialtype is created
      * thereafter it checks the DB for the item, if none is found then the item is created. lastly it adds the new material to the MaterialList on the application scope.
-     * lastly is resets all the the request scopes used on the jsp page.
+     * lastly all request scopes are reset before forwarded to updatematerials.jsp.
      *
-     * @param request
-     * @param response
+     * @param request Http request object
+     * @param response Http response object
      * @throws ServletException
      * @throws IOException
      * @author CarstenJuhl

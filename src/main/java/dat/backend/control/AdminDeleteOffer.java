@@ -38,7 +38,7 @@ public class AdminDeleteOffer extends HttpServlet {
      * This method handles deleting orders from the database and updating the list on the sessionScope if removal is successful.
      * It retrieves the orderID from the request object and tries to delete it everything in the database connected to that order ID.
      * If successful it will remove the Order object from the List of Orders that are saved on sessionScope.
-     * It redirects to adminneworders servlet and from there back to newordersadministration.jsp
+     * It redirects to adminneworders servlet
      * @param request Http request object
      * @param response Http response object
      * @throws ServletException

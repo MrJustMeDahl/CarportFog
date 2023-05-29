@@ -69,7 +69,6 @@ public class EditChosenMaterialFunction extends HttpServlet {
             chosenmaterials = (List<Material>) session.getAttribute("editmateriallist");
         } catch (NullPointerException e) {
         }
-
         try {
             if (materialfunction == 1) {
                 session.setAttribute("editmateriallist", postList);
