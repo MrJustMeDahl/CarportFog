@@ -165,9 +165,9 @@ class UserMapper {
 
     /**
      * A method to retrieve all users from the DB to use on the all orders admin page.
-     * @param connectionPool
+     * @param connectionPool is required to establish connection to the database.
      * @return a List of users
-     * @throws DatabaseException
+     * @throws DatabaseException Is thrown if there is no connection to the database or if data is invalid.
      * @author CarstenJuhl
      */
     static List<User> getAllUsers(ConnectionPool connectionPool)throws DatabaseException {

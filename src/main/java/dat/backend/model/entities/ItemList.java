@@ -26,6 +26,9 @@ public class ItemList {
      * @param length     length of the carport in centimeter
      * @param width      width of the carport in centimeter
      * @param minHeight  minimum height for the carport in centimeter
+     * @param hasShed    A boolean which is used to check for a shed
+     * @param shedLength Length of the shed
+     * @param shedWidth  Width of the shed
      * @param allPosts   list of all posts that can be used for calculations
      * @param allPurlins list of all purlins that can be used for calculations
      * @param allRafters list of all Rafters that can be used for calculations
@@ -42,9 +45,12 @@ public class ItemList {
      * This constructor is used when creating an object of an already existing order.
      * It will not generate content for the itemlist, and it is therefore required you use the addMaterialToItemList() method to fill out the content.
      *
-     * @param length    length of the carport in centimeter
-     * @param width     width of the carport in centimeter
-     * @param minHeight minimum height of the carport in centimeter
+     * @param length     length of the carport in centimeter
+     * @param width      width of the carport in centimeter
+     * @param minHeight  minimum height of the carport in centimeter
+     * @param hasShed    A boolean which is used to check for a shed
+     * @param shedLength Length of the shed
+     * @param shedWidth  Width of the shed
      * @author MrJustMeDahl
      */
     public ItemList(int length, int width, int minHeight, boolean hasShed, int shedLength, int shedWidth) {
@@ -60,9 +66,11 @@ public class ItemList {
      * This method is used to calculate to content of the itemlist.
      * It requires a list of all the different material types it can choose from.
      *
-     * @param allPosts   List of posts
-     * @param allPurlins List of Purlins
-     * @param allRafters List of Rafters
+     * @param allPosts       List of posts
+     * @param allPurlins    List of Purlins
+     * @param allRafters    List of Rafters
+     * @param allRoofs      list of the roof
+     * @param allSheathings list of the sheathings
      * @author MrJustMeDahl
      */
     public void generateItemListContent(List<Post> allPosts, List<Purlin> allPurlins, List<Rafter> allRafters, List<Roof> allRoofs, List<Sheathing> allSheathings) throws NoMaterialFoundException {
@@ -84,6 +92,12 @@ public class ItemList {
         }
     }
 
+    /**
+     * This method adds a material to the itemList
+     *
+     * @param material List of materials
+     * @author MrJustMeDahl
+     */
     public void addMaterialToItemList(ItemListMaterial material) {
         materials.add(material);
     }
