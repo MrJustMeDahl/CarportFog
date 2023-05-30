@@ -26,10 +26,12 @@ public class CarportTest {
     @Test
     void calculateActualPrice(){
         assertEquals(3759, carport.calculatePrice());
+        assertNotEquals(4000,carport.calculatePrice());
     }
 
     @Test
     void calculateIndicativePrice(){
         assertEquals(7703, carport.calculateIndicativePrice());
+        assertNotEquals(2500,carport.calculatePrice());
     }
 }

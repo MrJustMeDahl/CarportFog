@@ -124,10 +124,14 @@ public class OrderMapper {
     }
 
     /**
+     * This method creates an order object which is returned. Its also created in the database. If there is no shed connected to the carport, its values is set as 0 in the DB.
+     * This method is used when the customer orders a carport, which is why orderstatus is hard coded to be "pending"
+     *
      * @param carport         the Object, which will be generated with height, width and length from the user, later to be put into the order in the DB
      * @param userId          ID number for the user, which the order is made for.
      * @param price           Price is the final price for the order. (This will later be changeable for the admin)
      * @param indicativePrice The price which is predetermined, before the admin has made a deal.
+     * @param itemList        Is added return a list of items for each order when creating the object.
      * @param connectionPool  Is required for establishing connection to the DB.
      * @return Will return the order, which is being created by the method.
      * @throws DatabaseException is thrown if there isn't a connection to the database or if the data in the database is invalid.
@@ -201,7 +205,7 @@ public class OrderMapper {
     }
 
     /**
-     * This method will update the orderstatus for an order in the DB to "payed"
+     * This method will update the orderstatus for an order in the DB to "payed". This method is used after pressing the "pay" button on the orderpage.
      *
      * @param orderId        Is the ID for the order itself.
      * @param connectionPool Is required for establishing connection to the DB.
@@ -257,7 +261,7 @@ public class OrderMapper {
 
 
     /**
-     * This method returns a list of Order, where all orders have order status "ordered".
+     * This method returns a list of Order, where all orders have order status "ordered". This method is used on the admin "new orders" page.
      *
      * @param connectionPool required to establish connection to the database.
      * @return List of Order.

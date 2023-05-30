@@ -24,9 +24,13 @@ public class MaterialCalculator {
     private final DecimalFormat df = new DecimalFormat("0.0");
 
     /**
-     * @param length    length of carport in centimeter
-     * @param width     width of carport in centimeter
-     * @param minHeight minimum height of carport in centimeter
+     * This constructor     is used for creating an object of the materialcalculator class.
+     * @param length        length of carport in centimeter
+     * @param width         width of carport in centimeter
+     * @param minHeight     minimum height of carport in centimeter
+     * @param hasShed       Boolean used for checking if the carport has a shed
+     * @param shedLength    Length of the shed
+     * @param shedWidth     Width of the shed
      */
     public MaterialCalculator(int length, int width, int minHeight, boolean hasShed, int shedLength, int shedWidth) {
         this.length = length;

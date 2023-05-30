@@ -19,6 +19,10 @@ public class Carport {
     /**
      * This constructor is used when creating a new order - meaning you don't know the price yet, it will calculate the price of all materials for you and give you a suggested indicative price.
      * @param materials Key is the material and value is number of that material used for this specific Carport
+     * @param width is the width of the carport
+     * @param length is the length of the carport
+     * @param minHeight is the height of the carport
+     * @param shed the shed is defined as an object if chosen. If theres no shed selected, its defined as null
      * @author MrJustMeDahl
      */
 
@@ -37,7 +41,11 @@ public class Carport {
      * This constructor is used when loading in existing orders from the database.
      * @param materials Key is the material and value is number of that material used for this specific Carport
      * @param price The price of all the materials used for the carport.
-     * @param indicativePrice Sales price.
+     * @param indicativePrice Sales price
+     * @param width is the width of the carport
+     * @param length is the length of the carport
+     * @param minHeight is the height of the carport
+     * @param shed the shed is defined as an object if chosen. If theres no shed selected, its defined as null
      * @author MrJustMeDahl
      */
 

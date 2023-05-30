@@ -51,6 +51,8 @@ public class ItemListTest {
         itemList.generateItemListContent(posts, purlins, rafters, roofs, sheathings);
         assertEquals(10, itemList.getMaterials().size());
         assertEquals(11, itemList.getMaterials().get(0).getAmount() + itemList.getMaterials().get(1).getAmount());
+        assertNotEquals(5, itemList.getMaterials().size() );
+        assertNotEquals(15, itemList.getMaterials().get(0).getAmount() + itemList.getMaterials().get(1).getAmount() );
     }
 
     @Test
@@ -67,6 +69,7 @@ public class ItemListTest {
             totalAmount += entry.getValue();
         }
         assertEquals(20, totalAmount);
+        assertNotEquals(18,totalAmount);
     }
 
     @Test
@@ -83,6 +86,7 @@ public class ItemListTest {
             totalAmount += entry.getValue();
         }
         assertEquals(3, totalAmount);
+        assertNotEquals(1,totalAmount);
     }
 
 }

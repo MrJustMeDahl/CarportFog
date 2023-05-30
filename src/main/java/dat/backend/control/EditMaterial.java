@@ -29,7 +29,7 @@ public class EditMaterial extends HttpServlet {
 
     /**
      * The editmaterialServlet is used to edit items already in the database.
-     * only the admin user can use this servlet, and he/she can change the price and description of a material
+     * only the admin can use this servlet, and he/she can change the price and description of a material
      *
      * @param request
      * @param response

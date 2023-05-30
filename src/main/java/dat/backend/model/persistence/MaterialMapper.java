@@ -122,7 +122,7 @@ public class MaterialMapper {
     }
 
     /**
-     * This method retrieves a list of all material types from the databse.
+     * This method retrieves a list of all material types from the database.
      *
      * @param connectionPool required to establish connection to the database.
      * @return List of strings with material types.
