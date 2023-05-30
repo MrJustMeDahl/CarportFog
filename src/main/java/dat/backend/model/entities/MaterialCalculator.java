@@ -183,7 +183,7 @@ public class MaterialCalculator {
         Roof chosenRoof = null;
         int actualNumberOfRoofsNeeded = 0;
         int actualNumberOfRowsNeeded = 0;
-        double lowestWaste = 0;
+        double lowestWaste = -1;
         for (Roof r : allRoofs) {
             int numberOfRoofsNeeded = 0;
             int numberOfRowsNeeded = 1;
@@ -210,7 +210,7 @@ public class MaterialCalculator {
                 i -= 20;
             }
             waste = (wasteWidth * (numberOfRoofsNeeded / numberOfRoofsPerRow)) + wasteLength;
-            if (waste < lowestWaste || lowestWaste == 0) {
+            if (waste < lowestWaste || lowestWaste == -1) {
                 lowestWaste = waste;
                 chosenRoof = r;
                 actualNumberOfRoofsNeeded = numberOfRoofsNeeded;
@@ -218,7 +218,7 @@ public class MaterialCalculator {
             }
         }
         if(chosenRoof == null){
-            throw new NoMaterialFoundException("Could not find sheathings that matches the measurements for the chosen carport");
+            throw new NoMaterialFoundException("Could not find rooftiles that matches the measurements for the chosen carport");
         }
         roofs.add(new ItemListMaterial(chosenRoof, actualNumberOfRoofsNeeded, "Tagplader moneters på spær", "carport", length / actualNumberOfRowsNeeded));
         return roofs;

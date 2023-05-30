@@ -25,7 +25,7 @@
         <table class="table">
 
             <thead>
-            <th>Pris: ${requestScope.order.price} kr</th>
+            <th>Pris: ${requestScope.order.indicativePrice} kr</th>
             <th>Ordre Status: "${requestScope.order.orderStatus}"</th>
             <th>Længde: ${requestScope.order.carport.length} cm</th>
             <th>Bredde: ${requestScope.order.carport.width} cm</th>
