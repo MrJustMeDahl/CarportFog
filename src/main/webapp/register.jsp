@@ -29,7 +29,7 @@
                             <input type="password" name="password" placeholder="Kodeord">
                         </div>
                         <div class="row mt-3 w-75 mx-auto">
-                            <input type="text" name="fullName" placeholder="Fulde navn">
+                            <input type="text" name="fullName" pattern="[a-zA-Z]*" placeholder="Fulde navn">
                         </div>
                         <div class="row mt-3 w-75 mx-auto">
                             <input type="number" min="10000000" max="99999999" name="phoneNumber"

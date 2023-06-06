@@ -78,7 +78,7 @@ public class Carports extends HttpServlet {
         try {
             shedLength = Integer.parseInt(request.getParameter("shedLength"));
             shedWidth = Integer.parseInt(request.getParameter("shedWidth"));
-        } catch (NullPointerException e) {
+        } catch (NumberFormatException e) {
         }
 
 
