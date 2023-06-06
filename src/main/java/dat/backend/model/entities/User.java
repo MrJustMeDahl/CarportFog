@@ -162,25 +162,4 @@ public class User {
         ", navn=" + name + '\'' +
         '}';
     }
-
-
-    public boolean checkEmail(String email) {
-
-        if (email.contains("@")&& email.contains(".")){
-            return true;
-        }
-        return false;
-    }
-
-
-    public boolean checkPhoneNumber(String phoneNumber) {
-
-        return phoneNumber.matches("\\d+");
-    }
-
-
-    public boolean checkName(String fullName) {
-
-        return !fullName.matches("\\d+");
-    }
 }

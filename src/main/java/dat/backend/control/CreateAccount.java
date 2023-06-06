@@ -66,38 +66,21 @@ public class CreateAccount extends HttpServlet
         String address = request.getParameter("address");
 
 
-        User user = new User(0, null, null, null, 0, null, "user");
 
-        boolean emailPassed = user.checkEmail(email);
-        boolean phoneNumberPassed = user.checkPhoneNumber(phoneNumber);
-        boolean namePassed = user.checkName(fullName);
+
 
         try{
-            if(emailPassed && phoneNumberPassed && namePassed) {
 
-                user = UserFacade.createUser(email, password, Integer.parseInt(phoneNumber), address, fullName, "user", connectionPool);
-            }else {
-                user = null;
-            }
+                UserFacade.createUser(email, password, Integer.parseInt(phoneNumber), address, fullName, "user", connectionPool);
+                request.getRequestDispatcher("login.jsp").forward(request,response);
+
+
         }catch (DatabaseException e) {
             // Handle other exceptions such as database errors
             request.setAttribute("errormessage", "Hov, der skete en fejl ved registreringen, prøv igen..");
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }
 
-        if(user != null) {
-            request.setAttribute("registermessage", "Din konto er blevet oprettet, du kan nu logge ind.");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-        } else if (!emailPassed){
-            request.setAttribute("registermessage", "Hov, din email er ikke korrekt - prøv igen.");
-            request.getRequestDispatcher("register.jsp").forward(request, response);
-        } else if (!phoneNumberPassed){
-            request.setAttribute("registermessage", "Hov, dit telefonnummer er ikke korrekt - prøv igen.");
-            request.getRequestDispatcher("register.jsp").forward(request, response);
-        } else if (!namePassed){
-            request.setAttribute("registermessage", "Hov, dit navn må ikke indeholde tal - prøv igen.");
-            request.getRequestDispatcher("register.jsp").forward(request, response);
-        }
     }
 
 }
